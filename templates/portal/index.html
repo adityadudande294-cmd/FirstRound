@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FirstRound — Campus Placement Aptitude Portal</title>
+  <meta name="description" content="Practice 100% free & unlocked company placement aptitude tests for TCS, Wipro, Infosys, Accenture & Cognizant. Compete on the live leaderboard and master weak topics.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            tcsNavy: '#003057',       /* Primary Header / Footer / Dark Headings */
+            infosysBlue: '#3781C2',   /* Secondary Interactive Buttons / Active Links */
+            wiproYellow: '#FFC412',   /* Accent Primary CTA / Badges */
+            appBg: '#F4F7F6',         /* Main Clean Off-White */
+            surface: '#FFFFFF',       /* Cards / Modals Pure White */
+            emeraldGreen: '#10B981',  /* Success / Correct Answer */
+            crimsonRed: '#EF4444',    /* Danger / Wrong Option / Timer Alert */
+            textPrimary: '#00223E',   /* Deep Charcoal/Navy */
+            textMuted: '#64748B',     /* Slate Gray */
+            borderSubtle: '#E2E8F0'
+          },
+          fontFamily: {
+            heading: ['Outfit', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <!-- html2canvas for Client-side Scorecard PNG generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body class="bg-[#F4F7F6] text-[#00223E] min-h-screen flex flex-col antialiased selection:bg-[#3781C2] selection:text-white">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================================================== -->
+  <!-- MANDATORY AUTH GATEWAY (SHOWN TO UNREGISTERED/LOGGED OUT) -->
+  <!-- ==================================================== -->
+  <div id="view-auth-gate" class="fixed inset-0 z-50 bg-[#F4F7F6] flex flex-col justify-between overflow-y-auto hidden animate-fade-in">
+    
+    <!-- Auth Gate Header -->
+    <header class="bg-[#003057] text-white py-4 px-6 shadow-md">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#3781C2] to-[#FFC412] p-0.5 flex items-center justify-center shadow-md">
+            <div class="w-full h-full bg-[#003057] rounded-[10px] flex items-center justify-center">
+              <svg class="w-5 h-5 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <span class="text-xl font-black tracking-tight text-white font-heading flex items-center gap-1">
+              First<span class="text-[#FFC412]">Round</span>
+            </span>
+            <span class="block text-[10px] font-bold text-[#94A3B8] tracking-wider uppercase">Campus Placement Aptitude Portal</span>
+          </div>
+        </div>
+
+        <div class="text-xs text-[#E2E8F0] hidden sm:block">
+          <span class="px-3 py-1 rounded-full bg-[#FFC412] text-[#00223E] font-black text-[11px]">
+            100% Free & Unlocked
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Auth Form Container -->
+    <div class="flex-1 flex items-center justify-center p-4 sm:p-8 my-auto">
+      <div class="card-surface rounded-3xl p-6 sm:p-10 max-w-lg w-full border border-[#E2E8F0] shadow-xl space-y-6">
+        
+        <!-- Welcome Headings -->
+        <div class="text-center space-y-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EBF4FB] text-[#3781C2] border border-[#3781C2]/30">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span>Candidate Authentication Required</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-black text-[#003057] font-heading">Sign In to FirstRound</h2>
+          <p class="text-xs text-[#64748B] max-w-sm mx-auto">Access TCS, Wipro & Infosys placement mock tests and track your live rank on the campus leaderboard.</p>
+        </div>
+
+        <!-- Auth Tabs (Sign In vs Register) -->
+        <div class="grid grid-cols-2 gap-2 bg-[#F1F5F9] p-1 rounded-2xl border border-[#CBD5E1] text-xs font-bold">
+          <button id="gate-tab-signin" type="button" onclick="setAuthGateMode('signin')" class="py-2.5 rounded-xl transition-all bg-[#003057] text-white shadow-sm">
+            Existing Student Sign In
+          </button>
+          <button id="gate-tab-register" type="button" onclick="setAuthGateMode('register')" class="py-2.5 rounded-xl transition-all text-[#64748B] hover:text-[#003057]">
+            New Candidate Registration
+          </button>
+        </div>
+
+        <!-- Unified Dynamic Auth Form -->
+        <form id="gate-auth-form" class="space-y-4 text-xs">
+          <!-- Fields for Registration Only -->
+          <div id="gate-field-name" class="space-y-1 hidden">
+            <label class="block font-bold text-[#003057]">Full Name</label>
+            <input type="text" name="full_name" placeholder="e.g. Aditya Sharma" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-3 text-[#00223E] focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 focus:outline-none transition-all">
+          </div>
+
+          <div id="gate-field-college" class="space-y-1 hidden">
+            <label class="block font-bold text-[#003057]">College / University / Degree</label>
+            <input type="text" name="college" placeholder="e.g. IIT Bombay / NIT Trichy / COEP Tech" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-3 text-[#00223E] focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 focus:outline-none transition-all">
+          </div>
+
+          <!-- Common Fields -->
+          <div class="space-y-1">
+            <label class="block font-bold text-[#003057]">Email Address</label>
+            <input type="email" name="email" required placeholder="aditya@example.com" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-3 text-[#00223E] focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 focus:outline-none transition-all">
+          </div>
+
+          <div class="space-y-1">
+            <label class="block font-bold text-[#003057]">Password</label>
+            <input type="password" name="password" required placeholder="••••••••" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-3 text-[#00223E] focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 focus:outline-none transition-all">
+          </div>
+
+          <button id="gate-submit-btn" type="submit" class="w-full py-3.5 rounded-2xl font-black text-xs bg-[#FFC412] text-[#00223E] hover:bg-[#E5AF0E] transition-all shadow-md flex items-center justify-center gap-2">
+            <span>Sign In to Placement Portal</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </form>
+
+        <!-- Pre-configured Quick Login Presets -->
+        <div class="pt-4 border-t border-[#E2E8F0] space-y-2">
+          <span class="block text-[11px] text-[#64748B] text-center font-semibold">1-Click Quick Preset Access:</span>
+          <div class="grid grid-cols-2 gap-2">
+            <button 
+              type="button"
+              onclick="quickGateLoginAdmin()"
+              class="py-2.5 px-3 rounded-xl bg-[#FEE2E2] text-[#EF4444] border border-[#FECACA] hover:bg-[#FCA5A5]/30 text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>🛡️ Admin (aadi@gmail.com)</span>
+            </button>
+            <button 
+              type="button"
+              onclick="quickGateLoginStudent()"
+              class="py-2.5 px-3 rounded-xl bg-[#EBF4FB] text-[#3781C2] border border-[#BFDBFE] hover:bg-[#DBEAFE] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+            >
+              <span>🎓 Candidate Preset</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Auth Gate Footer -->
+    <footer class="bg-[#003057] text-white py-4 text-center text-xs border-t border-[#3781C2]/30">
+      <span class="text-[#94A3B8]">FirstRound • Free Corporate Placement Preparation & Live Rankings</span>
+    </footer>
+
+  </div>
+
+  <!-- ==================================================== -->
+  <!-- MAIN APPLICATION CONTENT (SHOWN WHEN AUTHENTICATED)   -->
+  <!-- ==================================================== -->
+  <div id="main-app-container" class="flex-1 flex flex-col">
+
+    <!-- Sticky Live Leaderboard Banner -->
+    <div id="sticky-leaderboard-banner" class="sticky top-0 z-40 bg-white border-b border-[#E2E8F0] shadow-sm px-4 py-2.5 hidden">
+      <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
+        <div class="flex items-center gap-3">
+          <span class="flex h-2.5 w-2.5 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10B981]"></span>
+          </span>
+          <span class="font-semibold text-[#64748B]">Live Campus Standing:</span>
+          <span class="font-bold text-[#003057] flex items-center gap-1.5">
+            <span id="banner-user-name">Candidate</span>
+            <span class="text-[#CBD5E1]">•</span>
+            <span class="text-[#3781C2] font-heading font-extrabold text-sm" id="banner-user-rank">#--</span>
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-1.5 bg-[#FFF9E6] px-3 py-1 rounded-full border border-[#FFE899]">
+            <span class="text-[#7A5800] font-medium">Points:</span>
+            <span class="font-black text-[#946C00] font-mono" id="banner-user-points">0 pts</span>
+          </div>
+          <button onclick="switchView('leaderboard')" class="text-[#3781C2] hover:text-[#003057] font-bold flex items-center gap-1 transition-colors">
+            <span>Leaderboard</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Global Header / Navbar (TCS Deep Navy #003057) -->
+    <header class="bg-[#003057] text-white sticky top-0 z-30 shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        
+        <!-- Brand Logo -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('home')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#3781C2] to-[#FFC412] p-0.5 flex items-center justify-center shadow-md">
+            <div class="w-full h-full bg-[#003057] rounded-[10px] flex items-center justify-center">
+              <svg class="w-5 h-5 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <span class="text-xl font-black tracking-tight text-white font-heading flex items-center gap-1">
+              First<span class="text-[#FFC412]">Round</span>
+            </span>
+            <span class="block text-[10px] font-bold text-[#94A3B8] tracking-wider uppercase">Campus Placement Portal</span>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-bold">
+          <button class="nav-link text-[#FFC412] border-b-2 border-[#FFC412] py-5 transition-all" data-view="home" onclick="switchView('home')">
+            Explore Tests
+          </button>
+          <button class="nav-link text-[#CBD5E1] hover:text-white py-5 transition-all" data-view="leaderboard" onclick="switchView('leaderboard')">
+            Live Leaderboard
+          </button>
+          <button class="nav-link text-[#CBD5E1] hover:text-[#FFC412] py-5 transition-all flex items-center gap-1.5" data-view="vault" onclick="switchView('vault')">
+            <svg class="w-4 h-4 text-[#FFC412]" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+            <span>Revision Vault</span>
+          </button>
+          <button id="nav-admin-link" class="nav-link text-[#CBD5E1] hover:text-[#FFC412] py-5 transition-all hidden flex items-center gap-1.5" data-view="admin" onclick="switchView('admin')">
+            <span class="w-2 h-2 rounded-full bg-[#EF4444]"></span>
+            Admin Dashboard
+          </button>
+        </nav>
+
+        <!-- Right Action & Profile -->
+        <div class="flex items-center gap-3">
+          <div id="user-profile-pill" class="flex items-center gap-3 bg-[#00223E] border border-[#3781C2]/40 pl-3 pr-2 py-1.5 rounded-full shadow-inner">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#10B981]"></span>
+              <span id="header-user-name" class="text-xs font-bold text-white">Student</span>
+              <span class="text-xs font-mono font-extrabold text-[#00223E] bg-[#FFC412] px-2.5 py-0.5 rounded-full" id="header-user-points">0 pts</span>
+            </div>
+            <button onclick="handleLogout()" title="Sign Out" class="w-7 h-7 rounded-full bg-[#003057] hover:bg-[#EF4444] text-[#CBD5E1] hover:text-white flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- Main Views Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- ========================================== -->
+      <!-- VIEW 1: HOME & TESTS CATALOG               -->
+      <!-- ========================================== -->
+      <section id="view-home" class="view-section space-y-8">
+        
+        <!-- Live / Upcoming Mega Drive Arena Sticky Hero Banner -->
+        <div id="hero-mega-event-container" class="hidden">
+          <!-- Rendered dynamically via JS -->
+        </div>
+
+        <!-- Hero Banner (Corporate TCS Navy & Infosys Blue Accent) -->
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#003057] to-[#0A4778] text-white p-8 sm:p-12 shadow-xl border border-[#3781C2]/30">
+          <div class="absolute -top-20 -right-20 w-80 h-80 bg-[#3781C2]/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-[#FFC412]/10 rounded-full blur-3xl pointer-events-none"></div>
+
+          <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FFC412] text-[#00223E] shadow-sm">
+              <span>✨ 100% Free & Unlocked Placement Preparation</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl font-black font-heading tracking-tight leading-tight text-white">
+              Crack Your Dream Campus <span class="text-[#FFC412]">Placement Drive</span>
+            </h1>
+
+            <p class="text-[#E2E8F0] text-sm sm:text-base leading-relaxed">
+              Practice authentic placement tests for <strong class="text-white">TCS, Wipro, Infosys, Accenture & Cognizant</strong>.
+              Zero duplication, instant step-by-step formula breakdowns, and live campus rankings.
+            </p>
+
+            <!-- Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs font-semibold">
+              <div class="bg-white/10 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-white/15 flex items-center gap-2">
+                <span class="text-[#FFC412]">✓</span>
+                <span>25+ Qs / Test</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-white/15 flex items-center gap-2">
+                <span class="text-[#FFC412]">✓</span>
+                <span>Dual Modes</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-white/15 flex items-center gap-2">
+                <span class="text-[#FFC412]">✓</span>
+                <span>Instant Formulas</span>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-white/15 flex items-center gap-2">
+                <span class="text-[#FFC412]">✓</span>
+                <span>Live Leaderboard</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tests Explorer Toolbar -->
+        <div class="space-y-4">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-bold text-[#003057] font-heading">Placement Test Series</h2>
+              <p class="text-xs text-[#64748B]">All test modules are 100% free and unlocked. Choose your target company or topic.</p>
+            </div>
+
+            <!-- Search Input -->
+            <div class="relative w-full md:w-80">
+              <input 
+                type="text" 
+                id="test-search-input"
+                placeholder="Search TCS, Wipro, Infosys, Topic..." 
+                class="w-full bg-white border border-[#CBD5E1] rounded-xl pl-10 pr-4 py-2.5 text-xs text-[#00223E] placeholder-[#94A3B8] focus:outline-none focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 transition-all shadow-sm"
+              >
+              <svg class="w-4 h-4 text-[#64748B] absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </div>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div id="test-filters-container" class="flex flex-wrap gap-2 pt-1">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Test Cards Grid -->
+        <div id="tests-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered via JS -->
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 2: INTERACTIVE TEST EXECUTION ENGINE   -->
+      <!-- ========================================== -->
+      <section id="view-test-engine" class="view-section space-y-6 hidden select-none">
+        
+        <!-- Engine Top Bar -->
+        <div class="card-surface rounded-2xl p-4 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-[#E2E8F0]">
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span id="engine-mode-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-[#E6F4EA] text-[#0D652D]">Practice Mode</span>
+              <span id="engine-tab-switch-badge" class="hidden px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#FECACA] animate-pulse">⚠️ Tab Switch: 0/2</span>
+              <span id="engine-q-tag" class="text-xs text-[#003057] font-mono font-bold bg-[#F1F5F9] px-2.5 py-0.5 rounded border border-[#CBD5E1]">[TCS 2025]</span>
+            </div>
+            <h2 id="engine-test-title" class="text-lg sm:text-xl font-bold text-[#003057] font-heading">TCS NQT Full Placement Test</h2>
+          </div>
+
+          <!-- Timer & Actions -->
+          <div class="flex items-center gap-4 self-end md:self-auto">
+            <div id="engine-timer-container" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1] text-[#003057]">
+              <svg class="w-4 h-4 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span id="engine-timer-display" class="font-mono text-sm font-extrabold tracking-wider">25:00</span>
+            </div>
+
+            <button onclick="submitCurrentTest()" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#EF4444] text-white hover:bg-[#DC2626] transition-all shadow-sm">
+              Submit Test
+            </button>
+          </div>
+        </div>
+
+        <!-- Test Body (Left: Question, Right: Palette) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left: Question & Solution Area (8 cols) -->
+          <div class="lg:col-span-8 space-y-6">
+            
+            <div class="card-surface rounded-2xl p-6 sm:p-8 space-y-6 border border-[#E2E8F0]">
+              <!-- Question Topic & Counter with Bookmark Button -->
+              <div class="flex items-center justify-between pb-4 border-b border-[#E2E8F0] text-xs">
+                <span id="engine-q-topic" class="font-bold text-[#3781C2] uppercase tracking-wider">Time & Work</span>
+                <div class="flex items-center gap-3">
+                  <button id="engine-btn-bookmark" onclick="toggleCurrentQuestionBookmark()" title="Save to Revision Vault" class="p-1.5 px-2 rounded-lg border border-[#CBD5E1] hover:border-[#FFC412] hover:bg-[#FFF9E6] text-[#64748B] hover:text-[#946C00] transition-all flex items-center gap-1.5">
+                    <svg id="engine-bookmark-icon" class="w-4 h-4 text-[#CBD5E1]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                    <span class="text-[11px] font-bold hidden sm:inline" id="engine-bookmark-text">Star</span>
+                  </button>
+                  <span id="engine-question-counter" class="text-[#64748B] font-semibold">Question 1 of 25</span>
+                </div>
+              </div>
+
+              <!-- Question Stem -->
+              <div class="text-sm sm:text-base font-semibold text-[#00223E] leading-relaxed select-none" id="engine-q-text">
+                Loading question prompt...
+              </div>
+
+              <!-- Options Grid -->
+              <div id="engine-options-container" class="space-y-3 pt-2">
+                <!-- Rendered via JS -->
+              </div>
+
+              <!-- Practice Mode Instant Solution Breakdown -->
+              <div id="engine-practice-solution" class="hidden space-y-4 pt-4 border-t border-[#E2E8F0]">
+                <!-- Rendered via JS -->
+              </div>
+
+              <!-- Action Buttons Bar -->
+              <div class="flex items-center justify-between pt-6 border-t border-[#E2E8F0] gap-2 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <button 
+                    id="engine-btn-prev"
+                    onclick="prevQuestion()" 
+                    class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-[#64748B] border border-[#CBD5E1] hover:border-[#3781C2] hover:text-[#003057] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    ← Previous
+                  </button>
+
+                  <button 
+                    id="engine-btn-clear"
+                    onclick="clearOptionSelect()" 
+                    class="px-3 py-2.5 rounded-xl text-xs font-semibold text-[#64748B] hover:text-[#EF4444] transition-colors"
+                  >
+                    Clear Choice
+                  </button>
+                </div>
+
+                <div class="flex items-center gap-3">
+                  <button 
+                    id="engine-btn-review"
+                    onclick="toggleReview()" 
+                    class="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#FFF9E6] text-[#946C00] border border-[#FFE899] hover:bg-[#FEF3C7] transition-all"
+                  >
+                    Mark for Review
+                  </button>
+
+                  <button 
+                    id="engine-btn-next"
+                    onclick="nextQuestion()" 
+                    class="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#3781C2] text-white hover:bg-[#2A6AA4] transition-all shadow-sm flex items-center gap-1.5"
+                  >
+                    <span>Next Question</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Right: Interactive Question Palette (4 cols) -->
+          <div class="lg:col-span-4">
+            <div class="card-surface rounded-2xl p-6 border border-[#E2E8F0] space-y-4 sticky top-24">
+              <h3 class="text-sm font-bold text-[#003057] font-heading flex items-center justify-between">
+                <span>Question Matrix</span>
+                <span class="text-xs text-[#64748B] font-normal">25 Questions</span>
+              </h3>
+
+              <!-- Palette Status Legends -->
+              <div class="grid grid-cols-3 gap-2 text-[11px] mb-5 pb-4 border-b border-[#E2E8F0]">
+                <div class="flex items-center gap-1.5 text-[#10B981] font-semibold">
+                  <span class="w-3 h-3 rounded bg-[#10B981]"></span>
+                  <span>Answered</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[#D97706] font-semibold">
+                  <span class="w-3 h-3 rounded bg-[#FFC412]"></span>
+                  <span>Review</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[#64748B]">
+                  <span class="w-3 h-3 rounded bg-white border border-[#CBD5E1]"></span>
+                  <span>Unvisited</span>
+                </div>
+              </div>
+
+              <!-- Palette Bubbles Grid -->
+              <div id="engine-palette-grid" class="grid grid-cols-5 gap-2.5 max-h-96 overflow-y-auto pr-1">
+                <!-- Rendered via JS -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 3: POST-TEST DIAGNOSTIC & WEAKNESS    -->
+      <!-- ========================================== -->
+      <section id="view-diagnostic" class="view-section space-y-8 hidden">
+        
+        <!-- Integrity Violation Alert Banner -->
+        <div id="diag-integrity-alert" class="hidden p-5 rounded-2xl bg-[#FEE2E2] border-2 border-[#EF4444] text-[#991B1B] text-xs font-bold flex items-start sm:items-center gap-3 shadow-md">
+          <svg class="w-6 h-6 text-[#EF4444] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <div>
+            <h4 class="font-extrabold text-sm text-[#7F1D1D]">Test Submitted with Integrity Flags</h4>
+            <p class="font-medium text-xs text-[#991B1B] mt-0.5" id="diag-integrity-reason">Multiple tab switches or window blur events were detected during Exam Simulation mode.</p>
+          </div>
+        </div>
+
+        <!-- Diagnostic Header Card -->
+        <div class="card-surface rounded-3xl p-8 border border-[#E2E8F0] shadow-lg relative overflow-hidden">
+          <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#E2E8F0]">
+              <div>
+                <span id="diag-company-tag" class="px-3 py-1 rounded-full text-xs font-bold bg-[#EBF4FB] text-[#3781C2] border border-[#3781C2]/30">[TCS 2025]</span>
+                <h2 id="diag-test-title" class="text-2xl sm:text-3xl font-black text-[#003057] font-heading mt-2">
+                  Placement Performance Diagnostic Report
+                </h2>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2.5">
+                <button id="diag-btn-whatsapp" onclick="shareOnWhatsApp()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#25D366] text-white hover:bg-[#20BD5A] transition-all shadow-sm flex items-center gap-1.5 hover:scale-105 active:scale-95">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  <span>Share on WhatsApp</span>
+                </button>
+                <button id="diag-btn-download-card" onclick="downloadScorecardImage()" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#003057] text-[#FFC412] hover:bg-[#00223E] transition-all shadow-sm flex items-center gap-1.5 hover:scale-105 active:scale-95 border border-[#003057]">
+                  <svg class="w-4 h-4 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                  <span>Download Scorecard PNG</span>
+                </button>
+                <button onclick="switchView('leaderboard')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-white text-[#3781C2] border border-[#3781C2] hover:bg-[#F0F7FF] transition-colors">
+                  Check Live Leaderboard
+                </button>
+                <button onclick="switchView('home')" class="px-4 py-2.5 rounded-xl text-xs font-bold bg-[#FFC412] text-[#00223E] hover:bg-[#E5AF0E] transition-all shadow-sm">
+                  Take Another Test
+                </button>
+              </div>
+            </div>
+
+            <!-- Score Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div class="bg-[#F8FAFC] p-5 rounded-2xl border border-[#E2E8F0]">
+                <div class="text-xs text-[#64748B] font-semibold mb-1">Final Score</div>
+                <div class="text-2xl sm:text-3xl font-black text-[#10B981] font-heading" id="diag-score-display">22 / 25</div>
+                <div class="text-[11px] text-[#64748B] mt-1">Questions Correct</div>
+              </div>
+
+              <div class="bg-[#F8FAFC] p-5 rounded-2xl border border-[#E2E8F0]">
+                <div class="text-xs text-[#64748B] font-semibold mb-1">Accuracy Rate</div>
+                <div class="text-2xl sm:text-3xl font-black text-[#003057] font-heading" id="diag-accuracy-display">88.0%</div>
+                <div class="text-[11px] text-[#3781C2] font-bold mt-1" id="diag-points-earned">+214 Points</div>
+              </div>
+
+              <div class="bg-[#F8FAFC] p-5 rounded-2xl border border-[#E2E8F0]">
+                <div class="text-xs text-[#64748B] font-semibold mb-1">Time Elapsed</div>
+                <div class="text-2xl sm:text-3xl font-black text-[#003057] font-mono" id="diag-time-taken">18m 42s</div>
+                <div class="text-[11px] text-[#64748B] mt-1">Total Exam Duration</div>
+              </div>
+
+              <div class="bg-[#F8FAFC] p-5 rounded-2xl border border-[#E2E8F0]">
+                <div class="text-xs text-[#64748B] font-semibold mb-1">Average Speed</div>
+                <div class="text-2xl sm:text-3xl font-black text-[#3781C2] font-heading" id="diag-avg-speed">44.8s / Q</div>
+                <div class="text-[11px] text-[#64748B] mt-1">Pacing Benchmark</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strengths vs Weaknesses Engine -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Strong Areas (>= 80%) -->
+          <div class="card-surface rounded-2xl p-6 border border-[#A7F3D0] space-y-4">
+            <div class="flex items-center gap-2 pb-3 border-b border-[#E2E8F0]">
+              <span class="w-3 h-3 rounded-full bg-[#10B981]"></span>
+              <h3 class="text-base font-bold text-[#003057] font-heading">Strong Areas (Accuracy $\ge$ 80%)</h3>
+            </div>
+            <div id="diag-strengths-container" class="space-y-3">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Weak Areas (< 60%) -->
+          <div class="card-surface rounded-2xl p-6 border border-[#FECACA] space-y-4">
+            <div class="flex items-center gap-2 pb-3 border-b border-[#E2E8F0]">
+              <span class="w-3 h-3 rounded-full bg-[#EF4444]"></span>
+              <h3 class="text-base font-bold text-[#003057] font-heading">Weak Areas (Accuracy &lt; 60%) & Recommendations</h3>
+            </div>
+            <div id="diag-weaknesses-container" class="space-y-3">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Full Step-by-Step Question Solution Explorer -->
+        <div class="card-surface rounded-2xl p-6 sm:p-8 border border-[#E2E8F0] space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
+            <div>
+              <h3 class="text-xl font-bold text-[#003057] font-heading">Complete Question & Solution Explorer</h3>
+              <p class="text-xs text-[#64748B]">Review detailed step-by-step formulas and speed shortcuts for all 25+ questions</p>
+            </div>
+
+            <!-- Solution Filter Tabs -->
+            <div class="flex items-center gap-1 bg-[#F1F5F9] p-1 rounded-xl border border-[#CBD5E1] text-xs">
+              <button class="sol-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-[#3781C2] text-white" data-filter="ALL" onclick="setSolutionFilter('ALL')">All</button>
+              <button class="sol-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-transparent text-[#64748B]" data-filter="CORRECT" onclick="setSolutionFilter('CORRECT')">Correct</button>
+              <button class="sol-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-transparent text-[#64748B]" data-filter="INCORRECT" onclick="setSolutionFilter('INCORRECT')">Incorrect</button>
+              <button class="sol-filter-btn px-3 py-1.5 rounded-lg font-semibold bg-transparent text-[#64748B]" data-filter="UNANSWERED" onclick="setSolutionFilter('UNANSWERED')">Unanswered</button>
+            </div>
+          </div>
+
+          <!-- Solutions Accordion List -->
+          <div id="diag-solutions-accordion" class="space-y-3">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 4: LIVE LEADERBOARD & COMPETITION     -->
+      <!-- ========================================== -->
+      <section id="view-leaderboard" class="view-section space-y-6 hidden">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#10B981] animate-pulse"></span>
+              <span class="text-xs font-bold text-[#3781C2] uppercase tracking-wider">Live Campus Competition</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-[#003057] font-heading">Placement Aspirants Leaderboard</h2>
+            <p class="text-xs text-[#64748B] mt-1">Ranking Formula: <span class="text-[#003057] font-bold font-mono">Points = (Correct × 10) - (Incorrect × 2)</span> with time taken as tie-breaker.</p>
+          </div>
+
+          <button onclick="loadLeaderboard()" class="self-start sm:self-auto px-4 py-2 rounded-xl text-xs font-bold bg-white border border-[#CBD5E1] text-[#003057] hover:border-[#3781C2] hover:text-[#3781C2] transition-colors flex items-center gap-2 shadow-sm">
+            <svg class="w-4 h-4 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            <span>Refresh Standing</span>
+          </button>
+        </div>
+
+        <!-- Leaderboard Table Container -->
+        <div class="card-surface rounded-2xl border border-[#E2E8F0] overflow-hidden shadow-md">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-[#003057] text-white text-[11px] font-bold uppercase tracking-wider">
+                  <th class="px-6 py-4 w-20">Rank</th>
+                  <th class="px-6 py-4">Student & College Profile</th>
+                  <th class="px-6 py-4 text-center hidden sm:table-cell">Tests</th>
+                  <th class="px-6 py-4 text-center hidden md:table-cell">Accuracy</th>
+                  <th class="px-6 py-4 text-right">Points</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-tbody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 5: ADMIN DASHBOARD (aadi@gmail.com)   -->
+      <!-- ========================================== -->
+      <section id="view-admin" class="view-section space-y-8 hidden">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#FEE2E2] text-[#EF4444] border border-[#FECACA]">SUPERUSER ACCESS</span>
+            <h2 class="text-2xl sm:text-3xl font-black text-[#003057] font-heading mt-1">Admin Command Center</h2>
+            <p class="text-xs text-[#64748B]">Manage test series, configure question banks, and inspect student member directory</p>
+          </div>
+        </div>
+
+        <!-- Admin Overview Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div class="card-surface p-5 rounded-2xl border border-[#E2E8F0]">
+            <div class="text-xs text-[#64748B] font-semibold">Total Students</div>
+            <div class="text-2xl font-black text-[#003057] font-heading mt-1" id="admin-stat-students">0</div>
+          </div>
+          <div class="card-surface p-5 rounded-2xl border border-[#E2E8F0]">
+            <div class="text-xs text-[#64748B] font-semibold">Total Test Series</div>
+            <div class="text-2xl font-black text-[#3781C2] font-heading mt-1" id="admin-stat-tests">0</div>
+          </div>
+          <div class="card-surface p-5 rounded-2xl border border-[#E2E8F0]">
+            <div class="text-xs text-[#64748B] font-semibold">Question Bank</div>
+            <div class="text-2xl font-black text-[#003057] font-heading mt-1" id="admin-stat-questions">0</div>
+          </div>
+          <div class="card-surface p-5 rounded-2xl border border-[#E2E8F0]">
+            <div class="text-xs text-[#64748B] font-semibold">Exam Attempts</div>
+            <div class="text-2xl font-black text-[#3781C2] font-heading mt-1" id="admin-stat-attempts">0</div>
+          </div>
+          <div class="card-surface p-5 rounded-2xl border border-[#E2E8F0]">
+            <div class="text-xs text-[#64748B] font-semibold">Avg Platform Acc</div>
+            <div class="text-2xl font-black text-[#10B981] font-heading mt-1" id="admin-stat-acc">0%</div>
+          </div>
+        </div>
+
+        <!-- Admin Tools Grid (Featured: Create Test from File .docx / .csv) -->
+        <div class="grid grid-cols-1 gap-6">
+          
+          <!-- FEATURED: Create Test from File (.docx / .csv) Generator -->
+          <div class="card-surface rounded-2xl p-6 sm:p-8 border-2 border-[#3781C2]/40 shadow-lg space-y-6 bg-gradient-to-br from-white to-[#F8FAFC]">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-[#E2E8F0]">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-[#003057] text-[#FFC412] flex items-center justify-center font-black text-xl shadow-md shrink-0">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="text-xl font-bold text-[#003057] font-heading">Auto Test Generator via CSV & Word (.docx)</h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-[#E6F4EA] text-[#0D652D] border border-[#A7F3D0]">AI-Ready Parser</span>
+                  </div>
+                  <p class="text-xs text-[#64748B] mt-0.5">Upload any Word (.docx) question document or CSV sheet to instantly build and publish a full interactive test series.</p>
+                </div>
+              </div>
+
+              <!-- Template Download Buttons -->
+              <div class="flex items-center gap-2 self-start md:self-auto shrink-0">
+                <button type="button" onclick="downloadSampleCSV()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-[#003057] hover:bg-[#F1F5F9] transition-all border border-[#CBD5E1] flex items-center gap-1.5 shadow-sm">
+                  <svg class="w-4 h-4 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                  <span>CSV Template</span>
+                </button>
+
+                <a href="/api/admin/sample-docx/" download class="px-3.5 py-2 rounded-xl text-xs font-bold bg-[#003057] text-[#FFC412] hover:bg-[#00223E] transition-all border border-[#003057] flex items-center gap-1.5 shadow-sm">
+                  <svg class="w-4 h-4 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                  <span>Word (.docx) Sample</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Generator Form -->
+            <form id="admin-generate-file-form" class="space-y-4 text-xs">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="md:col-span-2">
+                  <label class="block font-bold text-[#003057] mb-1.5">Test Title <span class="text-[#EF4444]">*</span></label>
+                  <input type="text" name="title" required placeholder="e.g. TCS NQT Advance Quantitative 2026" class="w-full bg-white border border-[#CBD5E1] rounded-xl p-3 text-xs text-[#00223E] focus:border-[#3781C2] focus:ring-2 focus:ring-[#3781C2]/20 focus:outline-none shadow-sm">
+                </div>
+
+                <div>
+                  <label class="block font-bold text-[#003057] mb-1.5">Dashboard Category <span class="text-[#EF4444]">*</span></label>
+                  <select name="test_type" class="w-full bg-white border border-[#CBD5E1] rounded-xl p-3 text-xs text-[#00223E] focus:border-[#3781C2] focus:outline-none shadow-sm font-semibold">
+                    <option value="COMPANY">Company Specific (Tab 2)</option>
+                    <option value="TOPIC">Topic-Wise Mastery (Tab 3)</option>
+                    <option value="OTHER">Other Practice Mocks (Tab 4)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Company / Topic Tag</label>
+                  <input type="text" name="company_name" placeholder="TCS, Wipro, Blood Relations..." required class="w-full bg-white border border-[#CBD5E1] rounded-xl p-2.5 text-xs text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Year / Batch</label>
+                  <input type="text" name="year" value="2026" required class="w-full bg-white border border-[#CBD5E1] rounded-xl p-2.5 text-xs text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Duration (Minutes)</label>
+                  <input type="number" name="duration_minutes" value="25" min="5" max="180" class="w-full bg-white border border-[#CBD5E1] rounded-xl p-2.5 text-xs text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+              </div>
+
+              <!-- Drag and drop file zone -->
+              <div>
+                <label class="block font-bold text-[#003057] mb-1.5">Upload Word Document (.docx) or CSV (.csv)</label>
+                <div class="border-2 border-dashed border-[#CBD5E1] hover:border-[#3781C2] rounded-2xl p-6 bg-white transition-all text-center group cursor-pointer relative">
+                  <input type="file" id="admin-file-gen-input" name="file" accept=".docx,.csv" class="absolute inset-0 opacity-0 cursor-pointer w-full h-full">
+                  <div class="space-y-2 pointer-events-none">
+                    <svg class="w-10 h-10 mx-auto text-[#3781C2] group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <div class="text-xs font-bold text-[#003057]">
+                      <span class="text-[#3781C2]">Click to browse</span> or drag & drop .docx / .csv file here
+                    </div>
+                    <p id="admin-file-gen-selected-name" class="text-[11px] text-[#64748B]">Supports MS Word standard placement questions (Q1, A, B, C, D, Answer, Explanation) and CSV format</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Or Paste Raw Text -->
+              <details class="text-xs text-[#64748B]">
+                <summary class="cursor-pointer font-semibold hover:text-[#003057] select-none py-1">Or paste question text directly...</summary>
+                <div class="pt-2">
+                  <textarea name="raw_text" rows="4" placeholder="Q1. What is the next number in series: 2, 6, 12, 20, ?&#10;A) 28&#10;B) 30&#10;C) 32&#10;D) 36&#10;Answer: B&#10;Explanation: Pattern is n^2 + n -> 1^2+1, 2^2+2, 3^2+3, 4^2+4, 5^2+5 = 30.&#10;Topic: Number Series" class="w-full bg-white border border-[#CBD5E1] rounded-xl p-3 text-[#00223E] font-mono text-[11px] focus:border-[#3781C2] focus:outline-none"></textarea>
+                </div>
+              </details>
+
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                <button type="submit" id="admin-file-gen-submit-btn" class="px-8 py-3 rounded-xl font-black text-xs bg-[#FFC412] text-[#00223E] hover:bg-[#E5AF0E] transition-all shadow-md flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>Generate & Publish Test Series</span>
+                </button>
+
+                <span id="admin-file-gen-status" class="text-xs font-semibold text-[#64748B]"></span>
+              </div>
+            </form>
+
+            <!-- Generation Log Box -->
+            <div id="admin-file-gen-logs-container" class="hidden p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-2 text-xs">
+              <h5 class="font-bold text-[#003057] flex items-center justify-between">
+                <span>Test Generation Summary</span>
+                <span id="admin-file-gen-summary-badge" class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#E6F4EA] text-[#0D652D]"></span>
+              </h5>
+              <div id="admin-file-gen-logs-list" class="max-h-36 overflow-y-auto space-y-1 font-mono text-[11px] text-[#475569]"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Admin Tools Grid (Add Test & Add Question) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          
+          <!-- Form: Create New Test Series -->
+          <div class="card-surface rounded-2xl p-6 border border-[#E2E8F0] space-y-4">
+            <h3 class="text-base font-bold text-[#003057] font-heading flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              Create Test Series Manually
+            </h3>
+            
+            <form id="admin-create-test-form" class="space-y-3 text-xs">
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Test Title</label>
+                <input type="text" name="title" required placeholder="e.g. TCS Prime 2026 Advanced Placement" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Company / Target</label>
+                  <input type="text" name="company_name" required placeholder="TCS, Wipro, Infosys..." class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Year Tag</label>
+                  <input type="text" name="year" value="2026" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Test Type</label>
+                  <select name="test_type" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                    <option value="COMPANY">Company Specific Mock</option>
+                    <option value="TOPIC">Topic-Wise Module</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Topic Category</label>
+                  <input type="text" name="topic_category" value="Full Mock" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Description</label>
+                <textarea name="description" rows="2" placeholder="Brief outline of syllabus..." class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none"></textarea>
+              </div>
+
+              <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs bg-[#003057] text-white hover:bg-[#00223E] transition-all shadow-sm">
+                Save Test Series
+              </button>
+            </form>
+          </div>
+
+          <!-- Form: Add Question to Test -->
+          <div class="card-surface rounded-2xl p-6 border border-[#E2E8F0] space-y-4">
+            <h3 class="text-base font-bold text-[#003057] font-heading flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              Add Single Question
+            </h3>
+
+            <form id="admin-add-question-form" class="space-y-3 text-xs">
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Select Target Test Series</label>
+                <select name="test_id" id="admin-q-test-select" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Topic</label>
+                  <input type="text" name="topic" required placeholder="Time & Work" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Company Tag</label>
+                  <input type="text" name="company_tag" placeholder="TCS 2025" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Correct Answer</label>
+                  <select name="correct_option" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#10B981] font-bold focus:border-[#3781C2] focus:outline-none">
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Question Prompt</label>
+                <textarea name="question_text" rows="2" required placeholder="Type question prompt..." class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none"></textarea>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" name="option_a" required placeholder="Option A text" class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E]">
+                <input type="text" name="option_b" required placeholder="Option B text" class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E]">
+                <input type="text" name="option_c" required placeholder="Option C text" class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E]">
+                <input type="text" name="option_d" required placeholder="Option D text" class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E]">
+              </div>
+
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Step-by-Step Solution Breakdown</label>
+                <textarea name="step_by_step_solution" rows="2" required placeholder="Detailed solution steps..." class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none font-mono"></textarea>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Speed Formula / Shortcut</label>
+                <input type="text" name="shortcut_formula" placeholder="Key formula or shortcut rule..." class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none font-mono">
+              </div>
+
+              <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs bg-[#3781C2] text-white hover:bg-[#2A6AA4] transition-all shadow-sm">
+                Add Question
+              </button>
+            </form>
+          </div>
+
+          <!-- Tool: Bulk CSV Question Import (Spans Full Width) -->
+          <div class="lg:col-span-2 card-surface rounded-2xl p-6 border border-[#E2E8F0] space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E2E8F0]">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-[#EBF4FB] text-[#3781C2] flex items-center justify-center font-bold">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                </div>
+                <div>
+                  <h3 class="text-base font-bold text-[#003057] font-heading">Bulk CSV Question Bank Importer</h3>
+                  <p class="text-[11px] text-[#64748B]">Batch import questions into any test series with automatic duplicate validation</p>
+                </div>
+              </div>
+
+              <button type="button" onclick="downloadSampleCSV()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#F1F5F9] text-[#003057] hover:bg-[#E2E8F0] transition-colors flex items-center gap-1.5 self-start sm:self-auto border border-[#CBD5E1]">
+                <svg class="w-3.5 h-3.5 text-[#3781C2]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                <span>Download Sample CSV</span>
+              </button>
+            </div>
+
+            <form id="admin-bulk-csv-form" class="space-y-4 text-xs">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Target Test Series (Default for all imported rows)</label>
+                  <select name="default_test_id" id="admin-csv-test-select" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                    <!-- Populated via JS -->
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Upload CSV File (.csv)</label>
+                  <input type="file" id="admin-csv-file-input" name="csv_file" accept=".csv" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-[#3781C2] file:text-white hover:file:bg-[#2A6AA4]">
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-semibold text-[#64748B] mb-1">Or Paste Raw CSV Data (Header: `question_text,option_a,option_b,option_c,option_d,correct_option,step_by_step_solution,shortcut_formula,topic`)</label>
+                <textarea id="admin-csv-text-input" name="csv_text" rows="4" placeholder="question_text,option_a,option_b,option_c,option_d,correct_option,step_by_step_solution,shortcut_formula,topic&#10;&quot;What is 2+2?&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,&quot;6&quot;,&quot;B&quot;,&quot;2+2=4&quot;,&quot;Basic addition&quot;,&quot;Quantitative&quot;" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-3 text-[#00223E] focus:border-[#3781C2] focus:outline-none font-mono text-[11px]"></textarea>
+              </div>
+
+              <div class="flex items-center justify-between gap-4">
+                <button type="submit" class="px-6 py-2.5 rounded-xl font-bold text-xs bg-[#10B981] text-white hover:bg-[#059669] transition-all shadow-md flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                  <span>Execute Bulk Import</span>
+                </button>
+
+                <span id="admin-csv-status-label" class="text-xs text-[#64748B] font-semibold"></span>
+              </div>
+            </form>
+
+            <div id="admin-csv-logs-container" class="hidden p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-2 text-xs">
+              <h5 class="font-bold text-[#003057] flex items-center justify-between">
+                <span>Import Execution Logs</span>
+                <span id="admin-csv-summary-badge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-[#E6F4EA] text-[#0D652D]"></span>
+              </h5>
+              <div id="admin-csv-logs-list" class="max-h-32 overflow-y-auto space-y-1 font-mono text-[11px] text-[#475569]"></div>
+            </div>
+          </div>
+
+        </div>
+
+        </div>
+
+        <!-- Member Directory Table -->
+        <div class="card-surface rounded-2xl border border-[#E2E8F0] p-6 space-y-4">
+          <h3 class="text-base font-bold text-[#003057] font-heading">Registered Student Member Directory</h3>
+          
+          <!-- FEATURE: Schedule Live Mega Contest Arena -->
+          <div class="lg:col-span-2 card-surface rounded-2xl p-6 sm:p-8 border border-[#E2E8F0] space-y-4 bg-white shadow-sm">
+            <div class="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-[#EF4444] animate-ping"></span>
+                <h3 class="text-base font-bold text-[#003057] font-heading">Schedule Live Mega Recruitment Contest Arena</h3>
+              </div>
+              <span class="px-2.5 py-0.5 rounded text-[10px] font-extrabold bg-[#FEE2E2] text-[#EF4444] border border-[#FECACA]">ALL-INDIA LIVE EVENT</span>
+            </div>
+            <p class="text-xs text-[#64748B]">Set up an All-India live contest with strict start/end window, live countdown hero banner, and locked contest leaderboards.</p>
+            
+            <form id="admin-schedule-mega-form" class="space-y-3 text-xs">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Contest Title</label>
+                  <input type="text" name="title" required placeholder="e.g. TCS NQT All-India Grand Mock Qualifier" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Target Test Series</label>
+                  <select name="test_series_id" id="admin-mega-test-select" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2.5 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                    <!-- Populated via JS -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Start Datetime</label>
+                  <input type="datetime-local" name="start_datetime" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">End Datetime</label>
+                  <input type="datetime-local" name="end_datetime" required class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Duration (Minutes)</label>
+                  <input type="number" name="duration_minutes" value="30" min="5" max="180" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Banner Tag</label>
+                  <input type="text" name="banner_tag" value="ALL-INDIA MEGA RECRUITMENT DRIVE" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+                <div>
+                  <label class="block font-semibold text-[#64748B] mb-1">Company / Drive Tag</label>
+                  <input type="text" name="company_tag" value="TCS NQT 2026" class="w-full bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg p-2 text-[#00223E] focus:border-[#3781C2] focus:outline-none">
+                </div>
+              </div>
+
+              <button type="submit" class="w-full py-2.5 rounded-xl font-bold text-xs bg-[#003057] text-[#FFC412] hover:bg-[#00223E] transition-all shadow-sm flex items-center justify-center gap-2">
+                <svg class="w-4 h-4 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                <span>Publish & Schedule Live Mega Drive</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- Student Members Table Card -->
+        <div class="card-surface rounded-2xl p-6 border border-[#E2E8F0] space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-[#E2E8F0]">
+            <div>
+              <h3 class="text-base font-bold text-[#003057] font-heading">Registered Student Directory</h3>
+              <p class="text-[11px] text-[#64748B]">Real authentic students who registered with email credentials</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#EBF4FB] text-[#3781C2]" id="admin-members-count-badge">0 Candidates</span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b border-[#E2E8F0] text-[11px] font-bold uppercase tracking-wider text-[#64748B] bg-[#F8FAFC]">
+                  <th class="px-4 py-3">#</th>
+                  <th class="px-4 py-3">Student Name & Email</th>
+                  <th class="px-4 py-3">College / University</th>
+                  <th class="px-4 py-3 text-center">Tests Taken</th>
+                  <th class="px-4 py-3 text-center">Accuracy</th>
+                  <th class="px-4 py-3 text-right">Points</th>
+                  <th class="px-4 py-3 text-center">Role</th>
+                </tr>
+              </thead>
+              <tbody id="admin-members-tbody">
+                <!-- Rendered via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================================== -->
+      <!-- VIEW 6: REVISION VAULT & STARRED QUESTIONS -->
+      <!-- ========================================== -->
+      <section id="view-vault" class="view-section space-y-8 hidden">
+        
+        <!-- Vault Header Card -->
+        <div class="card-surface rounded-3xl p-8 border border-[#E2E8F0] shadow-lg relative overflow-hidden bg-gradient-to-br from-[#003057] to-[#0A4778] text-white">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-extrabold bg-[#FFC412] text-[#00223E] shadow-sm mb-3">
+                <span>📚 Personal Retention & Mastery Engine</span>
+              </div>
+              <h2 class="text-2xl sm:text-4xl font-black font-heading text-white">
+                Student Revision Vault
+              </h2>
+              <p class="text-xs sm:text-sm text-[#E2E8F0] mt-1 max-w-2xl">
+                Review your starred questions and re-attempt tricky problems you got wrong in previous tests.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <div class="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15 text-center">
+                <div class="text-[11px] text-[#94A3B8] font-semibold">Starred Questions</div>
+                <div class="text-xl font-black text-[#FFC412] font-mono mt-0.5" id="vault-count-starred">0</div>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md px-4 py-3 rounded-2xl border border-white/15 text-center">
+                <div class="text-[11px] text-[#94A3B8] font-semibold">Weak Area Qs</div>
+                <div class="text-xl font-black text-[#F87171] font-mono mt-0.5" id="vault-count-weak">0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Tabs: Starred Questions vs Weak Area Questions -->
+        <div class="flex items-center gap-3 border-b border-[#E2E8F0] pb-2">
+          <button id="vault-tab-starred" onclick="switchVaultSubTab('starred')" class="px-5 py-2.5 rounded-xl font-bold text-xs bg-[#003057] text-white transition-all shadow-sm flex items-center gap-2">
+            <span>⭐ Starred Questions</span>
+            <span id="vault-badge-starred" class="px-2 py-0.5 rounded-full text-[10px] bg-[#FFC412] text-[#00223E] font-black">0</span>
+          </button>
+          <button id="vault-tab-weak" onclick="switchVaultSubTab('weak')" class="px-5 py-2.5 rounded-xl font-bold text-xs bg-white text-[#64748B] hover:bg-[#F1F5F9] border border-[#CBD5E1] transition-all flex items-center gap-2">
+            <span>🎯 Weak Area Questions</span>
+            <span id="vault-badge-weak" class="px-2 py-0.5 rounded-full text-[10px] bg-[#FEE2E2] text-[#EF4444] font-black">0</span>
+          </button>
+        </div>
+
+        <!-- Vault Questions List Container -->
+        <div id="vault-questions-container" class="space-y-4">
+          <!-- Rendered via JS -->
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Off-Screen Render Node for Scorecard Image Generation -->
+    <div style="position: fixed; left: -9999px; top: -9999px; z-index: -1;">
+      <div id="scorecard-render-node" style="width: 600px; background-color: #F4F7F6; font-family: 'Plus Jakarta Sans', sans-serif; padding: 32px; border-radius: 24px; border: 2px solid #CBD5E1; color: #00223E; box-sizing: border-box;">
+        <!-- Header -->
+        <div style="background-color: #003057; border-radius: 18px; padding: 20px 24px; color: white; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <div>
+            <div style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">First<span style="color: #FFC412;">Round</span></div>
+            <div style="font-size: 10px; color: #94A3B8; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Official Placement Scorecard</div>
+          </div>
+          <div style="background-color: rgba(255,196,18,0.15); border: 1px solid #FFC412; color: #FFC412; padding: 4px 12px; border-radius: 999px; font-size: 11px; font-weight: 800;">
+            100% VERIFIED
+          </div>
+        </div>
+
+        <!-- Student & Test Details -->
+        <div style="background-color: white; border-radius: 18px; padding: 24px; border: 1px solid #E2E8F0; margin-bottom: 20px;">
+          <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Candidate Name</div>
+          <div id="card-student-name" style="font-size: 22px; font-weight: 900; color: #003057; margin-bottom: 12px;">Candidate Name</div>
+
+          <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Assessment</div>
+          <div id="card-test-name" style="font-size: 15px; font-weight: 700; color: #3781C2; margin-bottom: 12px;">TCS NQT Full Mock</div>
+
+          <!-- Score Highlight Badges -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px;">
+            <div style="background-color: #E6F4EA; border: 1px solid #A7F3D0; border-radius: 12px; padding: 12px; text-align: center;">
+              <div style="font-size: 10px; color: #065F46; font-weight: 700;">SCORE</div>
+              <div id="card-score" style="font-size: 22px; font-weight: 900; color: #10B981; margin-top: 2px;">22 / 25</div>
+            </div>
+            <div style="background-color: #EBF4FB; border: 1px solid #BFDBFE; border-radius: 12px; padding: 12px; text-align: center;">
+              <div style="font-size: 10px; color: #1E40AF; font-weight: 700;">ACCURACY</div>
+              <div id="card-accuracy" style="font-size: 22px; font-weight: 900; color: #3781C2; margin-top: 2px;">88.0%</div>
+            </div>
+            <div style="background-color: #FFF9E6; border: 1px solid #FFE899; border-radius: 12px; padding: 12px; text-align: center;">
+              <div style="font-size: 10px; color: #946C00; font-weight: 700;">POINTS EARNED</div>
+              <div id="card-points" style="font-size: 22px; font-weight: 900; color: #946C00; margin-top: 2px;">+214</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 8px; font-size: 11px; color: #64748B; font-weight: 600;">
+          <span id="card-date">Date: August 2026</span>
+          <span style="color: #003057; font-weight: 800;">firstround.campus • Compete Live</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Re-attempt Question Practice Modal -->
+    <div id="reattempt-modal" class="fixed inset-0 z-50 bg-[#00223E]/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+      <div class="card-surface rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl border border-[#E2E8F0] relative">
+        <div class="flex items-center justify-between pb-4 border-b border-[#E2E8F0]">
+          <div>
+            <span class="px-2.5 py-0.5 rounded text-[10px] font-bold bg-[#EBF4FB] text-[#3781C2]">RE-ATTEMPT PRACTICE</span>
+            <h3 id="reattempt-q-topic" class="text-base font-bold text-[#003057] font-heading mt-1">Topic Name</h3>
+          </div>
+          <button onclick="closeReattemptModal()" class="text-[#94A3B8] hover:text-[#00223E] text-2xl font-bold">&times;</button>
+        </div>
+
+        <div id="reattempt-q-text" class="text-sm font-semibold text-[#00223E] leading-relaxed">
+          Question stem...
+        </div>
+
+        <div id="reattempt-options-container" class="space-y-3">
+          <!-- Options rendered via JS -->
+        </div>
+
+        <div id="reattempt-solution-box" class="hidden p-4 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] space-y-2 text-xs">
+          <!-- Solution breakdown -->
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button onclick="closeReattemptModal()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-[#003057] text-white hover:bg-[#00223E] transition-all">
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation Bar (md:hidden) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#003057] text-white border-t border-[#3781C2]/30 shadow-2xl px-2 py-1.5 flex items-center justify-around">
+      <button onclick="switchView('home')" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-xs font-bold transition-all text-[#FFC412] min-h-[44px] min-w-[44px]" data-mobile-view="home">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        <span class="text-[10px]">Tests</span>
+      </button>
+
+      <button onclick="switchView('leaderboard')" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-xs font-bold transition-all text-[#CBD5E1] hover:text-white min-h-[44px] min-w-[44px]" data-mobile-view="leaderboard">
+        <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <span class="text-[10px]">Ranks</span>
+      </button>
+
+      <button onclick="switchView('vault')" class="mobile-nav-btn flex flex-col items-center justify-center p-2 rounded-xl text-xs font-bold transition-all text-[#CBD5E1] hover:text-[#FFC412] min-h-[44px] min-w-[44px]" data-mobile-view="vault">
+        <svg class="w-5 h-5 mb-0.5 text-[#FFC412]" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
+        <span class="text-[10px]">Vault</span>
+      </button>
+
+      <button id="mobile-nav-admin" onclick="switchView('admin')" class="mobile-nav-btn hidden flex-col items-center justify-center p-2 rounded-xl text-xs font-bold transition-all text-[#CBD5E1] hover:text-[#EF4444] min-h-[44px] min-w-[44px]" data-mobile-view="admin">
+        <svg class="w-5 h-5 mb-0.5 text-[#EF4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+        <span class="text-[10px]">Admin</span>
+      </button>
+    </nav>
+
+    <!-- Global Footer (TCS Deep Navy #003057) -->
+    <footer class="mt-auto bg-[#003057] text-white py-8 text-xs border-t border-[#3781C2]/30 mb-16 md:mb-0">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-white font-heading text-sm">First<span class="text-[#FFC412]">Round</span></span>
+          <span class="text-[#94A3B8]">• Corporate Campus Placement Aptitude & Competition Portal</span>
+        </div>
+        <div class="text-[#94A3B8]">
+          <span>100% Free & Unlocked • TCS, Wipro & Infosys Recruitment Standards</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: DUAL-MODE TEST SETUP MODAL          -->
+  <!-- ========================================== -->
+  <div id="test-setup-modal" class="fixed inset-0 z-50 bg-[#00223E]/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="card-surface rounded-3xl p-6 sm:p-8 max-w-xl w-full border border-[#E2E8F0] shadow-2xl space-y-6 relative">
+      
+      <button onclick="closeTestSetupModal()" class="absolute top-5 right-5 text-[#64748B] hover:text-[#00223E]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+      <div>
+        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#EBF4FB] text-[#3781C2] border border-[#3781C2]/30">Select Test Mode</span>
+        <h3 id="modal-test-title" class="text-xl font-bold text-[#003057] font-heading mt-2">TCS NQT Placement Test</h3>
+        <p id="modal-test-meta" class="text-xs text-[#64748B] mt-1">25 Questions • Zero Duplication Guaranteed • 100% Free</p>
+      </div>
+
+      <!-- Mode Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <!-- Mode A: Practice Mode -->
+        <div 
+          id="btn-mode-practice"
+          onclick="selectSetupMode('PRACTICE')"
+          class="p-5 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] cursor-pointer hover:border-[#3781C2] transition-all space-y-2"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-[#003057]">Mode A: Practice</span>
+            <span class="w-4 h-4 rounded-full border border-[#3781C2] flex items-center justify-center">
+              <span class="w-2 h-2 rounded-full bg-[#3781C2]"></span>
+            </span>
+          </div>
+          <p class="text-xs text-[#64748B]">Question-wise timer with instant green/red check and step-by-step formula breakdown.</p>
+        </div>
+
+        <!-- Mode B: Full Exam Simulation -->
+        <div 
+          id="btn-mode-exam"
+          onclick="selectSetupMode('EXAM')"
+          class="p-5 rounded-2xl border-2 border-[#3781C2] bg-[#EBF4FB] cursor-pointer hover:border-[#3781C2] transition-all space-y-2"
+        >
+          <div class="flex items-center justify-between">
+            <span class="text-sm font-bold text-[#003057]">Mode B: Full Exam</span>
+            <span class="w-4 h-4 rounded-full border border-[#3781C2] flex items-center justify-center">
+              <span class="w-2 h-2 rounded-full bg-[#3781C2]"></span>
+            </span>
+          </div>
+          <p class="text-xs text-[#64748B]">Full test timer (25 Mins), question palette navigation, auto-submit and live ranking.</p>
+        </div>
+
+      </div>
+
+      <!-- Practice Mode Timer Config Sub-Options -->
+      <div id="practice-timer-options" class="space-y-2 hidden">
+        <label class="block text-xs font-semibold text-[#64748B]">Question-Wise Timer Duration:</label>
+        <div class="grid grid-cols-4 gap-2 text-xs">
+          <button type="button" class="practice-timer-btn py-2 rounded-xl font-bold bg-[#3781C2] text-white border border-[#3781C2]" data-seconds="0" onclick="selectPracticeTimer(0)">No Timer</button>
+          <button type="button" class="practice-timer-btn py-2 rounded-xl font-bold bg-white text-[#64748B] border border-[#CBD5E1]" data-seconds="60" onclick="selectPracticeTimer(60)">1 Min</button>
+          <button type="button" class="practice-timer-btn py-2 rounded-xl font-bold bg-white text-[#64748B] border border-[#CBD5E1]" data-seconds="120" onclick="selectPracticeTimer(120)">2 Min</button>
+          <button type="button" class="practice-timer-btn py-2 rounded-xl font-bold bg-white text-[#64748B] border border-[#CBD5E1]" data-seconds="180" onclick="selectPracticeTimer(180)">3 Min</button>
+        </div>
+      </div>
+
+      <!-- Launch Button -->
+      <button 
+        onclick="launchSelectedTest()" 
+        class="w-full py-3 rounded-2xl font-bold text-sm bg-[#FFC412] text-[#00223E] hover:bg-[#E5AF0E] transition-all shadow-md flex items-center justify-center gap-2"
+      >
+        <span>Begin Assessment</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: STUDENT PROFILE (LEADERBOARD CLICK) -->
+  <!-- ========================================== -->
+  <div id="student-profile-modal" class="fixed inset-0 z-50 bg-[#00223E]/60 backdrop-blur-sm flex items-center justify-center p-4 hidden animate-fade-in">
+    <div class="card-surface rounded-3xl p-6 sm:p-8 max-w-md w-full border border-[#E2E8F0] shadow-2xl space-y-6 relative">
+      
+      <button onclick="closeProfileModal()" class="absolute top-5 right-5 text-[#64748B] hover:text-[#00223E]">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
+
+      <!-- Candidate Header -->
+      <div class="flex items-center gap-4">
+        <div class="w-14 h-14 rounded-2xl bg-[#003057] text-white flex items-center justify-center font-black text-xl font-heading shadow-md shrink-0">
+          <svg class="w-7 h-7 text-[#FFC412]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-2">
+            <h3 id="modal-profile-name" class="text-lg font-bold text-[#003057] font-heading">Candidate Name</h3>
+            <span id="modal-profile-rank" class="px-2 py-0.5 rounded text-xs font-black bg-[#FFC412] text-[#00223E]">#1</span>
+          </div>
+          <p id="modal-profile-college" class="text-xs text-[#64748B]">University Candidate</p>
+        </div>
+      </div>
+
+      <!-- Candidate Metrics -->
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div class="bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
+          <div class="text-[#64748B]">Total Points</div>
+          <div id="modal-profile-points" class="text-lg font-extrabold text-[#3781C2] font-heading mt-1">0 Points</div>
+        </div>
+
+        <div class="bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
+          <div class="text-[#64748B]">Overall Accuracy</div>
+          <div id="modal-profile-accuracy" class="text-lg font-extrabold text-[#003057] font-heading mt-1">0.0%</div>
+        </div>
+
+        <div class="bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
+          <div class="text-[#64748B]">Tests Given</div>
+          <div id="modal-profile-tests" class="text-lg font-extrabold text-[#003057] font-heading mt-1">0 Tests</div>
+        </div>
+
+        <div class="bg-[#F8FAFC] p-4 rounded-xl border border-[#E2E8F0]">
+          <div class="text-[#64748B]">Correct Answers</div>
+          <div id="modal-profile-correct" class="text-lg font-extrabold text-[#10B981] font-heading mt-1">0 Correct</div>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-[#F1F5F9] border border-[#E2E8F0] text-[11px] text-[#64748B]">
+        Placement Formula: <span class="font-mono font-bold text-[#003057]">Points = (Correct × 10) - (Incorrect × 2)</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main JavaScript App Controller -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
