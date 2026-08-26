@@ -403,27 +403,6 @@ async function handleGateAuthSubmit(e) {
   }
 }
 
-function quickGateLoginAdmin() {
-  const form = document.getElementById('gate-auth-form');
-  if (form) {
-    form.email.value = 'aadi@gmail.com';
-    form.password.value = '1234';
-    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-  }
-}
-
-function quickGateLoginStudent() {
-  const form = document.getElementById('gate-auth-form');
-  if (form) {
-    setAuthGateMode('register');
-    form.email.value = 'placement.candidate@campus.edu';
-    form.password.value = '1234';
-    if (form.full_name) form.full_name.value = 'Aman Verma';
-    if (form.college) form.college.value = 'IIT Bombay - Computer Science';
-    form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-  }
-}
-
 function handleLogout() {
   localStorage.removeItem('firstround_user');
   localStorage.removeItem('firstround_token');
@@ -476,6 +455,13 @@ function switchView(viewName) {
   if (viewName === 'leaderboard') {
     loadLeaderboard();
   } else if (viewName === 'admin') {
+    const user = state.currentUser;
+    const isAdmin = user && (user.is_staff || user.is_superuser || user.email === 'aadi@gmail.com');
+    if (!isAdmin) {
+      showToast('Unauthorized. Super Admin access required.', 'error');
+      switchView('home');
+      return;
+    }
     loadAdminDashboard();
   } else if (viewName === 'vault') {
     loadRevisionVault();
@@ -500,8 +486,9 @@ function updateAuthUI() {
     if (userNameEl) userNameEl.textContent = user.full_name.split(' ')[0];
     if (userPointsEl) userPointsEl.textContent = `${user.total_points || 0} pts`;
     
+    const isAdmin = user.is_staff || user.is_superuser || user.email === 'aadi@gmail.com';
     if (adminNav) {
-      if (user.is_staff) {
+      if (isAdmin) {
         adminNav.classList.remove('hidden');
         if (mobileAdminNav) mobileAdminNav.classList.remove('hidden');
       } else {

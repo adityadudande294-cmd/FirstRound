@@ -11,11 +11,35 @@ from .serializers import (
     TestSeriesDetailSerializer, QuestionAdminSerializer, QuestionStudentSerializer,
     TestAttemptSerializer, BookmarkedQuestionSerializer, MegaEventSerializer
 )
+from .auto_seed import ensure_database_seeded
+
+
+def check_is_admin(request):
+    """
+    Strict Admin Role Guard:
+    Admin access is granted ONLY if the requesting user's email is aadi@gmail.com,
+    or if user.is_superuser == True, or user.is_staff == True.
+    """
+    user_id = request.data.get('user_id') if hasattr(request, 'data') else None
+    if not user_id and hasattr(request, 'query_params'):
+        user_id = request.query_params.get('user_id')
+    
+    user = None
+    if user_id:
+        user = User.objects.filter(id=user_id).first()
+    elif hasattr(request, 'user') and request.user and request.user.is_authenticated:
+        user = request.user
+
+    if user and (user.is_superuser or user.is_staff or user.email.lower() == 'aadi@gmail.com'):
+        return user
+    return None
 
 
 def index_view(request):
-    """Serve the single-page application."""
+    """Serve the single-page application and auto-seed database if empty."""
+    ensure_database_seeded()
     return render(request, 'portal/index.html')
+
 
 
 class AuthLoginOrRegisterView(APIView):
@@ -101,6 +125,7 @@ class TestSeriesListView(APIView):
     permission_classes = [permissions.AllowAny]
 
     def get(self, request):
+        ensure_database_seeded()
         test_type = request.query_params.get('type')
         company = request.query_params.get('company')
         topic = request.query_params.get('topic')
@@ -396,10 +421,9 @@ class LeaderboardView(APIView):
 
 class AdminStatsView(APIView):
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         total_students = User.objects.filter(is_staff=False).count()
         total_tests = TestSeries.objects.count()
@@ -421,10 +445,9 @@ class AdminStatsView(APIView):
 
 class AdminMembersView(APIView):
     def get(self, request):
-        user_id = request.query_params.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         students = User.objects.all().order_by('-total_points', '-created_at')
         data = []
@@ -447,10 +470,9 @@ class AdminMembersView(APIView):
 
 class AdminTestManageView(APIView):
     def post(self, request):
-        user_id = request.data.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         title = request.data.get('title')
         company_name = request.data.get('company_name', 'General')
@@ -486,10 +508,9 @@ class AdminTestManageView(APIView):
         }, status=status.HTTP_201_CREATED)
 
     def delete(self, request, test_id=None):
-        user_id = request.data.get('user_id') or request.query_params.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         test = TestSeries.objects.filter(id=test_id).first()
         if not test:
@@ -501,10 +522,9 @@ class AdminTestManageView(APIView):
 
 class AdminQuestionManageView(APIView):
     def post(self, request):
-        user_id = request.data.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         test_id = request.data.get('test_id')
         test = TestSeries.objects.filter(id=test_id).first()
@@ -541,10 +561,9 @@ class AdminBulkCSVUploadView(APIView):
         import csv
         import io
 
-        user_id = request.data.get('user_id') or request.query_params.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         csv_file = request.FILES.get('csv_file')
         csv_text = request.data.get('csv_text')
@@ -693,10 +712,9 @@ class AdminTestGenerateFromFileView(APIView):
         import io
         import docx
 
-        user_id = request.data.get('user_id') or request.query_params.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         title = request.data.get('title', '').strip()
         if not title:
@@ -1031,10 +1049,9 @@ class MegaEventListView(APIView):
         return Response({'mega_events': serializer.data})
 
     def post(self, request):
-        user_id = request.data.get('user_id')
-        admin_user = User.objects.filter(id=user_id, is_staff=True).first()
+        admin_user = check_is_admin(request)
         if not admin_user:
-            return Response({'error': 'Unauthorized admin access'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'error': 'Unauthorized. Admin credentials required.'}, status=status.HTTP_403_FORBIDDEN)
 
         title = request.data.get('title', '').strip()
         test_id = request.data.get('test_series_id')
