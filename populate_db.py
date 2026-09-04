@@ -1,6 +1,8 @@
 import os
 import sys
 import math
+import random
+from collections import Counter
 import django
 
 # Setup Django Environment
@@ -8,6 +10,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'firstround_core.settings')
 django.setup()
 
 from portal.models import User, CompanyCategory, TestSeries, Question, TestAttempt, QuestionResponse
+from portal.management.commands.shuffle_mcq_answers import shuffle_single_question_options
 
 def seed_rich_database():
     print("🚀 Starting FirstRound Complete Diverse Question Bank Generation (625 Unique Archetype Questions)...")
@@ -631,17 +634,24 @@ def seed_rich_database():
         assert len(q_bank) == 25, f"Test {tdef['title']} must have 25 questions, got {len(q_bank)}"
 
         for q_data in q_bank:
+            oa, ob, oc, od, new_correct = shuffle_single_question_options(
+                q_data["option_a"],
+                q_data["option_b"],
+                q_data["option_c"],
+                q_data["option_d"],
+                q_data["correct_option"]
+            )
             Question.objects.create(
                 test=test_obj,
                 topic=q_data["topic"],
                 company_tag=q_data["company_tag"],
                 year_tag=q_data["year_tag"],
                 question_text=q_data["question_text"],
-                option_a=q_data["option_a"],
-                option_b=q_data["option_b"],
-                option_c=q_data["option_c"],
-                option_d=q_data["option_d"],
-                correct_option=q_data["correct_option"],
+                option_a=oa,
+                option_b=ob,
+                option_c=oc,
+                option_d=od,
+                correct_option=new_correct,
                 step_by_step_solution=q_data["step_by_step_solution"],
                 shortcut_formula=q_data["shortcut_formula"],
                 order=q_data["order"]
@@ -651,7 +661,11 @@ def seed_rich_database():
         test_obj.total_questions = test_obj.questions.count()
         test_obj.save()
 
+    distribution = Counter(Question.objects.values_list('correct_option', flat=True))
     print(f"🎉 Complete Diverse Database Seeded: 25 Tests, {total_created_questions} Unique Questions.")
+    print(f"📊 Distribution: A: ~{distribution.get('A', 0)}, B: ~{distribution.get('B', 0)}, C: ~{distribution.get('C', 0)}, D: ~{distribution.get('D', 0)}")
+    print(f"   Detailed Counts: {dict(distribution)}")
 
 if __name__ == '__main__':
     seed_rich_database()
+
