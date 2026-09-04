@@ -37,7 +37,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
   return (
     <div className="space-y-8 pb-16">
       {/* Header Banner */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#0d3461] via-[#0b2b52] to-[#071f3d] p-7 sm:p-10 text-center space-y-3 text-white shadow-xl relative overflow-hidden">
+      <div className="rounded-3xl bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end p-7 sm:p-10 text-center space-y-3 text-white shadow-xl relative overflow-hidden">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-bold shadow-sm">
           <Trophy className="w-4 h-4 text-slate-950" />
           <span>All-India Placement Aptitude Rankings</span>
@@ -55,21 +55,21 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-end pt-2">
         {/* Rank 2 (Silver) */}
         {top2 && (
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center space-y-3.5 order-2 md:order-1 relative shadow-sm">
-            <div className="w-12 h-12 mx-auto rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center text-xl font-black shadow-inner">
+          <div className="bg-surface border border-border rounded-2xl p-6 text-center space-y-3.5 order-2 md:order-1 relative shadow-sm">
+            <div className="w-12 h-12 mx-auto rounded-2xl bg-surface-hover border border-border text-slate-700 flex items-center justify-center text-xl font-black shadow-inner">
               2
             </div>
             <div>
-              <span className="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+              <span className="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full bg-surface-hover text-slate-700 border border-border">
                 🥈 Rank 2
               </span>
-              <h3 className="text-base font-bold text-slate-900 mt-2">{top2.userName}</h3>
-              <p className="text-xs text-slate-500 truncate">{top2.userCollege}</p>
+              <h3 className="text-base font-bold text-text-primary mt-2">{top2.userName}</h3>
+              <p className="text-xs text-text-muted truncate">{top2.userCollege}</p>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
+            <div className="p-3 bg-app-bg rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Points</p>
-                <p className="text-sm font-extrabold text-slate-900">{top2.totalPoints.toLocaleString()}</p>
+                <p className="text-sm font-extrabold text-text-primary">{top2.totalPoints.toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Accuracy</p>
@@ -81,7 +81,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
         {/* Rank 1 (Gold - Elevated with Warm Yellow Highlight) */}
         {top1 && (
-          <div className="bg-white border-2 border-amber-400 rounded-3xl p-7 text-center space-y-4 order-1 md:order-2 relative shadow-md md:-translate-y-2">
+          <div className="bg-surface border-2 border-amber-400 rounded-3xl p-7 text-center space-y-4 order-1 md:order-2 relative shadow-md md:-translate-y-2">
             <div className="absolute top-3 right-3">
               <Crown className="w-6 h-6 text-amber-500 animate-bounce" />
             </div>
@@ -92,20 +92,20 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               <span className="text-xs uppercase font-extrabold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                 👑 All-India Champion
               </span>
-              <h3 className="text-lg font-black text-slate-900 mt-2.5 font-['Outfit']">{top1.userName}</h3>
-              <p className="text-xs text-slate-500 font-medium">{top1.userCollege}</p>
+              <h3 className="text-lg font-black text-text-primary mt-2.5 font-['Outfit']">{top1.userName}</h3>
+              <p className="text-xs text-text-muted font-medium">{top1.userCollege}</p>
             </div>
             <div className="p-3.5 bg-amber-50/60 rounded-2xl border border-amber-200 grid grid-cols-3 gap-2 text-center text-xs">
               <div>
-                <p className="text-[10px] text-slate-500 font-semibold">Points</p>
+                <p className="text-[10px] text-text-muted font-semibold">Points</p>
                 <p className="text-base font-black text-slate-950">{top1.totalPoints.toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-[10px] text-slate-500 font-semibold">Accuracy</p>
+                <p className="text-[10px] text-text-muted font-semibold">Accuracy</p>
                 <p className="text-base font-black text-emerald-600">{top1.averageAccuracy}%</p>
               </div>
               <div>
-                <p className="text-[10px] text-slate-500 font-semibold">Speed</p>
+                <p className="text-[10px] text-text-muted font-semibold">Speed</p>
                 <p className="text-base font-black text-sky-700">{top1.avgSpeedSeconds}s</p>
               </div>
             </div>
@@ -114,7 +114,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
         {/* Rank 3 (Bronze) */}
         {top3 && (
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center space-y-3.5 order-3 md:order-3 relative shadow-sm">
+          <div className="bg-surface border border-border rounded-2xl p-6 text-center space-y-3.5 order-3 md:order-3 relative shadow-sm">
             <div className="w-12 h-12 mx-auto rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 flex items-center justify-center text-xl font-black shadow-inner">
               3
             </div>
@@ -122,13 +122,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               <span className="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200">
                 🥉 Rank 3
               </span>
-              <h3 className="text-base font-bold text-slate-900 mt-2">{top3.userName}</h3>
-              <p className="text-xs text-slate-500 truncate">{top3.userCollege}</p>
+              <h3 className="text-base font-bold text-text-primary mt-2">{top3.userName}</h3>
+              <p className="text-xs text-text-muted truncate">{top3.userCollege}</p>
             </div>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
+            <div className="p-3 bg-app-bg rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Points</p>
-                <p className="text-sm font-extrabold text-slate-900">{top3.totalPoints.toLocaleString()}</p>
+                <p className="text-sm font-extrabold text-text-primary">{top3.totalPoints.toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Accuracy</p>
@@ -140,7 +140,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       </div>
 
       {/* Company Target Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface p-4 rounded-2xl border border-border shadow-sm">
         <div className="flex items-center gap-2">
           <Trophy className="w-4 h-4 text-amber-500" />
           <span className="text-xs font-bold text-slate-800">Filter by Target Drive:</span>
@@ -153,8 +153,8 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               onClick={() => setFilterCompany(c)}
               className={`px-3 py-1.5 text-xs font-bold uppercase rounded-lg transition-all ${
                 filterCompany === c
-                  ? 'bg-[#0b2545] text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'bg-surface-hover text-text-secondary hover:bg-slate-200'
               }`}
             >
               {c}
@@ -164,10 +164,10 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
       </div>
 
       {/* Complete Rankings Table - Clean Crisp White Data Grid */}
-      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+      <div className="bg-surface border border-border rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-50 border-b border-slate-200 text-[11px] uppercase font-extrabold text-slate-500 tracking-wider">
+            <thead className="bg-app-bg border-b border-border text-[11px] uppercase font-extrabold text-text-muted tracking-wider">
               <tr>
                 <th className="py-3.5 px-4 text-center">Rank</th>
                 <th className="py-3.5 px-4">Candidate & College</th>
@@ -188,7 +188,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                       className={`transition-colors ${
                         isCurrentUser
                           ? 'bg-amber-50/70 font-semibold text-slate-950'
-                          : 'hover:bg-slate-50'
+                          : 'hover:bg-app-bg'
                       }`}
                     >
                       <td className="py-3.5 px-4 text-center">
@@ -200,7 +200,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                               ? 'bg-slate-200 text-slate-800'
                               : entry.rank === 3
                               ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                              : 'bg-slate-100 text-slate-600'
+                              : 'bg-surface-hover text-text-secondary'
                           }`}
                         >
                           {entry.rank}
@@ -209,11 +209,11 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-lg bg-surface-hover border border-border text-xs font-bold text-slate-800 flex items-center justify-center">
                             {entry.userName.charAt(0)}
                           </div>
                           <div>
-                            <p className="font-bold text-slate-900 flex items-center gap-1.5">
+                            <p className="font-bold text-text-primary flex items-center gap-1.5">
                               {entry.userName}
                               {isCurrentUser && (
                                 <span className="text-[10px] font-black px-1.5 py-0.2 rounded bg-amber-400 text-slate-950">
@@ -221,13 +221,13 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                                 </span>
                               )}
                             </p>
-                            <p className="text-[11px] text-slate-500 truncate max-w-xs">{entry.userCollege}</p>
+                            <p className="text-[11px] text-text-muted truncate max-w-xs">{entry.userCollege}</p>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-3.5 px-4 text-center">
-                        <span className="text-[11px] px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                        <span className="text-[11px] px-2.5 py-0.5 rounded-md bg-surface-hover text-slate-700 border border-border">
                           {entry.targetCompany || 'Tier-1 IT'}
                         </span>
                       </td>
@@ -240,12 +240,12 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                         <span className="text-emerald-700 font-bold">{entry.averageAccuracy}%</span>
                       </td>
 
-                      <td className="py-3.5 px-4 text-center text-slate-600 font-mono">
+                      <td className="py-3.5 px-4 text-center text-text-secondary font-mono">
                         {entry.avgSpeedSeconds}s / Q
                       </td>
 
                       <td className="py-3.5 px-4 text-right">
-                        <span className="text-sm font-extrabold text-slate-900 font-mono">
+                        <span className="text-sm font-extrabold text-text-primary font-mono">
                           {entry.totalPoints.toLocaleString()}
                         </span>
                       </td>
@@ -254,7 +254,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                 })
               ) : (
                 <tr>
-                  <td colSpan={7} className="py-12 px-4 text-center text-slate-500">
+                  <td colSpan={7} className="py-12 px-4 text-center text-text-muted">
                     <Trophy className="w-8 h-8 text-slate-300 mx-auto mb-2" />
                     <p className="font-bold text-sm text-slate-700">No candidates on the leaderboard yet</p>
                     <p className="text-xs text-slate-400 mt-1">Complete a placement mock test to claim your All-India ranking!</p>

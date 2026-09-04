@@ -56,7 +56,7 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
   return (
     <div className="space-y-8 pb-16">
       {/* Hero Header */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#0d3461] via-[#0b2b52] to-[#071f3d] p-7 sm:p-10 space-y-3 text-white shadow-xl relative overflow-hidden">
+      <div className="rounded-3xl bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end p-7 sm:p-10 space-y-3 text-white shadow-xl relative overflow-hidden">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-bold shadow-sm">
           <BookOpen className="w-4 h-4 text-slate-950" />
           <span>Smart Revision & Memory Vault</span>
@@ -83,14 +83,14 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
       </div>
 
       {/* Tabs & Topic Filter */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border pb-4">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('weak')}
             className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
               activeTab === 'weak'
-                ? 'bg-[#0b2545] text-white shadow-sm'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-primary text-white shadow-sm'
+                : 'bg-surface text-text-secondary border border-border hover:bg-app-bg'
             }`}
           >
             <XCircle className="w-4 h-4 text-rose-400" />
@@ -101,8 +101,8 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
             onClick={() => setActiveTab('bookmarks')}
             className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
               activeTab === 'bookmarks'
-                ? 'bg-[#0b2545] text-white shadow-sm'
-                : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                ? 'bg-primary text-white shadow-sm'
+                : 'bg-surface text-text-secondary border border-border hover:bg-app-bg'
             }`}
           >
             <Bookmark className="w-4 h-4 text-amber-400" />
@@ -113,11 +113,11 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
         {/* Topic filter */}
         {topics.length > 0 && (
           <div className="flex items-center gap-2 text-xs">
-            <span className="text-slate-500 font-semibold">Filter Topic:</span>
+            <span className="text-text-muted font-semibold">Filter Topic:</span>
             <select
               value={selectedTopic}
               onChange={(e) => setSelectedTopic(e.target.value)}
-              className="px-3 py-1.5 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-[#0b2545]"
+              className="px-3 py-1.5 bg-surface border border-border rounded-xl text-xs text-slate-800 focus:outline-none focus:border-primary"
             >
               <option value="all">All Topics</option>
               {topics.map((t) => (
@@ -133,12 +133,12 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
       {/* Questions List */}
       <div className="space-y-4">
         {filteredQuestions.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center space-y-3 shadow-sm">
+          <div className="bg-surface border border-border rounded-2xl p-12 text-center space-y-3 shadow-sm">
             <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
             <h3 className="text-base font-bold text-slate-800">
               {activeTab === 'weak' ? 'No weak questions yet!' : 'No bookmarked questions saved yet'}
             </h3>
-            <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            <p className="text-xs text-text-muted max-w-md mx-auto leading-relaxed">
               {activeTab === 'weak'
                 ? 'When you take practice and exam mock tests, questions you get wrong will automatically appear here for focused revision.'
                 : 'During any test, click the bookmark icon on tough questions to save them to this vault.'}
@@ -152,18 +152,18 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
             return (
               <div
                 key={q.id}
-                className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4 shadow-sm transition-all hover:border-slate-300"
+                className="bg-surface border border-border rounded-2xl p-6 space-y-4 shadow-sm transition-all hover:border-slate-300"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="w-7 h-7 rounded-lg bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-lg bg-surface-hover text-slate-800 font-bold text-xs flex items-center justify-center">
                       #{idx + 1}
                     </span>
                     <span className="px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 text-xs font-bold">
                       {q.topic}
                     </span>
                     {q.subTopic && (
-                      <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs">
+                      <span className="px-2 py-0.5 rounded bg-surface-hover text-text-secondary text-xs">
                         {q.subTopic}
                       </span>
                     )}
@@ -196,12 +196,12 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                 </div>
 
                 {/* Question Statement */}
-                <p className="text-xs sm:text-sm font-semibold text-slate-900 leading-relaxed whitespace-pre-line">
+                <p className="text-xs sm:text-sm font-semibold text-text-primary leading-relaxed whitespace-pre-line">
                   {q.questionText}
                 </p>
 
                 {q.codeSnippet && (
-                  <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 font-mono text-xs text-sky-300 whitespace-pre">
+                  <div className="p-3 bg-primary rounded-xl border border-primary-active font-mono text-xs text-sky-300 whitespace-pre">
                     {q.codeSnippet}
                   </div>
                 )}
@@ -216,7 +216,7 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                         className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 ${
                           isCorrect && isExpanded
                             ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold'
-                            : 'bg-slate-50 border-slate-200 text-slate-700'
+                            : 'bg-app-bg border-border text-slate-700'
                         }`}
                       >
                         <span className="w-5 h-5 rounded bg-slate-200 font-bold text-[11px] flex items-center justify-center text-slate-700">
@@ -241,11 +241,11 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                     <span>{isExpanded ? 'Hide Step-by-Step Solution' : 'View Step-by-Step Solution & Formulas'}</span>
                   </button>
 
-                  <span className="text-[11px] text-slate-500 font-medium">Correct Option: ({q.correctOption})</span>
+                  <span className="text-[11px] text-text-muted font-medium">Correct Option: ({q.correctOption})</span>
                 </div>
 
                 {isExpanded && (
-                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 animate-in fade-in">
+                  <div className="p-4 rounded-xl bg-app-bg border border-border space-y-2 animate-in fade-in">
                     <p className="text-xs font-bold text-emerald-800">Full Derivation & Solution:</p>
                     <p className="text-xs text-slate-700 font-mono whitespace-pre-line leading-relaxed">
                       {q.explanation}

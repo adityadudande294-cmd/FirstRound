@@ -232,19 +232,19 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
     >
       <div
         id="test-result-report-card"
-        className="bg-white border border-slate-200 w-full max-w-5xl max-h-[92vh] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col text-slate-900 animate-in zoom-in-95 duration-200"
+        className="bg-surface border border-border w-full max-w-5xl max-h-[92vh] rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col text-text-primary animate-in zoom-in-95 duration-200"
         role="dialog"
         aria-modal="true"
       >
         {/* ========================================================= */}
         {/* REPORT HEADER                                             */}
         {/* ========================================================= */}
-        <header className="sticky top-0 z-20 bg-[#0b2545] border-b border-[#081b33] px-3.5 sm:px-6 py-3 sm:py-3.5 text-white flex items-center justify-between gap-2.5 shadow-sm">
+        <header className="sticky top-0 z-20 bg-primary border-b border-primary-dark px-3.5 sm:px-6 py-3 sm:py-3.5 text-white flex items-center justify-between gap-2.5 shadow-sm">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
             <button
               id="report-back-btn"
               onClick={onClose}
-              className="p-1.5 sm:p-2 bg-white/10 hover:bg-white/20 active:bg-white/30 text-slate-200 hover:text-white rounded-lg sm:rounded-xl transition-colors flex items-center justify-center shrink-0"
+              className="p-1.5 sm:p-2 bg-surface/10 hover:bg-surface/20 active:bg-surface/30 text-slate-200 hover:text-white rounded-lg sm:rounded-xl transition-colors flex items-center justify-center shrink-0"
               title="Back to Dashboard"
             >
               <ArrowLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -279,7 +279,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
             <button
               id="report-header-retake-btn"
               onClick={onRetake}
-              className="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-[#0e3461] hover:bg-[#134279] active:bg-[#185295] text-amber-300 border border-[#1d4d87] text-xs font-bold rounded-xl transition-colors shadow-2xs"
+              className="hidden sm:flex items-center gap-1 px-3 py-1.5 bg-primary-hover hover:bg-primary-hover active:bg-primary-active text-amber-300 border border-primary-active text-xs font-bold rounded-xl transition-colors shadow-2xs"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Retake Mock</span>
@@ -288,7 +288,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
             <button
               id="report-close-btn"
               onClick={onClose}
-              className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-lg sm:rounded-xl transition-colors flex items-center justify-center"
+              className="p-1.5 sm:p-2 text-slate-300 hover:text-white bg-surface/10 hover:bg-surface/20 rounded-lg sm:rounded-xl transition-colors flex items-center justify-center"
               title="Close Report"
               aria-label="Close"
             >
@@ -308,14 +308,14 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
               {/* SECTION 1 — PERFORMANCE SUMMARY HERO CARD */}
               <div
                 id="report-performance-summary"
-                className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs space-y-4"
+                className="bg-surface border border-border/90 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs space-y-4"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
                   <div>
                     <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                       Performance Summary
                     </span>
-                    <h2 className="text-base sm:text-lg font-extrabold text-slate-900 font-['Outfit']">
+                    <h2 className="text-base sm:text-lg font-extrabold text-text-primary font-['Outfit']">
                       Overall Score & Readiness
                     </h2>
                   </div>
@@ -342,25 +342,25 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                 </div>
 
                 {/* Primary Metric Showcase Banner */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3.5 sm:p-4 bg-slate-50/80 rounded-xl border border-slate-200/80">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-3.5 sm:p-4 bg-app-bg/80 rounded-xl border border-border/80">
                   {/* Total Points */}
                   <div className="space-y-1">
-                    <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
+                    <span className="text-[11px] font-semibold text-text-muted flex items-center gap-1">
                       <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                       Score Points
                     </span>
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900 font-['Outfit']">
+                      <span className="text-2xl sm:text-3xl font-black text-text-primary font-['Outfit']">
                         {scorePoints}
                       </span>
-                      <span className="text-[11px] text-slate-500 font-medium">pts</span>
+                      <span className="text-[11px] text-text-muted font-medium">pts</span>
                     </div>
-                    <p className="text-[10px] text-slate-500">+10 / -2 scheme</p>
+                    <p className="text-[10px] text-text-muted">+10 / -2 scheme</p>
                   </div>
 
                   {/* Accuracy */}
                   <div className="space-y-1">
-                    <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
+                    <span className="text-[11px] font-semibold text-text-muted flex items-center gap-1">
                       <Target className="w-3.5 h-3.5 text-sky-600" />
                       Accuracy
                     </span>
@@ -377,22 +377,22 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                         {accuracyPercentage}%
                       </span>
                     </div>
-                    <p className="text-[10px] text-slate-500">{correctCount} of {attempt.attemptedQuestions || totalQuestions} correct</p>
+                    <p className="text-[10px] text-text-muted">{correctCount} of {attempt.attemptedQuestions || totalQuestions} correct</p>
                   </div>
 
                   {/* Avg Speed */}
                   <div className="col-span-2 sm:col-span-1 space-y-1">
-                    <span className="text-[11px] font-semibold text-slate-500 flex items-center gap-1">
-                      <Clock className="w-3.5 h-3.5 text-slate-500" />
+                    <span className="text-[11px] font-semibold text-text-muted flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-text-muted" />
                       Average Speed
                     </span>
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900 font-['Outfit']">
+                      <span className="text-2xl sm:text-3xl font-black text-text-primary font-['Outfit']">
                         {attempt.avgTimePerQuestionSeconds || Math.round(attempt.timeTakenSeconds / Math.max(1, attempt.attemptedQuestions))}s
                       </span>
-                      <span className="text-[11px] text-slate-500 font-medium">/ question</span>
+                      <span className="text-[11px] text-text-muted font-medium">/ question</span>
                     </div>
-                    <p className="text-[10px] text-slate-500">
+                    <p className="text-[10px] text-text-muted">
                       {Math.floor(attempt.timeTakenSeconds / 60)}m {attempt.timeTakenSeconds % 60}s total
                     </p>
                   </div>
@@ -412,10 +412,10 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                     <span className="text-[10px] text-rose-700 font-semibold">-{incorrectCount * 2} pts</span>
                   </div>
 
-                  <div className="p-2.5 bg-slate-100/70 border border-slate-200/80 rounded-xl">
+                  <div className="p-2.5 bg-surface-hover/70 border border-border/80 rounded-xl">
                     <span className="text-[10px] font-bold uppercase text-slate-700 block">Unanswered</span>
-                    <span className="text-lg font-black text-slate-900 mt-0.5 block">{unattemptedCount}</span>
-                    <span className="text-[10px] text-slate-500 font-semibold">0 pts</span>
+                    <span className="text-lg font-black text-text-primary mt-0.5 block">{unattemptedCount}</span>
+                    <span className="text-[10px] text-text-muted font-semibold">0 pts</span>
                   </div>
                 </div>
               </div>
@@ -423,18 +423,18 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
               {/* SECTION 3 — TOPIC PERFORMANCE LIST */}
               <div
                 id="report-topic-performance"
-                className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3.5"
+                className="bg-surface border border-border/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3.5"
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                       Topic Mastery Breakdown
                     </span>
-                    <h3 className="text-sm sm:text-base font-bold text-slate-900 font-['Outfit']">
+                    <h3 className="text-sm sm:text-base font-bold text-text-primary font-['Outfit']">
                       Topic Performance & Accuracy
                     </h3>
                   </div>
-                  <span className="text-xs text-slate-500 font-semibold">
+                  <span className="text-xs text-text-muted font-semibold">
                     {topicStats.length} {topicStats.length === 1 ? 'Topic' : 'Topics'} Tested
                   </span>
                 </div>
@@ -471,14 +471,14 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                       <div key={item.topic} className="py-2.5 first:pt-0 last:pb-0 space-y-1.5">
                         <div className="flex items-center justify-between text-xs gap-2">
                           <div className="flex items-center gap-2 min-w-0">
-                            <span className="font-bold text-slate-900 truncate">{item.topic}</span>
-                            <span className="text-slate-500 text-[11px] shrink-0">
+                            <span className="font-bold text-text-primary truncate">{item.topic}</span>
+                            <span className="text-text-muted text-[11px] shrink-0">
                               ({item.correct}/{item.total} correct)
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2 shrink-0">
-                            <span className="font-extrabold text-slate-900 text-xs tabular-nums">
+                            <span className="font-extrabold text-text-primary text-xs tabular-nums">
                               {item.accuracy}%
                             </span>
                             {statusBadge}
@@ -486,7 +486,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                         </div>
 
                         {/* Progress Bar */}
-                        <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div className="w-full bg-surface-hover h-2 rounded-full overflow-hidden">
                           <div
                             className={`h-full ${barColor} transition-all duration-500 rounded-full`}
                             style={{ width: `${Math.max(4, item.accuracy)}%` }}
@@ -504,13 +504,13 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
               {/* SECTION 2 — PERFORMANCE INSIGHT */}
               <div
                 id="report-performance-insight"
-                className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3.5"
+                className="bg-surface border border-border/90 rounded-2xl p-4 sm:p-5 shadow-xs space-y-3.5"
               >
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                     Analytical Takeaway
                   </span>
-                  <h3 className="text-sm sm:text-base font-bold text-slate-900 font-['Outfit']">
+                  <h3 className="text-sm sm:text-base font-bold text-text-primary font-['Outfit']">
                     Performance Insight
                   </h3>
                 </div>
@@ -551,15 +551,15 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                 </div>
 
                 {/* Data-Grounded AI / Placement Mentor Interpretation */}
-                <div className="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#0b2545]">
+                <div className="p-3.5 bg-app-bg border border-border/80 rounded-xl space-y-1.5">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-primary">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
                     <span>{performanceInsight.headline}</span>
                   </div>
                   <p className="text-xs text-slate-700 leading-relaxed">
                     {performanceInsight.description}
                   </p>
-                  <p className="text-xs text-slate-900 font-semibold pt-1 border-t border-slate-200/60">
+                  <p className="text-xs text-text-primary font-semibold pt-1 border-t border-border/60">
                     💡 {performanceInsight.recommendation}
                   </p>
                 </div>
@@ -568,7 +568,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
               {/* SECTION 4 — NEXT BEST ACTION CARD */}
               <div
                 id="report-next-action-card"
-                className="bg-[#0b2545] border border-[#081b33] rounded-2xl p-4 sm:p-5 text-white shadow-md space-y-3.5"
+                className="bg-primary border border-primary-dark rounded-2xl p-4 sm:p-5 text-white shadow-md space-y-3.5"
               >
                 <div>
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-400">
@@ -606,28 +606,28 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
           {/* SECTION 5 — COLLAPSIBLE QUESTION REVIEW */}
           <div
             id="question-review-section"
-            className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs space-y-4 pt-4"
+            className="bg-surface border border-border/90 rounded-2xl p-4 sm:p-5 lg:p-6 shadow-xs space-y-4 pt-4"
           >
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                   Detailed Verification
                 </span>
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 font-['Outfit']">
+                <h3 className="text-sm sm:text-base font-bold text-text-primary font-['Outfit']">
                   Question Review & Step-by-Step Solutions
                 </h3>
               </div>
 
               {/* Filter Tabs & Expand All */}
               <div className="flex flex-wrap items-center gap-2">
-                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+                <div className="flex items-center gap-1 bg-surface-hover p-1 rounded-xl text-xs font-bold">
                   <button
                     id="filter-all-questions-btn"
                     onClick={() => setFilterType('all')}
                     className={`px-2.5 py-1 rounded-lg transition-all ${
                       filterType === 'all'
-                        ? 'bg-[#0b2545] text-white shadow-2xs'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-primary text-white shadow-2xs'
+                        : 'text-text-secondary hover:text-text-primary'
                     }`}
                   >
                     All ({responses.length})
@@ -638,7 +638,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                     className={`px-2.5 py-1 rounded-lg transition-all ${
                       filterType === 'correct'
                         ? 'bg-emerald-600 text-white shadow-2xs'
-                        : 'text-slate-600 hover:text-emerald-700'
+                        : 'text-text-secondary hover:text-emerald-700'
                     }`}
                   >
                     Correct ({correctCount})
@@ -649,7 +649,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                     className={`px-2.5 py-1 rounded-lg transition-all ${
                       filterType === 'incorrect'
                         ? 'bg-rose-600 text-white shadow-2xs'
-                        : 'text-slate-600 hover:text-rose-700'
+                        : 'text-text-secondary hover:text-rose-700'
                     }`}
                   >
                     Incorrect ({incorrectCount})
@@ -661,7 +661,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                       className={`px-2.5 py-1 rounded-lg transition-all ${
                         filterType === 'unattempted'
                           ? 'bg-slate-700 text-white shadow-2xs'
-                          : 'text-slate-600 hover:text-slate-900'
+                          : 'text-text-secondary hover:text-text-primary'
                       }`}
                     >
                       Unanswered ({unattemptedCount})
@@ -672,7 +672,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                 <button
                   id="toggle-expand-all-solutions-btn"
                   onClick={handleToggleExpandAll}
-                  className="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 rounded-xl transition-colors"
+                  className="px-2.5 py-1.5 bg-app-bg hover:bg-surface-hover border border-border text-xs font-semibold text-slate-700 rounded-xl transition-colors"
                 >
                   {expandAll ? 'Collapse All' : 'Expand All Solutions'}
                 </button>
@@ -681,7 +681,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
 
             {/* List of Collapsible Question Rows */}
             {filteredResponses.length === 0 ? (
-              <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200/80 text-xs text-slate-500 space-y-1">
+              <div className="p-8 text-center bg-app-bg rounded-xl border border-border/80 text-xs text-text-muted space-y-1">
                 <p className="font-semibold text-slate-700">No questions found in this category.</p>
                 <p>Try switching filter tabs above.</p>
               </div>
@@ -701,17 +701,17 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                       key={qId}
                       className={`rounded-xl border transition-all overflow-hidden ${
                         isCorrect
-                          ? 'bg-white border-emerald-200/90 shadow-2xs'
+                          ? 'bg-surface border-emerald-200/90 shadow-2xs'
                           : isSkipped
-                          ? 'bg-white border-slate-200'
-                          : 'bg-white border-rose-200/90 shadow-2xs'
+                          ? 'bg-surface border-border'
+                          : 'bg-surface border-rose-200/90 shadow-2xs'
                       }`}
                     >
                       {/* Compact Collapsible Header Row */}
                       <div
                         id={`question-review-row-${idx + 1}`}
                         onClick={() => toggleQuestion(qId)}
-                        className="p-3 sm:p-3.5 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-slate-50/80 transition-colors select-none"
+                        className="p-3 sm:p-3.5 flex items-center justify-between gap-2.5 cursor-pointer hover:bg-app-bg/80 transition-colors select-none"
                       >
                         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                           <span
@@ -719,7 +719,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                               isCorrect
                                 ? 'bg-emerald-100 text-emerald-800'
                                 : isSkipped
-                                ? 'bg-slate-100 text-slate-700'
+                                ? 'bg-surface-hover text-slate-700'
                                 : 'bg-rose-100 text-rose-800'
                             }`}
                           >
@@ -728,7 +728,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
 
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-1.5 sm:gap-2">
-                              <span className="text-xs font-bold text-slate-900 truncate max-w-[130px] sm:max-w-[200px]">
+                              <span className="text-xs font-bold text-text-primary truncate max-w-[130px] sm:max-w-[200px]">
                                 {q.topic}
                               </span>
                               <span
@@ -736,14 +736,14 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                                   isCorrect
                                     ? 'bg-emerald-100 text-emerald-800'
                                     : isSkipped
-                                    ? 'bg-slate-100 text-slate-600'
+                                    ? 'bg-surface-hover text-text-secondary'
                                     : 'bg-rose-100 text-rose-800'
                                 }`}
                               >
                                 {isCorrect ? '✓ Correct' : isSkipped ? 'Unanswered' : '✕ Incorrect'}
                               </span>
                             </div>
-                            <p className="text-xs text-slate-500 truncate mt-0.5 max-w-md sm:max-w-xl">
+                            <p className="text-xs text-text-muted truncate mt-0.5 max-w-md sm:max-w-xl">
                               {q.questionText}
                             </p>
                           </div>
@@ -772,36 +772,36 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
 
                       {/* Expandable Solution Area */}
                       {isExpanded && (
-                        <div className="px-3.5 sm:px-5 pb-4 pt-2 border-t border-slate-150 space-y-3 bg-slate-50/50 text-xs">
+                        <div className="px-3.5 sm:px-5 pb-4 pt-2 border-t border-slate-150 space-y-3 bg-app-bg/50 text-xs">
                           {/* Full Question Text */}
-                          <p className="text-slate-900 font-semibold whitespace-pre-line leading-relaxed sm:text-sm">
+                          <p className="text-text-primary font-semibold whitespace-pre-line leading-relaxed sm:text-sm">
                             {q.questionText}
                           </p>
 
                           {/* Code Snippet if applicable */}
                           {q.codeSnippet && (
-                            <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 font-mono text-xs text-sky-300 overflow-x-auto whitespace-pre leading-relaxed">
+                            <div className="p-3 bg-primary rounded-xl border border-primary-active font-mono text-xs text-sky-300 overflow-x-auto whitespace-pre leading-relaxed">
                               {q.codeSnippet}
                             </div>
                           )}
 
                           {/* Option Comparison Card */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-white p-3 rounded-xl border border-slate-200">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 bg-surface p-3 rounded-xl border border-border">
                             <div>
-                              <span className="text-slate-500 font-medium">Your Selected Answer: </span>
+                              <span className="text-text-muted font-medium">Your Selected Answer: </span>
                               <span className={`font-bold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}`}>
                                 {resp.selectedOption ? `Option (${resp.selectedOption})` : 'Not Attempted'}
                               </span>
                             </div>
                             <div>
-                              <span className="text-slate-500 font-medium">Correct Answer: </span>
+                              <span className="text-text-muted font-medium">Correct Answer: </span>
                               <span className="font-bold text-emerald-700">Option ({q.correctOption})</span>
                             </div>
                           </div>
 
                           {/* Step-by-Step Derivation & Placement Formula */}
-                          <div className="p-3.5 bg-white rounded-xl border border-slate-200 space-y-1.5">
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 block">
+                          <div className="p-3.5 bg-surface rounded-xl border border-border space-y-1.5">
+                            <span className="text-[10px] font-extrabold uppercase tracking-wider text-text-muted block">
                               Formula & Step-by-Step Solution:
                             </span>
                             <p className="text-slate-800 whitespace-pre-line leading-relaxed font-mono text-[11px] sm:text-xs">
@@ -840,22 +840,22 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
         {/* ========================================================= */}
         <footer
           id="test-report-footer"
-          className="sticky bottom-0 z-20 bg-slate-50/95 backdrop-blur-xs border-t border-slate-200 px-4 sm:px-6 py-3 flex items-center justify-between gap-3 shadow-inner"
+          className="sticky bottom-0 z-20 bg-app-bg/95 backdrop-blur-xs border-t border-border px-4 sm:px-6 py-3 flex items-center justify-between gap-3 shadow-inner"
           style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
         >
           <button
             id="report-footer-retake-btn"
             onClick={onRetake}
-            className="min-h-[44px] px-4 py-2 bg-white hover:bg-slate-100 active:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 active:scale-95 shadow-2xs"
+            className="min-h-[44px] px-4 py-2 bg-surface hover:bg-surface-hover active:bg-slate-200 border border-slate-300 text-slate-800 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 active:scale-95 shadow-2xs"
           >
-            <RotateCcw className="w-4 h-4 text-slate-600" />
+            <RotateCcw className="w-4 h-4 text-text-secondary" />
             <span>Retake Mock</span>
           </button>
 
           <button
             id="report-footer-dashboard-btn"
             onClick={onClose}
-            className="min-h-[44px] px-5 py-2 bg-[#0b2545] hover:bg-[#143a69] active:bg-[#1b4e8c] text-white text-xs font-extrabold rounded-xl transition-all shadow-sm flex items-center gap-1.5 active:scale-95"
+            className="min-h-[44px] px-5 py-2 bg-primary hover:bg-primary-hover active:bg-primary-active text-white text-xs font-extrabold rounded-xl transition-all shadow-sm flex items-center gap-1.5 active:scale-95"
           >
             <span>Back to Dashboard</span>
             <ArrowRight className="w-4 h-4" />

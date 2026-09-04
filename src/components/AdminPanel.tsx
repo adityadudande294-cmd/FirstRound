@@ -251,7 +251,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="rounded-3xl bg-gradient-to-r from-[#0d3461] via-[#0b2b52] to-[#071f3d] p-7 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-white shadow-xl">
+      <div className="rounded-3xl bg-gradient-to-r from-gradient-start via-gradient-mid to-gradient-end p-7 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-white shadow-xl">
         <div className="space-y-1.5">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-bold shadow-sm">
             <ShieldCheck className="w-4 h-4 text-slate-950" />
@@ -279,7 +279,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
 
           <button
             onClick={() => setShowAnnouncementModal(true)}
-            className="px-4 py-2.5 bg-[#143a69] hover:bg-[#1b4b87] border border-[#245899] text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2"
+            className="px-4 py-2.5 bg-primary-hover hover:bg-primary-active border border-primary-border text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center gap-2"
           >
             <Megaphone className="w-4 h-4 text-amber-400" />
             <span>Broadcast Update</span>
@@ -470,7 +470,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
       {/* Test Series Management Table */}
       <div className="bg-white border border-slate-200 rounded-3xl p-6 space-y-4 shadow-sm">
         <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-          <BookOpen className="w-4 h-4 text-[#0b2545]" />
+          <BookOpen className="w-4 h-4 text-primary" />
           <span>Active Test Series Catalog ({tests.length})</span>
         </h3>
 
@@ -553,7 +553,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   value={aiTopic}
                   onChange={(e) => setAiTopic(e.target.value)}
                   placeholder="e.g. TCS NQT 2025 Speed Distance, Infosys Cryptarithmetic..."
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -563,7 +563,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   <select
                     value={aiCategory}
                     onChange={(e) => setAiCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   >
                     <option value="Quantitative">Quantitative</option>
                     <option value="Logical">Logical</option>
@@ -578,7 +578,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   <select
                     value={aiDifficulty}
                     onChange={(e) => setAiDifficulty(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   >
                     <option value="Easy">Easy</option>
                     <option value="Medium">Medium</option>
@@ -597,7 +597,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   max="10"
                   value={aiNumQuestions}
                   onChange={(e) => setAiNumQuestions(Number(e.target.value))}
-                  className="w-full accent-[#0b2545]"
+                  className="w-full accent-primary"
                 />
               </div>
 
@@ -645,7 +645,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. Capgemini Exceller: Quantitative Math Mock"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -655,7 +655,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
                   placeholder="Short description of concepts covered"
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -665,7 +665,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   <select
                     value={newCompany}
                     onChange={(e) => setNewCompany(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   >
                     <option value="TCS (Tata Consultancy Services)">TCS</option>
                     <option value="Infosys">Infosys</option>
@@ -682,7 +682,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   <select
                     value={newCategory}
                     onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   >
                     <option value="Quantitative">Quantitative</option>
                     <option value="Logical">Logical</option>
@@ -700,7 +700,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                     type="number"
                     value={newDuration}
                     onChange={(e) => setNewDuration(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   />
                 </div>
                 <div>
@@ -709,7 +709,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                     type="number"
                     value={newCutoff}
                     onChange={(e) => setNewCutoff(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                   />
                 </div>
               </div>
@@ -745,7 +745,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
                   value={qText}
                   onChange={(e) => setQText(e.target.value)}
                   placeholder="e.g., A train 150m long passes a pole in 9 seconds..."
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545]"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary"
                 />
               </div>
 
@@ -924,7 +924,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onRefreshTests, tests })
               <button
                 type="submit"
                 disabled={isSubmittingAnn}
-                className="w-full py-2.5 bg-[#0b2545] hover:bg-[#143a69] text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+                className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
               >
                 <Megaphone className="w-4 h-4 text-amber-400" />
                 <span>{isSubmittingAnn ? 'Broadcasting...' : 'Broadcast to Candidates'}</span>

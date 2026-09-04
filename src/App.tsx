@@ -405,7 +405,7 @@ export default function App() {
   // 1. Unauthenticated Visitor Flow: Render Public Landing Page
   if (!loading && (!currentUser || !userId)) {
     return (
-      <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-['Plus_Jakarta_Sans'] antialiased no-scrollbar">
+      <div className="min-h-screen bg-app-bg text-text-primary flex flex-col font-['Plus_Jakarta_Sans'] antialiased no-scrollbar">
         <LandingPage
           onGetStarted={() => {
             setAuthModalMode('register');
@@ -435,7 +435,7 @@ export default function App() {
 
   // 2. Authenticated Candidate Flow: Render Main Placement Application
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-['Plus_Jakarta_Sans'] antialiased selection:bg-amber-300 selection:text-slate-900">
+    <div className="min-h-screen bg-app-bg text-text-primary flex flex-col font-['Plus_Jakarta_Sans'] antialiased selection:bg-amber-300 selection:text-text-primary">
       {/* Top Main Navigation */}
       <Navbar
         activeTab={activeTab}

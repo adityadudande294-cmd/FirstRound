@@ -180,7 +180,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         className="bg-white border border-slate-200 w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden text-slate-900 my-8"
       >
         {/* Header */}
-        <div className="p-6 bg-[#0b2545] border-b border-[#081b33] text-white flex items-center justify-between">
+        <div className="p-6 bg-primary border-b border-primary-dark text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center font-black shadow-md">
               <Zap className="w-5 h-5 fill-slate-950" />
@@ -208,7 +208,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             }}
             className={`flex-1 py-3 text-center transition-colors border-b-2 ${
               activeTab === 'register'
-                ? 'border-amber-400 bg-white text-[#0b2545]'
+                ? 'border-amber-400 bg-white text-primary'
                 : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
@@ -221,7 +221,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             }}
             className={`flex-1 py-3 text-center transition-colors border-b-2 ${
               activeTab === 'login'
-                ? 'border-amber-400 bg-white text-[#0b2545]'
+                ? 'border-amber-400 bg-white text-primary'
                 : 'border-transparent text-slate-500 hover:text-slate-900'
             }`}
           >
@@ -251,7 +251,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. Pawan Khot"
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                   />
                 </div>
 
@@ -266,7 +266,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. pawankhot9@gmail.com"
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                   />
                 </div>
               </div>
@@ -282,7 +282,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     value={college}
                     onChange={(e) => setCollege(e.target.value)}
                     placeholder="e.g. PICT Pune"
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                   />
                 </div>
 
@@ -294,7 +294,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     id="register-target-company-select"
                     value={targetCompany}
                     onChange={(e) => setTargetCompany(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                   >
                     {TARGET_COMPANIES.map((comp) => (
                       <option key={comp} value={comp}>
@@ -313,7 +313,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   id="register-target-role-select"
                   value={targetRole}
                   onChange={(e) => setTargetRole(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                 >
                   <option value="">Select target role...</option>
                   {TARGET_ROLES.map((role) => (
@@ -366,7 +366,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                             </span>
                           )}
                           <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-[#0b2545] text-amber-400 font-extrabold text-xs flex items-center justify-center shrink-0">
+                            <div className="w-8 h-8 rounded-lg bg-primary text-amber-400 font-extrabold text-xs flex items-center justify-center shrink-0">
                               {user.name.charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0 pr-6">
@@ -423,14 +423,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. pawankhot9@gmail.com"
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-[#0b2545] shadow-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-primary shadow-xs"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-2.5 bg-[#0b2545] hover:bg-[#12396b] text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
                 >
                   {loading ? 'Checking Account...' : 'Sign In with Email'}
                 </button>

@@ -159,7 +159,7 @@ export const HomeSearchBar: React.FC<HomeSearchBarProps> = ({
             setIsOpen(true);
           }}
           placeholder="Search placement tests, TCS, Infosys, topics..."
-          className="w-full pl-11 pr-10 py-3 bg-white hover:bg-slate-50/80 focus:bg-white text-sm text-slate-900 placeholder-slate-400 border border-slate-200 focus:border-[#0b2545] focus:ring-2 focus:ring-[#0b2545]/15 rounded-2xl shadow-xs outline-none transition-all"
+          className="w-full pl-11 pr-10 py-3 bg-white hover:bg-slate-50/80 focus:bg-white text-sm text-slate-900 placeholder-slate-400 border border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/15 rounded-2xl shadow-xs outline-none transition-all"
         />
         {query && (
           <button

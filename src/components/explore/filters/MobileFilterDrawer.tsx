@@ -18,7 +18,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ title, options, selectedO
           onClick={() => onSelect('All')}
           className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
             selectedOption === 'All'
-              ? 'bg-[#0b2545] text-white'
+              ? 'bg-primary text-white'
               : 'bg-slate-100 text-slate-700 border border-slate-200'
           }`}
         >
@@ -30,7 +30,7 @@ const FilterSection: React.FC<FilterSectionProps> = ({ title, options, selectedO
             onClick={() => onSelect(option)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
               selectedOption === option
-                ? 'bg-[#0b2545] text-white shadow-xs'
+                ? 'bg-primary text-white shadow-xs'
                 : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
             }`}
           >
@@ -177,7 +177,7 @@ export const MobileFilterDrawer: React.FC<MobileFilterDrawerProps> = ({
           </button>
           <button
             onClick={onClose}
-            className="flex-[2] py-3 px-4 rounded-xl text-sm font-bold text-white bg-[#0b2545] hover:bg-[#123663] transition-colors shadow-xs"
+            className="flex-[2] py-3 px-4 rounded-xl text-sm font-bold text-white bg-primary hover:bg-primary-hover transition-colors shadow-xs"
           >
             Show {resultCount} {resultCount === 1 ? 'Test' : 'Tests'}
           </button>

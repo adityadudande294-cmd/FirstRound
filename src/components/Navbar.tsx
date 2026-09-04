@@ -159,7 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* ========================================================= */}
       {/* MAIN TOP HEADER BAR (DESKTOP + MOBILE)                    */}
       {/* ========================================================= */}
-      <header className="w-full sticky top-0 z-40 bg-white border-b border-slate-200/90 shadow-2xs">
+      <header className="w-full sticky top-0 z-40 bg-surface border-b border-border/90 shadow-2xs">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-6">
             {/* Left: Brand Logo + Desktop Nav Pills */}
@@ -171,11 +171,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="flex items-center gap-2 sm:gap-2.5 group focus:outline-none shrink-0"
                 title="FirstRound Home"
               >
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#0b2545] text-amber-400 flex items-center justify-center shadow-xs transition-transform group-hover:scale-105">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-primary text-amber-400 flex items-center justify-center shadow-xs transition-transform group-hover:scale-105">
                   <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-400" />
                 </div>
                 <div className="flex items-baseline">
-                  <span className="font-extrabold text-base sm:text-lg lg:text-xl tracking-tight text-slate-900 font-['Outfit']">
+                  <span className="font-extrabold text-base sm:text-lg lg:text-xl tracking-tight text-text-primary font-['Outfit']">
                     First<span className="text-amber-500">Round</span>
                   </span>
                 </div>
@@ -184,15 +184,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Desktop Pill Navigation Bar (Hidden on mobile/tablet) */}
               <nav
                 id="desktop-nav-pill-group"
-                className="hidden lg:flex items-center bg-slate-100/90 p-1 rounded-full border border-slate-200/60 shadow-2xs"
+                className="hidden lg:flex items-center bg-surface-hover/90 p-1 rounded-full border border-border/60 shadow-2xs"
               >
                 <button
                   id="nav-home-btn"
                   onClick={() => handleNav('home')}
                   className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all ${
                     activeTab === 'home'
-                      ? 'bg-[#0b2545] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-slate-200/60'
                   }`}
                 >
                   Home
@@ -203,8 +203,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNav('tests')}
                   className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all ${
                     activeTab === 'tests'
-                      ? 'bg-[#0b2545] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-slate-200/60'
                   }`}
                 >
                   Explore Tests
@@ -215,8 +215,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNav('vault')}
                   className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1.5 ${
                     activeTab === 'vault'
-                      ? 'bg-[#0b2545] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-slate-200/60'
                   }`}
                 >
                   <BookOpen className="w-3.5 h-3.5" />
@@ -228,8 +228,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   onClick={() => handleNav('leaderboard')}
                   className={`px-4 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1.5 ${
                     activeTab === 'leaderboard'
-                      ? 'bg-[#0b2545] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+                      ? 'bg-primary text-white shadow-xs'
+                      : 'text-text-secondary hover:text-text-primary hover:bg-slate-200/60'
                   }`}
                 >
                   <Trophy className="w-3.5 h-3.5 text-amber-500" />
@@ -261,7 +261,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   id="header-scratchpad-btn"
                   onClick={onOpenScratchpad}
                   title="Open Placement Toolkit (Notes, Formulas, Solver)"
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold rounded-full border border-slate-200/70 transition-colors"
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-surface-hover hover:bg-slate-200/80 text-slate-700 text-xs font-semibold rounded-full border border-border/70 transition-colors"
                 >
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                   <span>Toolkit</span>
@@ -278,8 +278,8 @@ export const Navbar: React.FC<NavbarProps> = ({
                   }}
                   title="Notifications"
                   aria-label="Notifications"
-                  className={`p-2 text-slate-500 hover:text-slate-800 rounded-full transition-colors relative min-w-[36px] min-h-[36px] flex items-center justify-center ${
-                    isNotificationOpen ? 'bg-slate-100 text-slate-900' : 'hover:bg-slate-100'
+                  className={`p-2 text-text-muted hover:text-slate-800 rounded-full transition-colors relative min-w-[36px] min-h-[36px] flex items-center justify-center ${
+                    isNotificationOpen ? 'bg-surface-hover text-text-primary' : 'hover:bg-surface-hover'
                   }`}
                 >
                   <Bell className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
@@ -319,11 +319,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                       // On desktop toggle dropdown, on small mobile screens toggle dropdown or let user use menu
                       setIsUserMenuOpen(!isUserMenuOpen);
                     }}
-                    className="flex items-center gap-1 sm:gap-1.5 p-1 sm:pl-1.5 sm:pr-2 hover:bg-slate-100 rounded-full border border-slate-200 transition-colors group focus:outline-none min-h-[36px]"
+                    className="flex items-center gap-1 sm:gap-1.5 p-1 sm:pl-1.5 sm:pr-2 hover:bg-surface-hover rounded-full border border-border transition-colors group focus:outline-none min-h-[36px]"
                     aria-expanded={isUserMenuOpen}
                     title="User Profile & Settings"
                   >
-                    <div className="w-7 h-7 rounded-full bg-[#0b2545] text-white font-bold text-xs flex items-center justify-center shadow-2xs group-hover:ring-2 group-hover:ring-amber-400 transition-all shrink-0">
+                    <div className="w-7 h-7 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shadow-2xs group-hover:ring-2 group-hover:ring-amber-400 transition-all shrink-0">
                       {userInitial}
                     </div>
                     <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-700 transition-transform hidden sm:inline" />
@@ -331,12 +331,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
                   {/* Clean Profile & Account Dropdown */}
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                    <div className="absolute right-0 mt-2 w-56 bg-surface border border-border rounded-2xl shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                       <div className="px-4 py-2.5 border-b border-slate-100">
-                        <p className="text-xs font-bold text-slate-900 truncate">
+                        <p className="text-xs font-bold text-text-primary truncate">
                           {displayName}
                         </p>
-                        <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                        <p className="text-[11px] text-text-muted truncate mt-0.5">
                           {currentUser.targetCompany ? `Target: ${currentUser.targetCompany}` : 'Target company not set'}
                         </p>
                       </div>
@@ -345,7 +345,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         <button
                           id="dropdown-candidate-profile-btn"
                           onClick={handleOpenProfile}
-                          className="w-full px-4 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-slate-900 flex items-center gap-2"
+                          className="w-full px-4 py-2 text-left text-xs font-semibold text-slate-700 hover:bg-app-bg hover:text-text-primary flex items-center gap-2"
                         >
                           <UserIcon className="w-3.5 h-3.5 text-slate-400" />
                           <span>Candidate Profile</span>
@@ -369,7 +369,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   id="sign-in-btn"
                   onClick={handleOpenAuth}
-                  className="px-3 sm:px-4 py-1.5 bg-[#0b2545] hover:bg-[#123663] text-white font-bold text-xs rounded-full shadow-xs transition-all shrink-0"
+                  className="px-3 sm:px-4 py-1.5 bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-full shadow-xs transition-all shrink-0"
                 >
                   Sign In
                 </button>
@@ -379,7 +379,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 id="mobile-menu-toggle-btn"
                 onClick={() => setIsMobileDrawerOpen(!isMobileDrawerOpen)}
-                className="lg:hidden p-2 text-slate-700 hover:text-slate-950 hover:bg-slate-100 active:bg-slate-200 rounded-xl transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
+                className="lg:hidden p-2 text-slate-700 hover:text-slate-950 hover:bg-surface-hover active:bg-slate-200 rounded-xl transition-colors min-h-[40px] min-w-[40px] flex items-center justify-center"
                 aria-label={isMobileDrawerOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
                 aria-expanded={isMobileDrawerOpen}
               >
@@ -403,20 +403,20 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <div
             id="mobile-nav-drawer-panel"
-            className="w-full max-w-xs sm:max-w-sm bg-white h-full shadow-2xl flex flex-col justify-between border-l border-slate-200 animate-in slide-in-from-right duration-200 overflow-y-auto"
+            className="w-full max-w-xs sm:max-w-sm bg-surface h-full shadow-2xl flex flex-col justify-between border-l border-border animate-in slide-in-from-right duration-200 overflow-y-auto"
           >
             {/* Drawer Header */}
             <div>
-              <div className="p-4 sm:p-5 border-b border-slate-150 flex items-center justify-between gap-3 bg-slate-50/70">
+              <div className="p-4 sm:p-5 border-b border-slate-150 flex items-center justify-between gap-3 bg-app-bg/70">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-xl bg-[#0b2545] text-amber-400 flex items-center justify-center shadow-xs">
+                  <div className="w-8 h-8 rounded-xl bg-primary text-amber-400 flex items-center justify-center shadow-xs">
                     <Zap className="w-4 h-4 fill-amber-400" />
                   </div>
                   <div>
-                    <span className="font-extrabold text-base tracking-tight text-slate-900 font-['Outfit'] block leading-none">
+                    <span className="font-extrabold text-base tracking-tight text-text-primary font-['Outfit'] block leading-none">
                       First<span className="text-amber-500">Round</span>
                     </span>
-                    <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block mt-1">
+                    <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mt-1">
                       Placement Navigation
                     </span>
                   </div>
@@ -447,19 +447,19 @@ export const Navbar: React.FC<NavbarProps> = ({
                       onClick={() => handleNav(item.id)}
                       className={`w-full min-h-[48px] px-3.5 py-2.5 rounded-xl text-left text-xs font-bold flex items-center justify-between gap-3 transition-all ${
                         isActive
-                          ? 'bg-[#0b2545] text-white shadow-xs'
-                          : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+                          ? 'bg-primary text-white shadow-xs'
+                          : 'text-slate-700 hover:bg-surface-hover active:bg-slate-200'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <span className={`${isActive ? 'text-amber-400' : 'text-slate-500'}`}>
+                        <span className={`${isActive ? 'text-amber-400' : 'text-text-muted'}`}>
                           {item.icon}
                         </span>
                         <span className="text-sm font-bold">{item.label}</span>
                       </div>
 
                       {isActive ? (
-                        <span className="text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded bg-white/20 text-white">
+                        <span className="text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded bg-surface/20 text-white">
                           Active
                         </span>
                       ) : (
@@ -519,19 +519,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {/* Drawer Footer: User Profile / Auth Actions */}
-            <div className="p-4 border-t border-slate-150 bg-slate-50/80 space-y-3">
+            <div className="p-4 border-t border-slate-150 bg-app-bg/80 space-y-3">
               {currentUser ? (
                 <div className="space-y-2.5">
                   {/* Candidate Card */}
-                  <div className="p-3 bg-white border border-slate-200/90 rounded-xl flex items-center gap-2.5 shadow-2xs">
-                    <div className="w-8 h-8 rounded-full bg-[#0b2545] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+                  <div className="p-3 bg-surface border border-border/90 rounded-xl flex items-center gap-2.5 shadow-2xs">
+                    <div className="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
                       {userInitial}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-slate-900 truncate">
+                      <p className="text-xs font-bold text-text-primary truncate">
                         {displayName}
                       </p>
-                      <p className="text-[10px] text-slate-500 truncate">
+                      <p className="text-[10px] text-text-muted truncate">
                         {currentUser.targetCompany ? `Target: ${currentUser.targetCompany}` : 'Target company not set'}
                       </p>
                     </div>
@@ -541,9 +541,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <button
                       id="mobile-drawer-profile-btn"
                       onClick={handleOpenProfile}
-                      className="min-h-[44px] py-2 px-3 bg-white hover:bg-slate-100 active:bg-slate-200 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition-colors"
+                      className="min-h-[44px] py-2 px-3 bg-surface hover:bg-surface-hover active:bg-slate-200 border border-border rounded-xl text-xs font-bold text-slate-700 flex items-center justify-center gap-1.5 transition-colors"
                     >
-                      <UserIcon className="w-3.5 h-3.5 text-slate-500" />
+                      <UserIcon className="w-3.5 h-3.5 text-text-muted" />
                       <span>Profile</span>
                     </button>
 
@@ -561,7 +561,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   id="mobile-drawer-signin-btn"
                   onClick={handleOpenAuth}
-                  className="w-full min-h-[44px] py-2.5 px-4 bg-[#0b2545] hover:bg-[#123663] active:bg-[#18457d] text-white text-xs font-extrabold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
+                  className="w-full min-h-[44px] py-2.5 px-4 bg-primary hover:bg-primary-hover active:bg-primary-active text-white text-xs font-extrabold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2"
                 >
                   <UserIcon className="w-4 h-4 text-amber-400" />
                   <span>Sign In / Register</span>

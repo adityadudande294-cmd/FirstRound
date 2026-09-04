@@ -59,11 +59,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-['Plus_Jakarta_Sans'] selection:bg-amber-300 selection:text-slate-900 no-scrollbar overflow-y-auto">
+    <div className="min-h-screen bg-app-bg text-text-primary flex flex-col font-['Plus_Jakarta_Sans'] selection:bg-amber-300 selection:text-text-primary no-scrollbar overflow-y-auto">
       {/* ========================================================================= */}
       {/* 1. PUBLIC NAVBAR                                                          */}
       {/* ========================================================================= */}
-      <header className="sticky top-0 z-40 bg-[#0b2545] border-b border-[#143a69] text-white shadow-sm">
+      <header className="sticky top-0 z-40 bg-primary border-b border-primary-hover text-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-3">
@@ -107,7 +107,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <button
               id="landing-nav-login-btn"
               onClick={onLogin}
-              className="px-4 py-2 text-xs font-bold text-slate-200 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+              className="px-4 py-2 text-xs font-bold text-slate-200 hover:text-white hover:bg-surface/10 rounded-xl transition-colors"
             >
               Sign In
             </button>
@@ -124,7 +124,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg"
+            className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-surface/10 rounded-lg"
             aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -133,7 +133,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
         {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden bg-[#081d37] border-t border-[#143a69] px-4 py-5 space-y-4">
+          <div className="md:hidden bg-primary-dark border-t border-primary-hover px-4 py-5 space-y-4">
             <nav className="flex flex-col space-y-3 text-sm font-semibold text-slate-200">
               <button
                 onClick={() => scrollToSection('features')}
@@ -161,7 +161,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   setIsMobileMenuOpen(false);
                   onLogin();
                 }}
-                className="w-full py-2.5 bg-white/10 text-white font-bold text-xs rounded-xl"
+                className="w-full py-2.5 bg-surface/10 text-white font-bold text-xs rounded-xl"
               >
                 Sign In
               </button>
@@ -183,7 +183,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 2. HERO SECTION                                                           */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-[#0b2545] text-white">
+      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-28 bg-primary text-white">
         {/* Subtle geometric background accents */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sky-500 blur-3xl"></div>
@@ -194,7 +194,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             {/* Left Hero Content */}
             <div className="lg:col-span-7 space-y-6 text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-amber-300 text-xs font-bold tracking-wide uppercase">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface/10 border border-white/20 text-amber-300 text-xs font-bold tracking-wide uppercase">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span>FIRSTROUND</span>
               </div>
@@ -225,7 +225,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <button
                   id="hero-explore-tests-btn"
                   onClick={() => scrollToSection('supported-tests')}
-                  className="px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-sm rounded-xl transition-colors flex items-center gap-2"
+                  className="px-6 py-3.5 bg-surface/10 hover:bg-surface/20 border border-white/20 text-white font-bold text-sm rounded-xl transition-colors flex items-center gap-2"
                 >
                   <BookOpen className="w-4 h-4 text-amber-400" />
                   <span>Explore Tests</span>
@@ -251,23 +251,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
             {/* Right Hero Visual: Authentic UI Interface Preview */}
             <div className="lg:col-span-5">
-              <div className="bg-[#0e335f] border border-[#1b4b87] rounded-3xl p-5 sm:p-6 shadow-2xl text-slate-900 space-y-4 relative">
+              <div className="bg-primary-dark border border-primary-active rounded-3xl p-5 sm:p-6 shadow-2xl text-text-primary space-y-4 relative">
                 {/* Visual Header bar */}
-                <div className="flex items-center justify-between pb-3 border-b border-[#1a4478] text-white text-xs">
+                <div className="flex items-center justify-between pb-3 border-b border-primary-active text-white text-xs">
                   <div className="flex items-center gap-2">
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></div>
                     <span className="font-bold tracking-wide">TCS Digital Practice Mock</span>
                   </div>
-                  <div className="flex items-center gap-1.5 font-mono text-amber-400 font-bold bg-[#081d37] px-2.5 py-1 rounded-lg border border-[#1b4b87]">
+                  <div className="flex items-center gap-1.5 font-mono text-amber-400 font-bold bg-primary-dark px-2.5 py-1 rounded-lg border border-primary-active">
                     <Clock className="w-3.5 h-3.5" />
                     <span>44:30</span>
                   </div>
                 </div>
 
                 {/* Sample Question Card */}
-                <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm space-y-3.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500">
-                    <span className="font-bold text-[#0b2545] uppercase tracking-wider">
+                <div className="bg-surface rounded-2xl p-4 sm:p-5 border border-border shadow-sm space-y-3.5">
+                  <div className="flex items-center justify-between text-[11px] text-text-muted">
+                    <span className="font-bold text-primary uppercase tracking-wider">
                       Question 4 of 10 • Quantitative Aptitude
                     </span>
                     <span className="px-2 py-0.5 bg-amber-50 text-amber-900 font-bold border border-amber-200 rounded">
@@ -275,7 +275,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-xs sm:text-sm font-semibold text-slate-900 leading-relaxed">
+                  <p className="text-xs sm:text-sm font-semibold text-text-primary leading-relaxed">
                     A train passes a station platform in 36 seconds and a man standing on the
                     platform in 20 seconds. If the speed of the train is 54 km/hr, what is the length
                     of the platform?
@@ -294,13 +294,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                         className={`p-2.5 rounded-xl border text-xs font-medium flex items-center justify-between transition-colors ${
                           opt.active
                             ? 'bg-amber-50 border-amber-400 text-slate-950 font-bold'
-                            : 'bg-slate-50 border-slate-200 text-slate-700'
+                            : 'bg-app-bg border-border text-slate-700'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
                           <span
                             className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
-                              opt.active ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-slate-600'
+                              opt.active ? 'bg-amber-400 text-slate-950' : 'bg-slate-200 text-text-secondary'
                             }`}
                           >
                             {opt.id}
@@ -314,13 +314,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
                   {/* Bottom test helper controls */}
                   <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                    <span className="text-slate-500 font-medium">💡 Formula: Speed = Distance / Time</span>
-                    <span className="font-bold text-[#0b2545]">Next Question →</span>
+                    <span className="text-text-muted font-medium">💡 Formula: Speed = Distance / Time</span>
+                    <span className="font-bold text-primary">Next Question →</span>
                   </div>
                 </div>
 
                 {/* Sub-card: Real-Time Diagnostic Bar */}
-                <div className="bg-[#081d37] rounded-xl p-3 border border-[#1b4b87] text-white flex items-center justify-between text-xs">
+                <div className="bg-primary-dark rounded-xl p-3 border border-primary-active text-white flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-amber-400" />
                     <span className="font-medium text-slate-200">AI Step-by-Step Mentor & Doubt Solver</span>
@@ -336,13 +336,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 3. COMPANY STRIP (Recruiters Supported)                                   */}
       {/* ========================================================================= */}
-      <section id="supported-tests" className="py-12 bg-white border-b border-slate-200">
+      <section id="supported-tests" className="py-12 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
           <div className="space-y-1">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500">
+            <h2 className="text-sm font-bold uppercase tracking-wider text-text-muted">
               Company Assessment Patterns
             </h2>
-            <p className="text-xl sm:text-2xl font-bold text-slate-900">
+            <p className="text-xl sm:text-2xl font-bold text-text-primary">
               Prepare for assessments across leading recruiters
             </p>
           </div>
@@ -351,13 +351,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {supportedRecruiters.map((rec) => (
               <div
                 key={rec.name}
-                className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white hover:border-slate-300 hover:shadow-xs transition-all flex flex-col items-center justify-center text-center space-y-1 group"
+                className="p-3.5 rounded-2xl border border-border bg-app-bg/70 hover:bg-surface hover:border-slate-300 hover:shadow-xs transition-all flex flex-col items-center justify-center text-center space-y-1 group"
               >
-                <div className="w-8 h-8 rounded-xl bg-[#0b2545] text-amber-400 flex items-center justify-center font-extrabold text-xs shadow-xs">
+                <div className="w-8 h-8 rounded-xl bg-primary text-amber-400 flex items-center justify-center font-extrabold text-xs shadow-xs">
                   {rec.name.slice(0, 2).toUpperCase()}
                 </div>
-                <h4 className="text-xs font-bold text-slate-900">{rec.name}</h4>
-                <p className="text-[10px] text-slate-500 line-clamp-1">{rec.role}</p>
+                <h4 className="text-xs font-bold text-text-primary">{rec.name}</h4>
+                <p className="text-[10px] text-text-muted line-clamp-1">{rec.role}</p>
               </div>
             ))}
           </div>
@@ -371,16 +371,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 4. CORE FEATURES (4 Core Modules)                                         */}
       {/* ========================================================================= */}
-      <section id="features" className="py-20 bg-slate-50 border-b border-slate-200">
+      <section id="features" className="py-20 bg-app-bg border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-extrabold uppercase tracking-wider text-sky-700">
               Everything You Need For Campus Placement
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight font-['Outfit']">
               Engineered for Focused Practice
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-sm text-text-secondary leading-relaxed">
               Target your weak spots, simulate genuine recruitment round environments, and prepare
               systematically.
             </p>
@@ -389,13 +389,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* 4 Features Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Feature 1 */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
+            <div className="bg-surface rounded-3xl p-6 border border-border shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-200 text-sky-700 flex items-center justify-center">
                   <Target className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">Placement Tests</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <h3 className="text-lg font-bold text-text-primary">Placement Tests</h3>
+                <p className="text-xs text-text-secondary leading-relaxed">
                   Company-focused mocks and topic-based practice for placement preparation.
                 </p>
               </div>
@@ -406,13 +406,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
+            <div className="bg-surface rounded-3xl p-6 border border-border shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-amber-600" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">AI Mentor</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <h3 className="text-lg font-bold text-text-primary">AI Mentor</h3>
+                <p className="text-xs text-text-secondary leading-relaxed">
                   Get step-by-step explanations when you get stuck.
                 </p>
               </div>
@@ -423,13 +423,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
+            <div className="bg-surface rounded-3xl p-6 border border-border shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center">
                   <RotateCcw className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">Revision Vault</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <h3 className="text-lg font-bold text-text-primary">Revision Vault</h3>
+                <p className="text-xs text-text-secondary leading-relaxed">
                   Turn mistakes into targeted revision and re-quiz practice.
                 </p>
               </div>
@@ -440,13 +440,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             {/* Feature 4 */}
-            <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
+            <div className="bg-surface rounded-3xl p-6 border border-border shadow-xs space-y-4 hover:border-slate-300 transition-all flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center">
                   <TrendingUp className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">Performance Tracking</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">
+                <h3 className="text-lg font-bold text-text-primary">Performance Tracking</h3>
+                <p className="text-xs text-text-secondary leading-relaxed">
                   Understand your accuracy, progress and preparation readiness.
                 </p>
               </div>
@@ -462,50 +462,50 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 5. HOW IT WORKS (3 Simple Steps)                                          */}
       {/* ========================================================================= */}
-      <section id="how-it-works" className="py-20 bg-white border-b border-slate-200">
+      <section id="how-it-works" className="py-20 bg-surface border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-text-muted">
               Simple 3-Step Process
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight font-['Outfit']">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary tracking-tight font-['Outfit']">
               How It Works
             </h2>
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-text-secondary">
               A structured workflow designed for continuous placement preparation improvement.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Step 1 */}
-            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200 space-y-4 relative group hover:bg-white hover:border-slate-300 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-[#0b2545] text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
+            <div className="bg-app-bg rounded-3xl p-8 border border-border space-y-4 relative group hover:bg-surface hover:border-slate-300 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-primary text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
                 01
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Choose a Test</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary">Choose a Test</h3>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                 Select a company mock, topic drill or placement assessment.
               </p>
             </div>
 
             {/* Step 2 */}
-            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200 space-y-4 relative group hover:bg-white hover:border-slate-300 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-[#0b2545] text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
+            <div className="bg-app-bg rounded-3xl p-8 border border-border space-y-4 relative group hover:bg-surface hover:border-slate-300 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-primary text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
                 02
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Practice & Analyze</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary">Practice & Analyze</h3>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                 Take the assessment and understand your performance.
               </p>
             </div>
 
             {/* Step 3 */}
-            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200 space-y-4 relative group hover:bg-white hover:border-slate-300 transition-all">
-              <div className="w-12 h-12 rounded-2xl bg-[#0b2545] text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
+            <div className="bg-app-bg rounded-3xl p-8 border border-border space-y-4 relative group hover:bg-surface hover:border-slate-300 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-primary text-amber-400 flex items-center justify-center font-black text-lg shadow-sm">
                 03
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Improve</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              <h3 className="text-xl font-bold text-text-primary">Improve</h3>
+              <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                 Use mistakes, revision and AI guidance to prepare better.
               </p>
             </div>
@@ -516,7 +516,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 6. FINAL CTA                                                              */}
       {/* ========================================================================= */}
-      <section className="py-20 bg-[#0b2545] text-white relative overflow-hidden">
+      <section className="py-20 bg-primary text-white relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
           <div className="w-14 h-14 rounded-2xl bg-amber-400 text-slate-950 flex items-center justify-center mx-auto shadow-lg">
             <Zap className="w-7 h-7 fill-slate-950" />
@@ -547,7 +547,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* ========================================================================= */}
       {/* 7. FOOTER                                                                 */}
       {/* ========================================================================= */}
-      <footer className="bg-[#081d37] border-t border-[#143a69] text-slate-300 py-10">
+      <footer className="bg-primary-dark border-t border-primary-hover text-slate-300 py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           <div className="flex items-center justify-center sm:justify-start gap-3 text-center sm:text-left">
             <div className="w-8 h-8 rounded-lg bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm shrink-0">

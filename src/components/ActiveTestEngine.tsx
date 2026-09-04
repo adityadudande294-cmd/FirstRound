@@ -355,7 +355,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
       {/* 1. STICKY TOP EXAM HEADER (Mobile-First Single Row + Desktop Accommodating) */}
       <header
         id="active-test-header"
-        className="sticky top-0 z-40 bg-[#0b2545] border-b border-[#081b33] px-2.5 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-white shadow-md"
+        className="sticky top-0 z-40 bg-primary border-b border-primary-dark px-2.5 sm:px-4 lg:px-6 py-2.5 sm:py-3 text-white shadow-md"
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-4">
           {/* Left: Back / Exit & Title / Q counter */}
@@ -410,7 +410,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                   if (onOpenScratchpad) onOpenScratchpad();
                 }}
                 title="Placement Toolkit (Notes, Formulas, Solver)"
-                className="p-1.5 sm:px-3 sm:py-1.5 bg-[#0e3461] hover:bg-[#12427a] active:bg-[#185396] border border-[#1b4d8a] text-slate-200 text-xs font-semibold rounded-lg sm:rounded-xl transition-colors shadow-2xs flex items-center gap-1.5 shrink-0"
+                className="p-1.5 sm:px-3 sm:py-1.5 bg-primary-hover hover:bg-primary-hover active:bg-primary-active border border-primary-border text-slate-200 text-xs font-semibold rounded-lg sm:rounded-xl transition-colors shadow-2xs flex items-center gap-1.5 shrink-0"
               >
                 <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 shrink-0" />
                 <span className="hidden sm:inline">Toolkit</span>
@@ -427,7 +427,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                   setIsMobilePaletteOpen(true);
                 }
               }}
-              className={`${isCodingLayout ? 'flex' : 'flex lg:hidden'} p-1.5 sm:px-2.5 sm:py-1.5 bg-[#0e3461] hover:bg-[#12427a] active:bg-[#185396] border border-[#1b4d8a] text-slate-200 text-xs font-bold rounded-lg sm:rounded-xl transition-colors items-center gap-1`}
+              className={`${isCodingLayout ? 'flex' : 'flex lg:hidden'} p-1.5 sm:px-2.5 sm:py-1.5 bg-primary-hover hover:bg-primary-hover active:bg-primary-active border border-primary-border text-slate-200 text-xs font-bold rounded-lg sm:rounded-xl transition-colors items-center gap-1`}
               title="View all questions"
             >
               <Grid className="w-3.5 h-3.5 text-sky-400 shrink-0" />
@@ -440,7 +440,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
               className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl font-mono text-xs sm:text-sm font-bold border transition-colors shrink-0 ${
                 mode === 'exam' && secondsRemaining < 180
                   ? 'bg-red-500/20 border-red-400 text-red-300 animate-pulse'
-                  : 'bg-[#071930] border-[#1b477b] text-amber-300'
+                  : 'bg-primary-dark border-primary-border text-amber-300'
               }`}
             >
               <Clock className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 shrink-0" />
@@ -490,7 +490,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
             {/* Question Header & Meta Strip */}
             <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
               <div className="flex flex-wrap items-center gap-2 min-w-0">
-                <span className="px-3 py-1 bg-[#0b2545] text-white text-xs font-bold rounded-lg shadow-2xs tracking-wide">
+                <span className="px-3 py-1 bg-primary text-white text-xs font-bold rounded-lg shadow-2xs tracking-wide">
                   Question {currentIndex + 1} of {totalQuestions}
                 </span>
                 <span className="px-2.5 py-1 bg-sky-50 text-sky-800 border border-sky-200/80 text-xs font-bold rounded-lg truncate max-w-[140px] sm:max-w-none">
@@ -653,10 +653,10 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
             <div className="p-4 border-b border-slate-150 bg-slate-50/80 shrink-0">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <Grid className="w-4 h-4 text-[#0b2545]" />
+                  <Grid className="w-4 h-4 text-primary" />
                   <h2 className="text-sm font-bold text-slate-900 font-['Outfit']">Question Navigator</h2>
                 </div>
-                <span className="text-xs font-bold text-[#0b2545] bg-white border border-slate-200 px-2 py-0.5 rounded-md">
+                <span className="text-xs font-bold text-primary bg-white border border-slate-200 px-2 py-0.5 rounded-md">
                   {answeredCount}/{totalQuestions} Answered
                 </span>
               </div>
@@ -722,7 +722,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                       }}
                       className={`h-9 rounded-xl text-xs flex items-center justify-center transition-all ${bg} ${
                         isCurrent
-                          ? 'ring-2 ring-[#0b2545] ring-offset-1 scale-105 shadow-sm font-extrabold z-10'
+                          ? 'ring-2 ring-primary ring-offset-1 scale-105 shadow-sm font-extrabold z-10'
                           : 'hover:opacity-90 active:scale-95'
                       }`}
                       title={`Jump to Question ${idx + 1}`}
@@ -821,7 +821,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
           {/* Header */}
           <div className="p-4 border-b border-slate-150 bg-slate-50 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
-              <Grid className="w-4 h-4 text-[#0b2545]" />
+              <Grid className="w-4 h-4 text-primary" />
               <h2 className="text-sm font-bold text-slate-900 font-['Outfit']">Questions</h2>
             </div>
             <button onClick={() => setIsCodingDrawerOpen(false)} className="text-slate-400 hover:text-slate-700">
@@ -874,7 +874,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                     }}
                     className={`h-9 rounded-xl text-xs flex items-center justify-center transition-all ${bg} ${
                       isCurrent
-                        ? 'ring-2 ring-[#0b2545] ring-offset-1 scale-105 shadow-sm font-extrabold z-10'
+                        ? 'ring-2 ring-primary ring-offset-1 scale-105 shadow-sm font-extrabold z-10'
                         : 'hover:opacity-90 active:scale-95'
                     }`}
                   >
@@ -1071,7 +1071,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                       }}
                       className={`h-11 rounded-xl text-xs flex items-center justify-center transition-all ${bg} ${
-                        isCurrent ? 'ring-2 ring-[#0b2545] scale-105 font-extrabold shadow-sm' : 'active:scale-95'
+                        isCurrent ? 'ring-2 ring-primary scale-105 font-extrabold shadow-sm' : 'active:scale-95'
                       }`}
                     >
                       {idx + 1}

@@ -269,7 +269,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
     }
     if (history.status === 'VISITED') {
       return (
-        <span className="hidden sm:inline-block px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px] font-bold border border-slate-200">
+        <span className="hidden sm:inline-block px-2 py-0.5 bg-surface-hover text-text-muted rounded text-[10px] font-bold border border-border">
           Visited
         </span>
       );
@@ -347,7 +347,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
       {/* Adaptive Guidance Alert Strip (Real User Guidance) */}
       <div
         id="home-guidance-strip"
-        className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-[#0b2545] text-white border border-[#143a69] shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
+        className="p-4 rounded-2xl bg-gradient-to-r from-slate-900 to-primary text-white border border-primary-hover shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3"
       >
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-400 border border-amber-400/30 flex items-center justify-center shrink-0">
@@ -438,7 +438,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           <div className="flex items-center justify-between">
             <button
               onClick={() => onNavigateTab('tests')}
-              className="group flex items-center gap-1.5 text-lg font-bold text-slate-900 hover:text-sky-700 transition-colors"
+              className="group flex items-center gap-1.5 text-lg font-bold text-text-primary hover:text-sky-700 transition-colors"
             >
               <Target className="w-5 h-5 text-sky-700" />
               <span>Practice & Placement Tests</span>
@@ -459,7 +459,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             {targetTest && (
               <div
                 id="target-placement-test-card"
-                className="md:col-span-7 bg-[#0b2545] rounded-2xl p-6 text-white border border-[#143a69] relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[220px]"
+                className="md:col-span-7 bg-primary rounded-2xl p-6 text-white border border-primary-hover relative overflow-hidden shadow-sm flex flex-col justify-between min-h-[220px]"
               >
                 {/* Subtle background graphic */}
                 <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-10 pointer-events-none">
@@ -473,7 +473,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     <span className="text-[11px] font-extrabold uppercase tracking-wider text-amber-400">
                       TARGET PLACEMENT TEST
                     </span>
-                    <span className="text-[11px] font-semibold bg-white/10 px-2 py-0.5 rounded-full text-slate-200">
+                    <span className="text-[11px] font-semibold bg-surface/10 px-2 py-0.5 rounded-full text-slate-200">
                       {targetTest.companyName || targetTest.category}
                     </span>
                   </div>
@@ -553,7 +553,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       <button
                         id="target-test-practice-btn"
                         onClick={() => onStartTest(targetTest, 'practice')}
-                        className="px-4 py-2.5 bg-[#0e335f] hover:bg-[#134279] border border-[#1b4b87] text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                        className="px-4 py-2.5 bg-primary-dark hover:bg-primary-hover border border-primary-active text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
                       >
                         <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                         <span>Practice Mode</span>
@@ -574,7 +574,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                         <button
                           id="target-test-view-result-btn"
                           onClick={() => onViewAttemptReport(targetTestStatus.latestAttempt!)}
-                          className="px-4 py-2.5 bg-[#0e335f] hover:bg-[#134279] border border-[#1b4b87] text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                          className="px-4 py-2.5 bg-primary-dark hover:bg-primary-hover border border-primary-active text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                           <span>View Result</span>
@@ -583,7 +583,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                         <button
                           id="target-test-practice-btn"
                           onClick={() => onStartTest(targetTest, 'practice')}
-                          className="px-4 py-2.5 bg-[#0e335f] hover:bg-[#134279] border border-[#1b4b87] text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                          className="px-4 py-2.5 bg-primary-dark hover:bg-primary-hover border border-primary-active text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
                         >
                           <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                           <span>Practice Mode</span>
@@ -604,7 +604,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       <button
                         id="target-test-practice-btn"
                         onClick={() => onStartTest(targetTest, 'practice')}
-                        className="px-4 py-2.5 bg-[#0e335f] hover:bg-[#134279] border border-[#1b4b87] text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                        className="px-4 py-2.5 bg-primary-dark hover:bg-primary-hover border border-primary-active text-white font-semibold text-xs rounded-xl transition-colors flex items-center justify-center gap-1.5"
                       >
                         <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                         <span>Practice Mode</span>
@@ -619,7 +619,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             {trackTest && (
               <div
                 id="sprint-track-card"
-                className="md:col-span-5 bg-white rounded-2xl p-6 border border-slate-200 shadow-xs flex flex-col justify-between min-h-[220px] relative overflow-hidden group hover:border-slate-300 transition-all"
+                className="md:col-span-5 bg-surface rounded-2xl p-6 border border-border shadow-xs flex flex-col justify-between min-h-[220px] relative overflow-hidden group hover:border-slate-300 transition-all"
               >
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
@@ -627,7 +627,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       className={`text-[10px] font-extrabold uppercase tracking-wider ${
                         sprintTrackSubtitle.includes('WEAKNESS')
                           ? 'text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200'
-                          : 'text-slate-500'
+                          : 'text-text-muted'
                       }`}
                     >
                       {sprintTrackSubtitle}
@@ -637,17 +637,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     </span>
                   </div>
 
-                  <h4 className="text-lg font-bold text-slate-900 group-hover:text-sky-700 transition-colors">
+                  <h4 className="text-lg font-bold text-text-primary group-hover:text-sky-700 transition-colors">
                     {trackTest.title}
                   </h4>
 
-                  <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-text-secondary line-clamp-2 leading-relaxed">
                     {sprintTrackReason || trackTest.description}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium">
+                  <div className="flex items-center gap-1.5 text-xs text-text-secondary font-medium">
                     <span className="px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-200 rounded font-bold text-[11px]">
                       {trackTest.difficulty}
                     </span>
@@ -655,7 +655,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   </div>
 
                   {trackTest.status === 'coming_soon' ? (
-                    <div className="px-3 py-1.5 bg-slate-100 text-slate-400 text-xs font-bold rounded-lg flex items-center gap-1.5 cursor-not-allowed">
+                    <div className="px-3 py-1.5 bg-surface-hover text-slate-400 text-xs font-bold rounded-lg flex items-center gap-1.5 cursor-not-allowed">
                       <Clock className="w-3.5 h-3.5" />
                       <span>Coming Soon</span>
                     </div>
@@ -676,19 +676,19 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           {/* Section 2: Review & Revision (Derived purely from real user weak questions) */}
           <div
             id="review-revision-section"
-            className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4"
+            className="bg-surface rounded-2xl p-6 border border-border shadow-xs space-y-4"
           >
             <div className="flex items-center justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-base font-bold text-slate-900">Review & Revision</h3>
+                  <h3 className="text-base font-bold text-text-primary">Review & Revision</h3>
                   {weakQuestions.length > 0 && (
                     <span className="px-2 py-0.5 bg-amber-500 text-white font-extrabold rounded-full text-xs">
                       {weakQuestions.length}
                     </span>
                   )}
                 </div>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-text-muted">
                   {weakQuestions.length > 0
                     ? 'Targeted practice opportunities based on your recent mistakes and bookmarked concepts.'
                     : 'Build your preparation by taking your first assessment.'}
@@ -716,19 +716,19 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     <div
                       key={`weak_${item.question.id}_${idx}`}
                       onClick={() => targetTest && onStartTest(targetTest, 'practice')}
-                      className="bg-slate-50 hover:bg-white p-4 rounded-xl border border-slate-200 hover:border-amber-400/80 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between min-h-[110px] group"
+                      className="bg-app-bg hover:bg-surface p-4 rounded-xl border border-border hover:border-amber-400/80 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between min-h-[110px] group"
                     >
                       <div className="space-y-1">
                         <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 group-hover:text-amber-600 transition-colors">
                           PRACTICE • #{idx + 1}
                         </span>
-                        <h5 className="text-xs font-bold text-slate-800 group-hover:text-slate-900 line-clamp-2">
+                        <h5 className="text-xs font-bold text-slate-800 group-hover:text-text-primary line-clamp-2">
                           {item.question.topic} ({item.timesFailed}x review)
                         </h5>
                       </div>
 
                       <div className="flex items-center justify-between text-[11px] text-sky-700 font-semibold pt-2">
-                        <span className="text-slate-400 group-hover:text-slate-600">
+                        <span className="text-slate-400 group-hover:text-text-secondary">
                           {item.question.difficulty}
                         </span>
                         <span className="group-hover:translate-x-0.5 transition-transform">
@@ -740,18 +740,18 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 })}
               </div>
             ) : (
-              <div className="py-8 px-4 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center space-y-3">
+              <div className="py-8 px-4 rounded-xl bg-app-bg border border-dashed border-border text-center space-y-3">
                 <BookOpen className="w-8 h-8 text-slate-300 mx-auto" />
                 <div className="space-y-1">
                   <h4 className="text-sm font-bold text-slate-800">No revision activity yet.</h4>
-                  <p className="text-xs text-slate-500 max-w-md mx-auto">
+                  <p className="text-xs text-text-muted max-w-md mx-auto">
                     Complete a test and your mistakes will automatically appear here for targeted
                     practice.
                   </p>
                 </div>
                 <button
                   onClick={() => onNavigateTab('tests')}
-                  className="px-4 py-2 bg-[#0b2545] hover:bg-[#133c6e] text-white text-xs font-bold rounded-xl shadow-xs transition-all inline-flex items-center gap-1.5"
+                  className="px-4 py-2 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl shadow-xs transition-all inline-flex items-center gap-1.5"
                 >
                   <span>Explore Practice Tests →</span>
                 </button>
@@ -764,7 +764,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-sky-700" />
-                <h3 className="text-base font-bold text-slate-900">
+                <h3 className="text-base font-bold text-text-primary">
                   Featured Placement Test Series
                 </h3>
               </div>
@@ -778,28 +778,28 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             </div>
 
             {/* List of Mock Test Items */}
-            <div className="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-xs overflow-hidden">
+            <div className="bg-surface rounded-2xl border border-border divide-y divide-slate-100 shadow-xs overflow-hidden">
               {featuredTests.map((test) => (
                 <div
                   key={test.id}
-                  className="p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-slate-50/80 transition-colors group"
+                  className="p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-app-bg/80 transition-colors group"
                 >
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-slate-100 group-hover:bg-amber-100/60 border border-slate-200 group-hover:border-amber-300 flex items-center justify-center text-slate-700 group-hover:text-amber-900 font-bold text-xs transition-colors shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-surface-hover group-hover:bg-amber-100/60 border border-border group-hover:border-amber-300 flex items-center justify-center text-slate-700 group-hover:text-amber-900 font-bold text-xs transition-colors shrink-0">
                       {test.companyId ? test.companyId.slice(0, 3).toUpperCase() : 'APT'}
                     </div>
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4 className="text-sm font-bold text-slate-900 group-hover:text-sky-700 transition-colors truncate">
+                        <h4 className="text-sm font-bold text-text-primary group-hover:text-sky-700 transition-colors truncate">
                           {test.title}
                         </h4>
-                        <span className="hidden sm:inline-block px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-semibold">
+                        <span className="hidden sm:inline-block px-2 py-0.5 bg-surface-hover text-text-secondary rounded text-[10px] font-semibold">
                           {test.category}
                         </span>
                         {renderHistoryBadge(test.id)}
                       </div>
-                      <p className="text-xs text-slate-500 truncate max-w-md">
+                      <p className="text-xs text-text-muted truncate max-w-md">
                         {test.description}
                       </p>
                     </div>
@@ -812,7 +812,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     </div>
 
                     {test.status === 'coming_soon' ? (
-                      <div className="px-3.5 py-1.5 bg-slate-100 text-slate-400 font-bold text-xs rounded-lg flex items-center gap-1.5 cursor-not-allowed">
+                      <div className="px-3.5 py-1.5 bg-surface-hover text-slate-400 font-bold text-xs rounded-lg flex items-center gap-1.5 cursor-not-allowed">
                         <Clock className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">Coming Soon</span>
                       </div>
@@ -820,7 +820,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => onStartTest(test, 'practice')}
-                          className="px-3.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs rounded-lg transition-all"
+                          className="px-3.5 py-1.5 bg-surface hover:bg-app-bg border border-border text-slate-700 font-bold text-xs rounded-lg transition-all"
                         >
                           Practice
                         </button>
@@ -846,12 +846,12 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           {/* Card 1: My Placement Profile */}
           <div
             id="user-profile-card"
-            className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-5"
+            className="bg-surface rounded-2xl p-6 border border-border shadow-xs space-y-5"
           >
             <div className="flex items-center justify-between">
               <button
                 onClick={onOpenProfile}
-                className="group flex items-center gap-1 text-sm font-bold text-slate-900 hover:text-sky-700 transition-colors"
+                className="group flex items-center gap-1 text-sm font-bold text-text-primary hover:text-sky-700 transition-colors"
               >
                 <span>My Placement Profile</span>
                 <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
@@ -859,22 +859,22 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
               <button
                 onClick={onOpenProfile}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-800"
+                className="text-xs font-semibold text-text-muted hover:text-slate-800"
               >
                 Edit
               </button>
             </div>
 
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-full bg-[#0b2545] border-2 border-amber-400 text-white flex items-center justify-center font-extrabold text-xl shadow-sm shrink-0">
+              <div className="w-14 h-14 rounded-full bg-primary border-2 border-amber-400 text-white flex items-center justify-center font-extrabold text-xl shadow-sm shrink-0">
                 {initial}
               </div>
 
               <div className="space-y-0.5 min-w-0">
-                <h4 className="text-base font-extrabold text-slate-900 leading-tight truncate">
+                <h4 className="text-base font-extrabold text-text-primary leading-tight truncate">
                   {displayName}
                 </h4>
-                <p className="text-xs text-slate-500 truncate">
+                <p className="text-xs text-text-muted truncate">
                   {currentUser?.targetCompany
                     ? `Target: ${currentUser.targetCompany}${currentUser.targetRole ? ` • ${currentUser.targetRole}` : ''}`
                     : 'Target company not set'}
@@ -887,31 +887,31 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
             {/* Streak, Total XP & Overall Readiness metrics */}
             <div className="grid grid-cols-3 gap-2.5 pt-2 border-t border-slate-100">
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                <span className="text-[10px] font-semibold text-slate-500 block">Streak</span>
+              <div className="p-2.5 bg-app-bg rounded-xl border border-slate-100 text-center">
+                <span className="text-[10px] font-semibold text-text-muted block">Streak</span>
                 <div className="flex items-center justify-center gap-1 mt-1">
                   <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span className="text-sm font-extrabold text-slate-900">
+                  <span className="text-sm font-extrabold text-text-primary">
                     {streakDays}d
                   </span>
                 </div>
               </div>
 
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                <span className="text-[10px] font-semibold text-slate-500 block">Points</span>
+              <div className="p-2.5 bg-app-bg rounded-xl border border-slate-100 text-center">
+                <span className="text-[10px] font-semibold text-text-muted block">Points</span>
                 <div className="flex items-center justify-center gap-1 mt-1">
                   <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                  <span className="text-sm font-extrabold text-slate-900">
+                  <span className="text-sm font-extrabold text-text-primary">
                     {displayPoints} XP
                   </span>
                 </div>
               </div>
 
-              <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-center">
-                <span className="text-[10px] font-semibold text-slate-500 block">Readiness</span>
+              <div className="p-2.5 bg-app-bg rounded-xl border border-slate-100 text-center">
+                <span className="text-[10px] font-semibold text-text-muted block">Readiness</span>
                 <div className="flex items-center justify-center gap-1 mt-1">
                   <Target className="w-3.5 h-3.5 text-sky-600" />
-                  <span className="text-sm font-extrabold text-slate-900">
+                  <span className="text-sm font-extrabold text-text-primary">
                     {overallReadinessPercentage}%
                   </span>
                 </div>
@@ -922,12 +922,12 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           {/* Card 2: Leaderboard Home Card (Strictly conditional based on real activity) */}
           <div
             id="leaderboard-standing-card"
-            className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4 relative overflow-hidden"
+            className="bg-surface rounded-2xl p-6 border border-border shadow-xs space-y-4 relative overflow-hidden"
           >
             <div className="flex items-center justify-between">
               <button
                 onClick={() => onNavigateTab('leaderboard')}
-                className="group flex items-center gap-1 text-sm font-bold text-slate-900 hover:text-sky-700 transition-colors"
+                className="group flex items-center gap-1 text-sm font-bold text-text-primary hover:text-sky-700 transition-colors"
               >
                 <Trophy
                   className={`w-4 h-4 ${isUserEligibleForRank ? 'text-amber-500' : 'text-slate-400'}`}
@@ -940,7 +940,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 className={`px-2 py-0.5 text-[10px] font-extrabold uppercase rounded ${
                   isUserEligibleForRank
                     ? 'bg-emerald-50 border border-emerald-200 text-emerald-800'
-                    : 'bg-slate-100 text-slate-500'
+                    : 'bg-surface-hover text-text-muted'
                 }`}
               >
                 {isUserEligibleForRank ? `Rank #${userRank}` : 'Unranked'}
@@ -953,11 +953,11 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   🏆
                 </div>
 
-                <h4 className="text-base font-bold text-slate-900">
+                <h4 className="text-base font-bold text-text-primary">
                   You are Ranked #{userRank} on Campus Standing!
                 </h4>
 
-                <p className="text-xs text-slate-500 px-2 leading-relaxed">
+                <p className="text-xs text-text-muted px-2 leading-relaxed">
                   {outperformingPercentile
                     ? `Outperforming ${outperformingPercentile}% of active candidates across ${totalRankedCount} campus participant${
                         totalRankedCount > 1 ? 's' : ''
@@ -976,19 +976,19 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               </div>
             ) : (
               <div className="text-center py-3 space-y-2">
-                <div className="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 text-slate-400 flex items-center justify-center mx-auto shadow-inner">
+                <div className="w-12 h-12 rounded-full bg-surface-hover border border-border text-slate-400 flex items-center justify-center mx-auto shadow-inner">
                   <Trophy className="w-5 h-5 text-slate-400" />
                 </div>
 
-                <h4 className="text-base font-bold text-slate-900">Not Ranked Yet</h4>
+                <h4 className="text-base font-bold text-text-primary">Not Ranked Yet</h4>
 
-                <p className="text-xs text-slate-500 px-2 leading-relaxed max-w-xs mx-auto">
+                <p className="text-xs text-text-muted px-2 leading-relaxed max-w-xs mx-auto">
                   Complete an assessment to appear on the campus leaderboard.
                 </p>
 
                 <button
                   onClick={() => onNavigateTab('leaderboard')}
-                  className="w-full mt-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl shadow-xs transition-all"
+                  className="w-full mt-3 py-2.5 bg-surface-hover hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl shadow-xs transition-all"
                 >
                   View Full Leaderboard →
                 </button>
@@ -999,19 +999,19 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           {/* Card 3: Placement Journey */}
           <div
             id="placement-journey-card"
-            className="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-4"
+            className="bg-surface rounded-2xl p-6 border border-border shadow-xs space-y-4"
           >
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-text-muted">
                   Placement Journey
                 </h4>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-text-muted mt-0.5">
                   Track your progress from first assessment to placement readiness.
                 </p>
               </div>
 
-              <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 text-slate-700 text-[10px] font-extrabold rounded-full shrink-0">
+              <span className="px-2 py-0.5 bg-surface-hover border border-border text-slate-700 text-[10px] font-extrabold rounded-full shrink-0">
                 {journeyCompletedCount} / 5 Done
               </span>
             </div>
@@ -1024,7 +1024,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 className={`p-3 rounded-xl border transition-all ${
                   m1Complete
                     ? 'bg-emerald-50/50 border-emerald-200'
-                    : 'bg-slate-50/80 border-slate-200'
+                    : 'bg-app-bg/80 border-border'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1033,17 +1033,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
                         m1Complete
                           ? 'bg-emerald-500 text-white shadow-2xs'
-                          : 'bg-slate-200 text-slate-600'
+                          : 'bg-slate-200 text-text-secondary'
                       }`}
                     >
                       {m1Complete ? <Check className="w-3.5 h-3.5" /> : '1'}
                     </div>
 
                     <div className="min-w-0">
-                      <h5 className="text-xs font-bold text-slate-900 leading-tight">
+                      <h5 className="text-xs font-bold text-text-primary leading-tight">
                         First Assessment
                       </h5>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-text-muted mt-0.5">
                         {m1Complete
                           ? 'Completed'
                           : 'Complete your first mock assessment.'}
@@ -1068,7 +1068,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 className={`p-3 rounded-xl border transition-all ${
                   m2Complete
                     ? 'bg-emerald-50/50 border-emerald-200'
-                    : 'bg-slate-50/80 border-slate-200 opacity-80'
+                    : 'bg-app-bg/80 border-border opacity-80'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1077,17 +1077,17 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
                         m2Complete
                           ? 'bg-emerald-500 text-white shadow-2xs'
-                          : 'bg-slate-200 text-slate-600'
+                          : 'bg-slate-200 text-text-secondary'
                       }`}
                     >
                       {m2Complete ? <Check className="w-3.5 h-3.5" /> : '2'}
                     </div>
 
                     <div className="min-w-0">
-                      <h5 className="text-xs font-bold text-slate-900 leading-tight">
+                      <h5 className="text-xs font-bold text-text-primary leading-tight">
                         Performance Analysis
                       </h5>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-text-muted mt-0.5">
                         {m2Complete
                           ? 'Your first result is ready.'
                           : 'Complete an assessment to unlock performance analysis.'}
@@ -1114,7 +1114,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     ? 'bg-emerald-50/50 border-emerald-200'
                     : completedAssessmentsCount > 0
                     ? 'bg-sky-50/40 border-sky-200'
-                    : 'bg-slate-50/80 border-slate-200 opacity-80'
+                    : 'bg-app-bg/80 border-border opacity-80'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1125,7 +1125,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                           ? 'bg-emerald-500 text-white shadow-2xs'
                           : completedAssessmentsCount > 0
                           ? 'bg-sky-600 text-white'
-                          : 'bg-slate-200 text-slate-600'
+                          : 'bg-slate-200 text-text-secondary'
                       }`}
                     >
                       {m3Complete ? <Check className="w-3.5 h-3.5" /> : '3'}
@@ -1133,14 +1133,14 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h5 className="text-xs font-bold text-slate-900 leading-tight">
+                        <h5 className="text-xs font-bold text-text-primary leading-tight">
                           Build Your Practice Base
                         </h5>
-                        <span className="px-1.5 py-0.2 bg-slate-100 text-slate-600 text-[10px] font-bold rounded">
+                        <span className="px-1.5 py-0.2 bg-surface-hover text-text-secondary text-[10px] font-bold rounded">
                           {m3Progress} / 3
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-text-muted mt-0.5">
                         {m3Complete
                           ? '3 assessments completed.'
                           : 'Complete 3 assessments to establish benchmark accuracy.'}
@@ -1151,7 +1151,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   {!m3Complete && (
                     <button
                       onClick={() => onNavigateTab('tests')}
-                      className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg shrink-0 transition-all"
+                      className="px-2.5 py-1 bg-surface-hover hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg shrink-0 transition-all"
                     >
                       Explore
                     </button>
@@ -1167,7 +1167,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     ? 'bg-emerald-50/50 border-emerald-200'
                     : m4InProgress
                     ? 'bg-amber-50/40 border-amber-200'
-                    : 'bg-slate-50/80 border-slate-200 opacity-80'
+                    : 'bg-app-bg/80 border-border opacity-80'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1178,7 +1178,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                           ? 'bg-emerald-500 text-white shadow-2xs'
                           : m4InProgress
                           ? 'bg-amber-500 text-slate-950 font-extrabold'
-                          : 'bg-slate-200 text-slate-600'
+                          : 'bg-slate-200 text-text-secondary'
                       }`}
                     >
                       {m4Complete ? <Check className="w-3.5 h-3.5" /> : '4'}
@@ -1186,7 +1186,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h5 className="text-xs font-bold text-slate-900 leading-tight">
+                        <h5 className="text-xs font-bold text-text-primary leading-tight">
                           Master Weak Areas
                         </h5>
                         {hasWeakAreaEvidence && (
@@ -1195,7 +1195,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                           </span>
                         )}
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-text-muted mt-0.5">
                         {!hasWeakAreaEvidence
                           ? 'Complete assessments to identify areas to improve.'
                           : masteredWeakCount > 0
@@ -1215,7 +1215,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                   ) : (
                     <button
                       onClick={() => onNavigateTab('tests')}
-                      className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[11px] rounded-lg shrink-0 transition-all"
+                      className="px-2.5 py-1 bg-surface-hover hover:bg-slate-200 text-text-secondary font-bold text-[11px] rounded-lg shrink-0 transition-all"
                     >
                       Practice
                     </button>
@@ -1229,7 +1229,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                 className={`p-3 rounded-xl border transition-all ${
                   m5Complete
                     ? 'bg-emerald-50/70 border-emerald-200'
-                    : 'bg-slate-50/80 border-slate-200 opacity-80'
+                    : 'bg-app-bg/80 border-border opacity-80'
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
@@ -1238,7 +1238,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                       className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
                         m5Complete
                           ? 'bg-emerald-500 text-white shadow-2xs'
-                          : 'bg-slate-200 text-slate-600'
+                          : 'bg-slate-200 text-text-secondary'
                       }`}
                     >
                       {m5Complete ? <Check className="w-3.5 h-3.5" /> : '5'}
@@ -1246,20 +1246,20 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h5 className="text-xs font-bold text-slate-900 leading-tight">
+                        <h5 className="text-xs font-bold text-text-primary leading-tight">
                           Placement Ready
                         </h5>
                         <span
                           className={`px-1.5 py-0.2 text-[10px] font-bold rounded ${
                             m5Complete
                               ? 'bg-emerald-100 text-emerald-800'
-                              : 'bg-slate-100 text-slate-600'
+                              : 'bg-surface-hover text-text-secondary'
                           }`}
                         >
                           {overallReadinessPercentage}% / {placementReadinessTarget}%
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-500 mt-0.5">
+                      <p className="text-[11px] text-text-muted mt-0.5">
                         {m5Complete
                           ? 'Your preparation has reached the readiness target.'
                           : `Reach ${placementReadinessTarget}% overall readiness score.`}
@@ -1269,7 +1269,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
 
                   <button
                     onClick={onOpenProfile}
-                    className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg shrink-0 transition-all"
+                    className="px-2.5 py-1 bg-surface-hover hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg shrink-0 transition-all"
                   >
                     Status
                   </button>
@@ -1281,7 +1281,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
           {/* Card 4: Placement Toolkit */}
           <div
             id="placement-toolkit-card"
-            className="bg-[#0b2545] rounded-2xl p-5 text-white border border-[#143a69] space-y-3.5 shadow-xs"
+            className="bg-primary rounded-2xl p-5 text-white border border-primary-hover space-y-3.5 shadow-xs"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -1306,7 +1306,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             <button
               id="open-placement-toolkit-btn"
               onClick={onOpenScratchpad}
-              className="w-full py-2.5 bg-[#0e335f] hover:bg-[#134279] border border-[#1b4b87] text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 group shadow-xs"
+              className="w-full py-2.5 bg-primary-dark hover:bg-primary-hover border border-primary-active text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 group shadow-xs"
             >
               <Calculator className="w-3.5 h-3.5 text-amber-400 group-hover:scale-110 transition-transform" />
               <span>Open Toolkit</span>

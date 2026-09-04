@@ -435,7 +435,7 @@ export const TestHub: React.FC<TestHubProps> = ({
       case 'UNVERIFIED':
       default:
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-600 border border-slate-200">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-surface-hover text-text-secondary border border-border">
             Draft
           </span>
         );
@@ -467,7 +467,7 @@ export const TestHub: React.FC<TestHubProps> = ({
               setSelectedCategory('categories');
               handleResetFilters();
             }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0b2545] p-1 -ml-1 rounded-lg hover:bg-slate-100 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-primary p-1 -ml-1 rounded-lg hover:bg-surface-hover transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>All Categories</span>
@@ -476,12 +476,12 @@ export const TestHub: React.FC<TestHubProps> = ({
 
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 font-['Outfit'] tracking-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-text-primary font-['Outfit'] tracking-tight">
               {selectedCategory === 'categories'
                 ? 'Explore Tests'
                 : CATEGORIES_CONFIG[selectedCategory].title}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 max-w-2xl mt-0.5">
+            <p className="text-xs sm:text-sm text-text-muted max-w-2xl mt-0.5">
               {selectedCategory === 'categories'
                 ? 'Build skills, practice technical concepts, and simulate real placement assessments.'
                 : CATEGORIES_CONFIG[selectedCategory].description}
@@ -492,7 +492,7 @@ export const TestHub: React.FC<TestHubProps> = ({
           <div className="self-start sm:self-auto flex items-center gap-2">
             <span
               id="catalogue-real-count-badge"
-              className="text-[11px] sm:text-xs font-bold px-3 py-1 bg-slate-100 border border-slate-200/90 text-slate-700 rounded-full shadow-2xs"
+              className="text-[11px] sm:text-xs font-bold px-3 py-1 bg-surface-hover border border-border/90 text-slate-700 rounded-full shadow-2xs"
             >
               {selectedCategory === 'categories'
                 ? `${categoryCounts.total} Available Tests`
@@ -507,7 +507,7 @@ export const TestHub: React.FC<TestHubProps> = ({
       {/* ========================================================= */}
       <div
         id="explore-tests-search-container"
-        className="bg-white rounded-2xl p-3.5 sm:p-4 border border-slate-200/90 shadow-2xs space-y-3"
+        className="bg-surface rounded-2xl p-3.5 sm:p-4 border border-border/90 shadow-2xs space-y-3"
       >
         <div className="relative w-full">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -517,14 +517,14 @@ export const TestHub: React.FC<TestHubProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search test name, company, topic, skill, role, technology (e.g. TCS, Infosys, SQL, DSA, Time & Work)..."
-            className="w-full h-11 sm:h-11 pl-10 pr-10 bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0b2545] focus:ring-1 focus:ring-[#0b2545] transition-all shadow-2xs"
+            className="w-full h-11 sm:h-11 pl-10 pr-10 bg-app-bg hover:bg-surface focus:bg-surface border border-border rounded-xl text-xs sm:text-sm text-text-primary placeholder-slate-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-2xs"
           />
           {searchQuery && (
             <button
               id="clear-catalogue-search-btn"
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-700 hover:bg-surface-hover transition-colors"
               title="Clear search query"
             >
               <X className="w-4 h-4" />
@@ -539,8 +539,8 @@ export const TestHub: React.FC<TestHubProps> = ({
             onClick={() => setSelectedCategory('categories')}
             className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
               selectedCategory === 'categories'
-                ? 'bg-[#0b2545] text-white shadow-xs'
-                : 'bg-slate-100 hover:bg-slate-200/70 text-slate-700 border border-slate-200/60'
+                ? 'bg-primary text-white shadow-xs'
+                : 'bg-surface-hover hover:bg-slate-200/70 text-slate-700 border border-border/60'
             }`}
           >
             All Categories
@@ -557,8 +557,8 @@ export const TestHub: React.FC<TestHubProps> = ({
                 onClick={() => setSelectedCategory(catKey)}
                 className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all flex items-center gap-2 ${
                   isSelected
-                    ? 'bg-[#0b2545] text-white shadow-xs'
-                    : 'bg-slate-100 hover:bg-slate-200/70 text-slate-700 border border-slate-200/60'
+                    ? 'bg-primary text-white shadow-xs'
+                    : 'bg-surface-hover hover:bg-slate-200/70 text-slate-700 border border-border/60'
                 }`}
               >
                 <span>{meta.shortTitle}</span>
@@ -566,7 +566,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                   className={`text-[10px] px-1.5 py-0.2 rounded font-extrabold ${
                     isSelected
                       ? 'bg-amber-400 text-slate-950'
-                      : 'bg-white text-slate-600 border border-slate-200'
+                      : 'bg-surface text-text-secondary border border-border'
                   }`}
                 >
                   {count > 0 ? count : 'Soon'}
@@ -586,7 +586,7 @@ export const TestHub: React.FC<TestHubProps> = ({
             {/* CATEGORY 1: FOUNDATION & SECTIONAL */}
             <div
               id="category-card-foundation"
-              className="bg-white border border-slate-200/90 hover:border-blue-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
+              className="bg-surface border border-border/90 hover:border-blue-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
@@ -598,14 +598,14 @@ export const TestHub: React.FC<TestHubProps> = ({
                       {categoryCounts.foundation} Tests
                     </span>
                   ) : (
-                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-surface-hover text-text-secondary border border-border">
                       Coming soon
                     </span>
                   )}
                 </div>
 
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-slate-900 group-hover:text-blue-900 transition-colors">
+                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-text-primary group-hover:text-blue-900 transition-colors">
                     FOUNDATION & SECTIONAL
                   </h3>
                   <p className="text-xs font-semibold text-blue-700 mt-0.5">
@@ -613,18 +613,18 @@ export const TestHub: React.FC<TestHubProps> = ({
                   </p>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                   Short focused assessments that help students build individual placement skills.
                   Build core fundamentals before attempting full mocks.
                 </p>
 
                 {/* Scope & Duration note */}
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-xl space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                <div className="p-3 bg-app-bg border border-slate-150 rounded-xl space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-text-muted font-bold">
                     <span>Typical Duration:</span>
                     <span className="text-slate-800 font-extrabold">10–30 minutes</span>
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-text-muted">
                     <span className="font-semibold text-slate-700">Planned Focus:</span> Quant, Logical, Verbal, Pseudocode, Data Interpretation
                   </div>
                 </div>
@@ -634,7 +634,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                 <button
                   id="view-foundation-tests-btn"
                   onClick={() => setSelectedCategory('foundation')}
-                  className="w-full min-h-[44px] py-2.5 px-4 bg-[#0b2545] hover:bg-[#123663] active:bg-[#18457d] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
+                  className="w-full min-h-[44px] py-2.5 px-4 bg-primary hover:bg-primary-hover active:bg-primary-active text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
                 >
                   <span>View Tests</span>
                   <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
@@ -645,7 +645,7 @@ export const TestHub: React.FC<TestHubProps> = ({
             {/* CATEGORY 2: COMPANY-SPECIFIC MOCKS */}
             <div
               id="category-card-company"
-              className="bg-white border border-slate-200/90 hover:border-purple-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
+              className="bg-surface border border-border/90 hover:border-purple-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
@@ -657,14 +657,14 @@ export const TestHub: React.FC<TestHubProps> = ({
                       {categoryCounts.company} Tests
                     </span>
                   ) : (
-                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-surface-hover text-text-secondary border border-border">
                       Coming soon
                     </span>
                   )}
                 </div>
 
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-slate-900 group-hover:text-purple-900 transition-colors">
+                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-text-primary group-hover:text-purple-900 transition-colors">
                     COMPANY-SPECIFIC MOCKS
                   </h3>
                   <p className="text-xs font-semibold text-purple-700 mt-0.5">
@@ -672,18 +672,18 @@ export const TestHub: React.FC<TestHubProps> = ({
                   </p>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                   Realistic placement assessments based on researched and verified company
                   assessment patterns (TCS, Infosys, Accenture, Wipro, Cognizant).
                 </p>
 
                 {/* Scope & Duration note */}
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-xl space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                <div className="p-3 bg-app-bg border border-slate-150 rounded-xl space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-text-muted font-bold">
                     <span>Pattern Status:</span>
                     <span className="text-purple-800 font-extrabold">Research & Verification</span>
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-text-muted">
                     <span className="font-semibold text-slate-700">Planned Companies:</span> TCS NQT, Infosys, Accenture, Wipro, Cognizant
                   </div>
                 </div>
@@ -693,7 +693,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                 <button
                   id="view-company-mocks-btn"
                   onClick={() => setSelectedCategory('company')}
-                  className="w-full min-h-[44px] py-2.5 px-4 bg-[#0b2545] hover:bg-[#123663] active:bg-[#18457d] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
+                  className="w-full min-h-[44px] py-2.5 px-4 bg-primary hover:bg-primary-hover active:bg-primary-active text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
                 >
                   <span>View Tests</span>
                   <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
@@ -704,7 +704,7 @@ export const TestHub: React.FC<TestHubProps> = ({
             {/* CATEGORY 3: CODING & TECHNICAL */}
             <div
               id="category-card-coding"
-              className="bg-white border border-slate-200/90 hover:border-emerald-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
+              className="bg-surface border border-border/90 hover:border-emerald-300 rounded-2xl p-5 sm:p-6 shadow-xs flex flex-col justify-between transition-all group"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
@@ -716,14 +716,14 @@ export const TestHub: React.FC<TestHubProps> = ({
                       {categoryCounts.coding} Tests
                     </span>
                   ) : (
-                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
+                    <span className="text-[11px] font-extrabold px-2.5 py-1 rounded-full bg-surface-hover text-text-secondary border border-border">
                       Coming soon
                     </span>
                   )}
                 </div>
 
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-slate-900 group-hover:text-emerald-900 transition-colors">
+                  <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-text-primary group-hover:text-emerald-900 transition-colors">
                     CODING & TECHNICAL
                   </h3>
                   <p className="text-xs font-semibold text-emerald-700 mt-0.5">
@@ -731,18 +731,18 @@ export const TestHub: React.FC<TestHubProps> = ({
                   </p>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-secondary leading-relaxed">
                   Technical problem-solving and coding preparation: DSA concepts, SQL querying,
                   programming logic, output prediction, and CS fundamentals.
                 </p>
 
                 {/* Scope & Duration note */}
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-xl space-y-1.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold">
+                <div className="p-3 bg-app-bg border border-slate-150 rounded-xl space-y-1.5">
+                  <div className="flex items-center justify-between text-[11px] text-text-muted font-bold">
                     <span>Technical Tracks:</span>
                     <span className="text-emerald-800 font-extrabold">DSA, SQL & Core CS</span>
                   </div>
-                  <div className="text-[11px] text-slate-500">
+                  <div className="text-[11px] text-text-muted">
                     <span className="font-semibold text-slate-700">Planned Topics:</span> DSA, SQL, C, C++, Java, Python, Pseudocode
                   </div>
                 </div>
@@ -752,7 +752,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                 <button
                   id="view-coding-tests-btn"
                   onClick={() => setSelectedCategory('coding')}
-                  className="w-full min-h-[44px] py-2.5 px-4 bg-[#0b2545] hover:bg-[#123663] active:bg-[#18457d] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
+                  className="w-full min-h-[44px] py-2.5 px-4 bg-primary hover:bg-primary-hover active:bg-primary-active text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 group/btn"
                 >
                   <span>View Tests</span>
                   <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
@@ -800,10 +800,10 @@ export const TestHub: React.FC<TestHubProps> = ({
                   <div
                     key={test.id}
                     id={`test-card-${test.id}`}
-                    className={`bg-white rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4 border transition-colors ${
+                    className={`bg-surface rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4 border transition-colors ${
                       isComingSoon
-                        ? 'border-slate-200/70 opacity-90'
-                        : 'border-slate-200/90 hover:border-slate-300'
+                        ? 'border-border/70 opacity-90'
+                        : 'border-border/90 hover:border-slate-300'
                     }`}
                   >
                     <div className="space-y-2.5">
@@ -811,7 +811,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                         <div className="flex items-center gap-2 flex-wrap">
                           {/* Coming Soon pill replaces the verification badge for blueprint tests */}
                           {isComingSoon ? (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-500 border border-slate-200">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-surface-hover text-text-muted border border-border">
                               <Layers className="w-3 h-3" />
                               Coming Soon
                             </span>
@@ -835,22 +835,22 @@ export const TestHub: React.FC<TestHubProps> = ({
                               return <span className="inline-block px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[10px] font-bold border border-amber-200 tracking-wider">In Progress</span>;
                             }
                             if (h.status === 'VISITED') {
-                              return <span className="inline-block px-2 py-0.5 bg-slate-100 text-slate-500 rounded text-[10px] font-bold border border-slate-200 tracking-wider">Visited</span>;
+                              return <span className="inline-block px-2 py-0.5 bg-surface-hover text-text-muted rounded text-[10px] font-bold border border-border tracking-wider">Visited</span>;
                             }
                             return null;
                           })()}
                         </div>
-                        <span className="text-xs font-bold text-slate-500 flex items-center gap-1 shrink-0">
+                        <span className="text-xs font-bold text-text-muted flex items-center gap-1 shrink-0">
                           <Clock className="w-3.5 h-3.5" />
                           {test.durationMinutes || test.duration || 0}m
                         </span>
                       </div>
 
-                      <h4 className="text-sm sm:text-base font-bold text-slate-900 leading-snug">
+                      <h4 className="text-sm sm:text-base font-bold text-text-primary leading-snug">
                         {test.title}
                       </h4>
 
-                      <p className="text-xs text-slate-600 line-clamp-2">
+                      <p className="text-xs text-text-secondary line-clamp-2">
                         {test.description}
                       </p>
 
@@ -864,7 +864,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                         {test.topics?.slice(0, 3).map((top) => (
                           <span
                             key={top}
-                            className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200"
+                            className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-surface-hover text-slate-700 border border-border"
                           >
                             {top}
                           </span>
@@ -881,7 +881,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                     </div>
 
                     <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
-                      <span className="text-xs text-slate-500 font-semibold">
+                      <span className="text-xs text-text-muted font-semibold">
                         {isComingSoon
                           ? `Planned: ${test.totalQuestions || test.questionCount || 0} Qs`
                           : `${test.totalQuestions || test.questionCount || 0} Questions`}
@@ -892,7 +892,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                           id={`coming-soon-btn-${test.id}`}
                           disabled
                           title="Questions are being prepared for this test"
-                          className="min-h-[38px] px-3.5 py-1.5 bg-slate-100 text-slate-400 text-xs font-bold rounded-xl border border-slate-200 cursor-not-allowed flex items-center gap-1.5"
+                          className="min-h-[38px] px-3.5 py-1.5 bg-surface-hover text-slate-400 text-xs font-bold rounded-xl border border-border cursor-not-allowed flex items-center gap-1.5"
                         >
                           <Layers className="w-3.5 h-3.5" />
                           <span>Questions Pending</span>
@@ -903,14 +903,14 @@ export const TestHub: React.FC<TestHubProps> = ({
                           <button
                             id={`practice-btn-${test.id}`}
                             onClick={() => onStartTest(test, 'practice')}
-                            className="min-h-[38px] px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition-colors flex items-center gap-1.5"
+                            className="min-h-[38px] px-3.5 py-1.5 bg-surface hover:bg-app-bg text-slate-700 text-xs font-bold rounded-xl border border-border transition-colors flex items-center gap-1.5"
                           >
                             <span>Practice</span>
                           </button>
                           <button
                             id={`start-test-btn-${test.id}`}
                             onClick={() => onStartTest(test, 'exam')}
-                            className="min-h-[38px] px-3.5 py-1.5 bg-[#0b2545] hover:bg-[#123663] text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                            className="min-h-[38px] px-3.5 py-1.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
                           >
                             <Play className="w-3.5 h-3.5 fill-white" />
                             <span>Start Test</span>
@@ -929,9 +929,9 @@ export const TestHub: React.FC<TestHubProps> = ({
             /* ========================================================= */
             <div
               id="category-empty-state"
-              className="bg-white border border-slate-200/90 rounded-2xl p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-2xs space-y-4"
+              className="bg-surface border border-border/90 rounded-2xl p-8 sm:p-12 text-center max-w-2xl mx-auto shadow-2xs space-y-4"
             >
-              <div className="w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 text-slate-500 flex items-center justify-center mx-auto shadow-2xs">
+              <div className="w-14 h-14 rounded-2xl bg-surface-hover border border-border text-text-muted flex items-center justify-center mx-auto shadow-2xs">
                 {searchQuery.trim() ? (
                   <Search className="w-7 h-7 text-slate-400" />
                 ) : selectedCategory === 'company' ? (
@@ -944,14 +944,14 @@ export const TestHub: React.FC<TestHubProps> = ({
               </div>
 
               <div className="space-y-1.5">
-                <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-slate-900">
+                <h3 className="text-base sm:text-lg font-bold font-['Outfit'] text-text-primary">
                   {searchQuery.trim()
                     ? `No assessments found for "${searchQuery}"`
                     : selectedCategory !== 'categories'
                     ? CATEGORIES_CONFIG[selectedCategory].emptyTitle
                     : 'No assessments available'}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                <p className="text-xs sm:text-sm text-text-secondary max-w-md mx-auto leading-relaxed">
                   {searchQuery.trim()
                     ? 'Try searching by company name, skill, topic, or role, or clear your search to explore all categories.'
                     : selectedCategory !== 'categories'
@@ -969,7 +969,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                       setSearchQuery('');
                       handleResetFilters();
                     }}
-                    className="min-h-[44px] px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl border border-slate-200 transition-colors"
+                    className="min-h-[44px] px-5 py-2.5 bg-surface-hover hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl border border-border transition-colors"
                   >
                     Clear Search
                   </button>
@@ -978,14 +978,14 @@ export const TestHub: React.FC<TestHubProps> = ({
                     <button
                       id="explore-foundation-tests-action-btn"
                       onClick={() => setSelectedCategory('foundation')}
-                      className="min-h-[44px] px-5 py-2.5 bg-[#0b2545] hover:bg-[#123663] text-white text-xs font-bold rounded-xl shadow-xs transition-colors"
+                      className="min-h-[44px] px-5 py-2.5 bg-primary hover:bg-primary-hover text-white text-xs font-bold rounded-xl shadow-xs transition-colors"
                     >
                       Explore Foundation Tests
                     </button>
                     <button
                       id="return-all-categories-btn"
                       onClick={() => setSelectedCategory('categories')}
-                      className="min-h-[44px] px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition-colors"
+                      className="min-h-[44px] px-4 py-2.5 bg-surface-hover hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-border transition-colors"
                     >
                       All Categories
                     </button>
@@ -994,7 +994,7 @@ export const TestHub: React.FC<TestHubProps> = ({
                   <button
                     id="return-all-categories-btn-2"
                     onClick={() => setSelectedCategory('categories')}
-                    className="min-h-[44px] px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-slate-200 transition-colors"
+                    className="min-h-[44px] px-5 py-2.5 bg-surface-hover hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl border border-border transition-colors"
                   >
                     Return to Categories
                   </button>

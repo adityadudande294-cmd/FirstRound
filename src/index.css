@@ -3,8 +3,15 @@
 @theme {
   --color-primary: var(--theme-color-primary);
   --color-primary-hover: var(--theme-color-primary-hover);
+  --color-primary-active: var(--theme-color-primary-active);
+  --color-primary-dark: var(--theme-color-primary-dark);
+  --color-primary-border: var(--theme-color-primary-border);
   --color-secondary: var(--theme-color-secondary);
   --color-accent: var(--theme-color-accent);
+  
+  --color-gradient-start: var(--theme-gradient-start);
+  --color-gradient-mid: var(--theme-gradient-mid);
+  --color-gradient-end: var(--theme-gradient-end);
   
   --color-app-bg: var(--theme-color-app-bg);
   --color-surface: var(--theme-color-surface);
@@ -26,76 +33,83 @@
   --color-warning-bg: var(--theme-color-warning-bg);
   --color-info: var(--theme-color-info);
   --color-info-bg: var(--theme-color-info-bg);
-  
-  /* Important Hardcoded Colors Discovered */
-  --color-raw-primary: var(--theme-raw-primary);
-  --color-raw-primary-dark: var(--theme-raw-primary-dark);
 }
 
-:root,
-[data-theme="classic"] {
-  /* Provided core colors */
-  --theme-color-primary: #003057;
-  --theme-color-primary-hover: #0a2542;
-  --theme-color-secondary: #3781C2;
-  --theme-color-accent: #FFC412;
-  
-  --theme-color-app-bg: #F4F7F6;
-  --theme-color-surface: #FFFFFF;
-  --theme-color-surface-hover: #F8FAFC;
-  
-  --theme-color-text-primary: #00223E;
-  --theme-color-text-secondary: #334155;
-  --theme-color-text-muted: #64748B;
-  --theme-color-text-inverse: #FFFFFF;
-  
-  --theme-color-border: #E2E8F0;
-  --theme-color-border-strong: #CBD5E1;
-  
-  --theme-color-success: #10B981;
-  --theme-color-success-bg: #D1FAE5;
-  --theme-color-danger: #EF4444;
-  --theme-color-danger-bg: #FEE2E2;
-  --theme-color-warning: #FEF3C7;
-  --theme-color-warning-bg: #FFFBEB;
-  --theme-color-info: #3B82F6;
-  --theme-color-info-bg: #DBEAFE;
-  
-  /* Frequently used hardcoded app colors */
-  --theme-raw-primary: #0b2545;
-  --theme-raw-primary-dark: #081b33;
-}
+@layer base {
+  :root,
+  [data-theme="classic"] {
+    /* Classic Theme - Preserves exact original hex codes for 0% visual regression */
+    --theme-color-primary: #0b2545;
+    --theme-color-primary-hover: #123663;
+    --theme-color-primary-active: #18457d;
+    --theme-color-primary-dark: #081b33;
+    --theme-color-primary-border: #143a69;
+    
+    --theme-color-secondary: #3781C2;
+    --theme-color-accent: #FFC412;
+    
+    --theme-gradient-start: #0d3461;
+    --theme-gradient-mid: #0b2b52;
+    --theme-gradient-end: #071f3d;
+    
+    --theme-color-app-bg: #f8fafc;
+    --theme-color-surface: #FFFFFF;
+    --theme-color-surface-hover: #F8FAFC;
+    
+    --theme-color-text-primary: #0f172a;
+    --theme-color-text-secondary: #334155;
+    --theme-color-text-muted: #64748B;
+    --theme-color-text-inverse: #FFFFFF;
+    
+    --theme-color-border: #E2E8F0;
+    --theme-color-border-strong: #CBD5E1;
+    
+    --theme-color-success: #10B981;
+    --theme-color-success-bg: #D1FAE5;
+    --theme-color-danger: #EF4444;
+    --theme-color-danger-bg: #FEE2E2;
+    --theme-color-warning: #FEF3C7;
+    --theme-color-warning-bg: #FFFBEB;
+    --theme-color-info: #3B82F6;
+    --theme-color-info-bg: #DBEAFE;
+  }
 
-[data-theme="new"] {
-  /* Temporary inheritance of classic values */
-  --theme-color-primary: #003057;
-  --theme-color-primary-hover: #0a2542;
-  --theme-color-secondary: #3781C2;
-  --theme-color-accent: #FFC412;
-  
-  --theme-color-app-bg: #F4F7F6;
-  --theme-color-surface: #FFFFFF;
-  --theme-color-surface-hover: #F8FAFC;
-  
-  --theme-color-text-primary: #00223E;
-  --theme-color-text-secondary: #334155;
-  --theme-color-text-muted: #64748B;
-  --theme-color-text-inverse: #FFFFFF;
-  
-  --theme-color-border: #E2E8F0;
-  --theme-color-border-strong: #CBD5E1;
-  
-  --theme-color-success: #10B981;
-  --theme-color-success-bg: #D1FAE5;
-  --theme-color-danger: #EF4444;
-  --theme-color-danger-bg: #FEE2E2;
-  --theme-color-warning: #FEF3C7;
-  --theme-color-warning-bg: #FFFBEB;
-  --theme-color-info: #3B82F6;
-  --theme-color-info-bg: #DBEAFE;
-  
-  --theme-raw-primary: #0b2545;
-  --theme-raw-primary-dark: #081b33;
+  [data-theme="new"] {
+    /* New Team Palette */
+    --theme-color-primary: #003057;
+    --theme-color-primary-hover: #00427a;
+    --theme-color-primary-active: #00223e;
+    --theme-color-primary-dark: #001a30;
+    --theme-color-primary-border: #00223e;
+    
+    --theme-color-secondary: #3781C2;
+    --theme-color-accent: #FFC412;
+    
+    --theme-gradient-start: #003057;
+    --theme-gradient-mid: #00223e;
+    --theme-gradient-end: #001426;
+    
+    --theme-color-app-bg: #F4F7F6;
+    --theme-color-surface: #FFFFFF;
+    --theme-color-surface-hover: #F8FAFC;
+    
+    --theme-color-text-primary: #00223E;
+    --theme-color-text-secondary: #334155;
+    --theme-color-text-muted: #64748B;
+    --theme-color-text-inverse: #FFFFFF;
+    
+    --theme-color-border: #E2E8F0;
+    --theme-color-border-strong: #CBD5E1;
+    
+    --theme-color-success: #10B981;
+    --theme-color-success-bg: #D1FAE5;
+    --theme-color-danger: #EF4444;
+    --theme-color-danger-bg: #FEE2E2;
+    --theme-color-warning: #FEF3C7;
+    --theme-color-warning-bg: #FFFBEB;
+    --theme-color-info: #3B82F6;
+    --theme-color-info-bg: #DBEAFE;
+  }
 }
 
 

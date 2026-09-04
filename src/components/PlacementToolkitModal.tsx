@@ -357,10 +357,10 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
     >
       <div
         id="placement-toolkit-modal"
-        className="bg-white border border-slate-200 w-full max-w-3xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-slate-900"
+        className="bg-surface border border-border w-full max-w-3xl rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] text-text-primary"
       >
         {/* Header */}
-        <div className="px-5 py-4 bg-[#0b2545] text-white flex items-center justify-between shrink-0">
+        <div className="px-5 py-4 bg-primary text-white flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-bold">
               <Zap className="w-4 h-4 fill-slate-950" />
@@ -382,22 +382,22 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
             id="toolkit-close-btn"
             onClick={onClose}
             aria-label="Close Toolkit"
-            className="p-1.5 text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors"
+            className="p-1.5 text-slate-300 hover:text-white hover:bg-surface/10 rounded-xl transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="px-5 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2 overflow-x-auto shrink-0">
+        <div className="px-5 py-2.5 bg-app-bg border-b border-border flex items-center justify-between gap-2 overflow-x-auto shrink-0">
           <div className="flex items-center gap-1.5 p-1 bg-slate-200/80 rounded-xl">
             <button
               id="toolkit-tab-notes"
               onClick={() => setActiveTab('notes')}
               className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
                 activeTab === 'notes'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text-primary shadow-xs'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               <FileText className="w-3.5 h-3.5 text-amber-600" />
@@ -409,8 +409,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
               onClick={() => setActiveTab('formulas')}
               className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
                 activeTab === 'formulas'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text-primary shadow-xs'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               <Sparkles className="w-3.5 h-3.5 text-sky-600" />
@@ -422,8 +422,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
               onClick={() => setActiveTab('solver')}
               className={`px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 ${
                 activeTab === 'solver'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900'
+                  ? 'bg-surface text-text-primary shadow-xs'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               <Calculator className="w-3.5 h-3.5 text-emerald-600" />
@@ -432,7 +432,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
           </div>
 
           {activeTestTitle && (
-            <span className="hidden sm:inline-block text-[11px] font-semibold text-slate-500 truncate max-w-xs">
+            <span className="hidden sm:inline-block text-[11px] font-semibold text-text-muted truncate max-w-xs">
               Context: {activeTestTitle}
             </span>
           )}
@@ -447,8 +447,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h4 className="text-sm font-bold text-slate-900">Placement Rough Sheet</h4>
-                  <p className="text-xs text-slate-500">
+                  <h4 className="text-sm font-bold text-text-primary">Placement Rough Sheet</h4>
+                  <p className="text-xs text-text-muted">
                     Auto-saved rough work scratchpad for calculations, test equations, and speed notes.
                   </p>
                 </div>
@@ -457,7 +457,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                   <button
                     onClick={handleCopyNotes}
                     disabled={!notes.trim()}
-                    className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 disabled:opacity-40 text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5"
+                    className="px-3 py-1.5 bg-surface-hover hover:bg-slate-200 text-slate-700 disabled:opacity-40 text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5"
                   >
                     {copiedNotes ? (
                       <>
@@ -489,7 +489,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Type your placement rough notes, equations, or calculations here...&#10;Example:&#10;Speed = 54 km/h = 15 m/s&#10;Time = 20 s&#10;Distance = 15 * 20 = 300 m"
-                  className="w-full h-72 sm:h-80 p-4 font-mono text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-amber-400 focus:bg-white resize-none leading-relaxed text-slate-800"
+                  className="w-full h-72 sm:h-80 p-4 font-mono text-xs sm:text-sm bg-app-bg border border-slate-300 rounded-2xl focus:outline-hidden focus:ring-2 focus:ring-amber-400 focus:bg-surface resize-none leading-relaxed text-slate-800"
                 />
               </div>
 
@@ -516,11 +516,11 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                     {recommendedFormulas.map((f) => (
                       <div
                         key={f.id}
-                        className="p-2.5 bg-white border border-amber-200/80 rounded-xl flex items-center justify-between gap-2 shadow-2xs"
+                        className="p-2.5 bg-surface border border-amber-200/80 rounded-xl flex items-center justify-between gap-2 shadow-2xs"
                       >
                         <div className="min-w-0">
-                          <p className="text-xs font-bold text-slate-900 truncate">{f.name}</p>
-                          <p className="text-[11px] font-mono text-slate-600 truncate">{f.equation}</p>
+                          <p className="text-xs font-bold text-text-primary truncate">{f.name}</p>
+                          <p className="text-[11px] font-mono text-text-secondary truncate">{f.equation}</p>
                         </div>
                         <button
                           onClick={() => handleCopyFormula(f)}
@@ -550,7 +550,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                     value={formulaSearchQuery}
                     onChange={(e) => setFormulaSearchQuery(e.target.value)}
                     placeholder="Search formula (e.g. speed, train, work, profit, bitwise, cryptarithm)..."
-                    className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-amber-400 focus:bg-white text-slate-900"
+                    className="w-full pl-9 pr-4 py-2 bg-app-bg border border-border rounded-xl text-xs focus:outline-hidden focus:ring-2 focus:ring-amber-400 focus:bg-surface text-text-primary"
                   />
                   {formulaSearchQuery && (
                     <button
@@ -562,15 +562,15 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                   )}
                 </div>
 
-                <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl shrink-0 overflow-x-auto">
+                <div className="flex items-center gap-1 p-1 bg-surface-hover rounded-xl shrink-0 overflow-x-auto">
                   {['All', 'Quantitative', 'Logical', 'Technical'].map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedFormulaCategory(cat)}
                       className={`px-3 py-1 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
                         selectedFormulaCategory === cat
-                          ? 'bg-white text-slate-900 shadow-2xs font-bold'
-                          : 'text-slate-600 hover:text-slate-900'
+                          ? 'bg-surface text-text-primary shadow-2xs font-bold'
+                          : 'text-text-secondary hover:text-text-primary'
                       }`}
                     >
                       {cat}
@@ -590,7 +590,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                       <button
                         key={rf.id}
                         onClick={() => handleCopyFormula(rf)}
-                        className="px-2.5 py-1 bg-slate-100 hover:bg-amber-100/80 border border-slate-200 hover:border-amber-300 rounded-lg text-xs font-medium text-slate-800 transition-colors flex items-center gap-1.5"
+                        className="px-2.5 py-1 bg-surface-hover hover:bg-amber-100/80 border border-border hover:border-amber-300 rounded-lg text-xs font-medium text-slate-800 transition-colors flex items-center gap-1.5"
                       >
                         <Clock className="w-3 h-3 text-slate-400" />
                         <span>{rf.name}</span>
@@ -606,7 +606,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
               {/* Formulas Cards Grid */}
               <div className="space-y-2.5">
                 {filteredFormulas.length === 0 ? (
-                  <div className="p-8 text-center bg-slate-50 rounded-2xl border border-slate-200">
+                  <div className="p-8 text-center bg-app-bg rounded-2xl border border-border">
                     <p className="text-xs font-bold text-slate-700">No matching formulas found.</p>
                     <p className="text-[11px] text-slate-400 mt-1">
                       Try searching another topic like "work", "train", "si", "percentage", or "oop".
@@ -616,13 +616,13 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                   filteredFormulas.map((formula) => (
                     <div
                       key={formula.id}
-                      className="p-3.5 bg-white border border-slate-200 rounded-2xl hover:border-slate-300 transition-all shadow-2xs space-y-2 group"
+                      className="p-3.5 bg-surface border border-border rounded-2xl hover:border-slate-300 transition-all shadow-2xs space-y-2 group"
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-extrabold text-slate-900">{formula.name}</span>
-                            <span className="px-2 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-semibold rounded">
+                            <span className="text-xs font-extrabold text-text-primary">{formula.name}</span>
+                            <span className="px-2 py-0.5 bg-surface-hover text-text-secondary text-[10px] font-semibold rounded">
                               {formula.topic}
                             </span>
                           </div>
@@ -631,7 +631,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         <button
                           onClick={() => handleCopyFormula(formula)}
                           aria-label={`Copy formula ${formula.name}`}
-                          className="px-3 py-1.5 bg-slate-100 hover:bg-amber-400 text-slate-800 hover:text-slate-950 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shrink-0"
+                          className="px-3 py-1.5 bg-surface-hover hover:bg-amber-400 text-slate-800 hover:text-slate-950 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shrink-0"
                         >
                           {copiedFormulaId === formula.id ? (
                             <>
@@ -647,12 +647,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         </button>
                       </div>
 
-                      <div className="p-2.5 bg-slate-50 border border-slate-100 rounded-xl font-mono text-xs text-sky-900 font-semibold select-all">
+                      <div className="p-2.5 bg-app-bg border border-slate-100 rounded-xl font-mono text-xs text-sky-900 font-semibold select-all">
                         {formula.equation}
                       </div>
 
                       {formula.explanation && (
-                        <p className="text-[11px] text-slate-500 leading-relaxed">
+                        <p className="text-[11px] text-text-muted leading-relaxed">
                           {formula.explanation}
                         </p>
                       )}
@@ -669,7 +669,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
           {activeTab === 'solver' && (
             <div className="space-y-4">
               {/* Category selector */}
-              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl overflow-x-auto shrink-0">
+              <div className="flex items-center gap-1.5 p-1 bg-surface-hover rounded-xl overflow-x-auto shrink-0">
                 {[
                   { id: 'speed', label: 'Speed & Distance' },
                   { id: 'percentage', label: 'Percentages' },
@@ -682,8 +682,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                     onClick={() => setSolverCategory(s.id as SolverCategory)}
                     className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
                       solverCategory === s.id
-                        ? 'bg-white text-slate-900 font-bold shadow-2xs'
-                        : 'text-slate-600 hover:text-slate-900'
+                        ? 'bg-surface text-text-primary font-bold shadow-2xs'
+                        : 'text-text-secondary hover:text-text-primary'
                     }`}
                   >
                     {s.label}
@@ -693,12 +693,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
               {/* 1. SPEED / DISTANCE / TIME */}
               {solverCategory === 'speed' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
-                  <div className="border-b border-slate-200 pb-2">
+                <div className="p-4 bg-app-bg border border-border rounded-2xl space-y-4">
+                  <div className="border-b border-border pb-2">
                     <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700">
                       Speed / Distance / Time Solver
                     </h4>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-text-muted">
                       Enter any TWO values to calculate the missing third value with automatic unit conversion.
                     </p>
                   </div>
@@ -713,12 +713,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                           value={sdtSpeed}
                           onChange={(e) => setSdtSpeed(e.target.value)}
                           placeholder="e.g. 54"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                          className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                         />
                         <select
                           value={sdtSpeedUnit}
                           onChange={(e) => setSdtSpeedUnit(e.target.value as any)}
-                          className="px-2 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
+                          className="px-2 py-2 bg-surface border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
                         >
                           <option value="kmh">km/h</option>
                           <option value="mps">m/s</option>
@@ -735,12 +735,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                           value={sdtDistance}
                           onChange={(e) => setSdtDistance(e.target.value)}
                           placeholder="e.g. 300"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                          className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                         />
                         <select
                           value={sdtDistanceUnit}
                           onChange={(e) => setSdtDistanceUnit(e.target.value as any)}
-                          className="px-2 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
+                          className="px-2 py-2 bg-surface border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
                         >
                           <option value="m">m</option>
                           <option value="km">km</option>
@@ -757,12 +757,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                           value={sdtTime}
                           onChange={(e) => setSdtTime(e.target.value)}
                           placeholder="e.g. 20"
-                          className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                          className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                         />
                         <select
                           value={sdtTimeUnit}
                           onChange={(e) => setSdtTimeUnit(e.target.value as any)}
-                          className="px-2 py-2 bg-white border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
+                          className="px-2 py-2 bg-surface border border-slate-300 rounded-xl text-xs font-semibold text-slate-700"
                         >
                           <option value="sec">sec</option>
                           <option value="min">min</option>
@@ -810,12 +810,12 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
               {/* 2. PERCENTAGES */}
               {solverCategory === 'percentage' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
-                  <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+                <div className="p-4 bg-app-bg border border-border rounded-2xl space-y-4">
+                  <div className="flex items-center gap-2 border-b border-border pb-2">
                     <button
                       onClick={() => setPercMode('of')}
                       className={`px-2.5 py-1 text-xs font-semibold rounded-lg ${
-                        percMode === 'of' ? 'bg-[#0b2545] text-white font-bold' : 'text-slate-600'
+                        percMode === 'of' ? 'bg-primary text-white font-bold' : 'text-text-secondary'
                       }`}
                     >
                       X% of Y
@@ -823,7 +823,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                     <button
                       onClick={() => setPercMode('is_what_perc')}
                       className={`px-2.5 py-1 text-xs font-semibold rounded-lg ${
-                        percMode === 'is_what_perc' ? 'bg-[#0b2545] text-white font-bold' : 'text-slate-600'
+                        percMode === 'is_what_perc' ? 'bg-primary text-white font-bold' : 'text-text-secondary'
                       }`}
                     >
                       X is what % of Y
@@ -831,7 +831,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                     <button
                       onClick={() => setPercMode('change')}
                       className={`px-2.5 py-1 text-xs font-semibold rounded-lg ${
-                        percMode === 'change' ? 'bg-[#0b2545] text-white font-bold' : 'text-slate-600'
+                        percMode === 'change' ? 'bg-primary text-white font-bold' : 'text-text-secondary'
                       }`}
                     >
                       % Change from X to Y
@@ -848,7 +848,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={percX}
                         onChange={(e) => setPercX(e.target.value)}
                         placeholder="e.g. 15"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
 
@@ -861,7 +861,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={percY}
                         onChange={(e) => setPercY(e.target.value)}
                         placeholder="e.g. 250"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
                   </div>
@@ -889,8 +889,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
               {/* 3. PROFIT & LOSS */}
               {solverCategory === 'profit' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-slate-200 pb-2">
+                <div className="p-4 bg-app-bg border border-border rounded-2xl space-y-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-border pb-2">
                     Profit & Loss Calculator
                   </h4>
 
@@ -902,7 +902,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={plCP}
                         onChange={(e) => setPlCP(e.target.value)}
                         placeholder="e.g. 450"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
 
@@ -913,7 +913,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={plSP}
                         onChange={(e) => setPlSP(e.target.value)}
                         placeholder="e.g. 540"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
                   </div>
@@ -941,8 +941,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
               {/* 4. TIME & WORK */}
               {solverCategory === 'work' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-slate-200 pb-2">
+                <div className="p-4 bg-app-bg border border-border rounded-2xl space-y-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-border pb-2">
                     Combined Time & Work (A + B)
                   </h4>
 
@@ -954,7 +954,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={twPersonA}
                         onChange={(e) => setTwPersonA(e.target.value)}
                         placeholder="e.g. 10"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
 
@@ -965,7 +965,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={twPersonB}
                         onChange={(e) => setTwPersonB(e.target.value)}
                         placeholder="e.g. 15"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
                   </div>
@@ -993,8 +993,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
               {/* 5. SIMPLE & COMPOUND INTEREST */}
               {solverCategory === 'interest' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-slate-200 pb-2">
+                <div className="p-4 bg-app-bg border border-border rounded-2xl space-y-4">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 border-b border-border pb-2">
                     Simple & Compound Interest
                   </h4>
 
@@ -1006,7 +1006,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={intP}
                         onChange={(e) => setIntP(e.target.value)}
                         placeholder="e.g. 10000"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
 
@@ -1017,7 +1017,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={intR}
                         onChange={(e) => setIntR(e.target.value)}
                         placeholder="e.g. 8"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
 
@@ -1028,7 +1028,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
                         value={intT}
                         onChange={(e) => setIntT(e.target.value)}
                         placeholder="e.g. 2"
-                        className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
+                        className="w-full px-3 py-2 bg-surface border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-amber-400 focus:outline-hidden"
                       />
                     </div>
                   </div>
@@ -1060,11 +1060,11 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="px-5 py-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 shrink-0">
+        <div className="px-5 py-3 bg-app-bg border-t border-border flex items-center justify-between text-xs text-text-muted shrink-0">
           <span>Press <kbd className="px-1.5 py-0.5 bg-slate-200 rounded text-[10px] font-mono font-bold text-slate-700">ESC</kbd> to close</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-[#0b2545] hover:bg-[#123663] text-white font-bold text-xs rounded-xl transition-colors"
+            className="px-4 py-1.5 bg-primary hover:bg-primary-hover text-white font-bold text-xs rounded-xl transition-colors"
           >
             Close Toolkit
           </button>

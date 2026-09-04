@@ -105,12 +105,12 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
     <div
       ref={panelRef}
       id="notification-center-dropdown"
-      className="fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96 max-w-[calc(100vw-1.5rem)] bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
+      className="fixed inset-x-3 top-16 sm:absolute sm:inset-x-auto sm:right-0 sm:top-auto sm:mt-2 sm:w-96 max-w-[calc(100vw-1.5rem)] bg-surface border border-border rounded-2xl shadow-xl z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150"
     >
       {/* Header */}
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+      <div className="px-4 py-3 bg-app-bg border-b border-slate-100 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h3 className="text-xs font-bold text-slate-900 tracking-tight">Notifications</h3>
+          <h3 className="text-xs font-bold text-text-primary tracking-tight">Notifications</h3>
           {unreadCount > 0 && (
             <span
               id="notification-unread-pill"
@@ -135,7 +135,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1 text-slate-400 hover:text-slate-600 rounded-md hover:bg-slate-100 transition-colors"
+            className="p-1 text-slate-400 hover:text-text-secondary rounded-md hover:bg-surface-hover transition-colors"
             aria-label="Close notifications"
           >
             <X className="w-3.5 h-3.5" />
@@ -147,11 +147,11 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
       <div className="max-h-[380px] overflow-y-auto divide-y divide-slate-100">
         {notifications.length === 0 ? (
           <div className="py-10 px-6 text-center space-y-2">
-            <div className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mx-auto">
+            <div className="w-10 h-10 rounded-full bg-surface-hover text-slate-400 flex items-center justify-center mx-auto">
               <Bell className="w-5 h-5" />
             </div>
             <p className="text-xs font-bold text-slate-800">You're all caught up.</p>
-            <p className="text-[11px] text-slate-500 max-w-xs mx-auto">
+            <p className="text-[11px] text-text-muted max-w-xs mx-auto">
               Important updates will appear here.
             </p>
           </div>
@@ -167,15 +167,15 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   onNotificationClick(notif);
                 }}
                 className={`p-3.5 transition-colors cursor-pointer flex items-start gap-3 group ${
-                  isRead ? 'bg-white hover:bg-slate-50/80 opacity-80 hover:opacity-100' : 'bg-amber-50/40 hover:bg-amber-50/80'
+                  isRead ? 'bg-surface hover:bg-app-bg/80 opacity-80 hover:opacity-100' : 'bg-amber-50/40 hover:bg-amber-50/80'
                 }`}
               >
                 {/* Icon Circle */}
                 <div
                   className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 border ${
                     isRead
-                      ? 'bg-slate-100 border-slate-200 text-slate-600'
-                      : 'bg-white border-amber-200 shadow-2xs'
+                      ? 'bg-surface-hover border-border text-text-secondary'
+                      : 'bg-surface border-amber-200 shadow-2xs'
                   }`}
                 >
                   {getTypeIcon(notif.type)}
@@ -186,7 +186,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                   <div className="flex items-center justify-between gap-1">
                     <h4
                       className={`text-xs font-bold truncate ${
-                        isRead ? 'text-slate-700' : 'text-slate-900 font-extrabold'
+                        isRead ? 'text-slate-700' : 'text-text-primary font-extrabold'
                       }`}
                     >
                       {notif.title}
@@ -196,7 +196,7 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
                     </span>
                   </div>
 
-                  <p className="text-[11px] text-slate-600 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] text-text-secondary line-clamp-2 leading-relaxed">
                     {notif.message}
                   </p>
 

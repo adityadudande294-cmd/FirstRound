@@ -67,7 +67,7 @@ export const AIDoubtDrawer: React.FC<AIDoubtDrawerProps> = ({
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/60 backdrop-blur-sm animate-in fade-in">
       <div className="w-full max-w-xl bg-white border-l border-slate-200 h-full flex flex-col shadow-2xl text-slate-900 animate-in slide-in-from-right duration-300">
         {/* Header */}
-        <div className="p-5 bg-[#0b2545] border-b border-[#081b33] text-white flex items-center justify-between">
+        <div className="p-5 bg-primary border-b border-primary-dark text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center shadow-md">
               <Bot className="w-5 h-5 text-slate-950" />
@@ -180,7 +180,7 @@ export const AIDoubtDrawer: React.FC<AIDoubtDrawerProps> = ({
             value={customQuestion}
             onChange={(e) => setCustomQuestion(e.target.value)}
             placeholder="Ask AI: e.g., 'Explain using LCM shortcut method'..."
-            className="flex-1 px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0b2545] transition-colors"
+            className="flex-1 px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-primary transition-colors"
           />
           <button
             type="submit"
