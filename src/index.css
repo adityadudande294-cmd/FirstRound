@@ -1,5 +1,104 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: var(--theme-color-primary);
+  --color-primary-hover: var(--theme-color-primary-hover);
+  --color-secondary: var(--theme-color-secondary);
+  --color-accent: var(--theme-color-accent);
+  
+  --color-app-bg: var(--theme-color-app-bg);
+  --color-surface: var(--theme-color-surface);
+  --color-surface-hover: var(--theme-color-surface-hover);
+  
+  --color-text-primary: var(--theme-color-text-primary);
+  --color-text-secondary: var(--theme-color-text-secondary);
+  --color-text-muted: var(--theme-color-text-muted);
+  --color-text-inverse: var(--theme-color-text-inverse);
+  
+  --color-border: var(--theme-color-border);
+  --color-border-strong: var(--theme-color-border-strong);
+  
+  --color-success: var(--theme-color-success);
+  --color-success-bg: var(--theme-color-success-bg);
+  --color-danger: var(--theme-color-danger);
+  --color-danger-bg: var(--theme-color-danger-bg);
+  --color-warning: var(--theme-color-warning);
+  --color-warning-bg: var(--theme-color-warning-bg);
+  --color-info: var(--theme-color-info);
+  --color-info-bg: var(--theme-color-info-bg);
+  
+  /* Important Hardcoded Colors Discovered */
+  --color-raw-primary: var(--theme-raw-primary);
+  --color-raw-primary-dark: var(--theme-raw-primary-dark);
+}
+
+:root,
+[data-theme="classic"] {
+  /* Provided core colors */
+  --theme-color-primary: #003057;
+  --theme-color-primary-hover: #0a2542;
+  --theme-color-secondary: #3781C2;
+  --theme-color-accent: #FFC412;
+  
+  --theme-color-app-bg: #F4F7F6;
+  --theme-color-surface: #FFFFFF;
+  --theme-color-surface-hover: #F8FAFC;
+  
+  --theme-color-text-primary: #00223E;
+  --theme-color-text-secondary: #334155;
+  --theme-color-text-muted: #64748B;
+  --theme-color-text-inverse: #FFFFFF;
+  
+  --theme-color-border: #E2E8F0;
+  --theme-color-border-strong: #CBD5E1;
+  
+  --theme-color-success: #10B981;
+  --theme-color-success-bg: #D1FAE5;
+  --theme-color-danger: #EF4444;
+  --theme-color-danger-bg: #FEE2E2;
+  --theme-color-warning: #FEF3C7;
+  --theme-color-warning-bg: #FFFBEB;
+  --theme-color-info: #3B82F6;
+  --theme-color-info-bg: #DBEAFE;
+  
+  /* Frequently used hardcoded app colors */
+  --theme-raw-primary: #0b2545;
+  --theme-raw-primary-dark: #081b33;
+}
+
+[data-theme="new"] {
+  /* Temporary inheritance of classic values */
+  --theme-color-primary: #003057;
+  --theme-color-primary-hover: #0a2542;
+  --theme-color-secondary: #3781C2;
+  --theme-color-accent: #FFC412;
+  
+  --theme-color-app-bg: #F4F7F6;
+  --theme-color-surface: #FFFFFF;
+  --theme-color-surface-hover: #F8FAFC;
+  
+  --theme-color-text-primary: #00223E;
+  --theme-color-text-secondary: #334155;
+  --theme-color-text-muted: #64748B;
+  --theme-color-text-inverse: #FFFFFF;
+  
+  --theme-color-border: #E2E8F0;
+  --theme-color-border-strong: #CBD5E1;
+  
+  --theme-color-success: #10B981;
+  --theme-color-success-bg: #D1FAE5;
+  --theme-color-danger: #EF4444;
+  --theme-color-danger-bg: #FEE2E2;
+  --theme-color-warning: #FEF3C7;
+  --theme-color-warning-bg: #FFFBEB;
+  --theme-color-info: #3B82F6;
+  --theme-color-info-bg: #DBEAFE;
+  
+  --theme-raw-primary: #0b2545;
+  --theme-raw-primary-dark: #081b33;
+}
+
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
