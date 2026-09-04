@@ -1,0 +1,135 @@
+import { AssessmentBlueprint } from '../../types';
+import { TAXONOMY } from '../taxonomy';
+
+export const FOUNDATION_BLUEPRINTS: AssessmentBlueprint[] = [
+  {
+    id: 'bp_foundation_quant',
+    title: 'Quantitative Aptitude Blueprint',
+    category: TAXONOMY.categories.FOUNDATION,
+    supportedRoles: ['SE', 'SDE', 'Analyst', 'Data Analyst', 'Consultant', 'Finance'],
+    verificationStatus: 'VERIFIED',
+    duration: 30,
+    questionCount: 25,
+    sections: [
+      {
+        id: 'sec_quant_main',
+        name: 'Quantitative Core',
+        questionCount: 25,
+        questionTypes: ['MCQ_SINGLE', 'NUMERICAL_INPUT'],
+        topics: TAXONOMY.topics.QUANTITATIVE_APTITUDE,
+        difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+        marksPerQuestion: 10,
+        negativeMarking: 2,
+      }
+    ],
+    difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+    skills: [TAXONOMY.skills.QUANTITATIVE_APTITUDE],
+    topics: TAXONOMY.topics.QUANTITATIVE_APTITUDE,
+    scoringModel: '+10 / -2',
+    mode: 'exam',
+  },
+  {
+    id: 'bp_foundation_logical',
+    title: 'Logical Reasoning Blueprint',
+    category: TAXONOMY.categories.FOUNDATION,
+    supportedRoles: ['SE', 'SDE', 'Analyst', 'Data Analyst', 'Business Analyst', 'Consultant', 'Operations'],
+    verificationStatus: 'VERIFIED',
+    duration: 30,
+    questionCount: 25,
+    sections: [
+      {
+        id: 'sec_logical_main',
+        name: 'Logical Reasoning Core',
+        questionCount: 25,
+        questionTypes: ['MCQ_SINGLE'],
+        topics: TAXONOMY.topics.LOGICAL_REASONING,
+        difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+        marksPerQuestion: 10,
+        negativeMarking: 2,
+      }
+    ],
+    difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+    skills: [TAXONOMY.skills.LOGICAL_REASONING],
+    topics: TAXONOMY.topics.LOGICAL_REASONING,
+    scoringModel: '+10 / -2',
+    mode: 'exam',
+  },
+  {
+    id: 'bp_foundation_verbal',
+    title: 'Verbal Ability Blueprint',
+    category: TAXONOMY.categories.FOUNDATION,
+    supportedRoles: ['SE', 'SDE', 'Analyst', 'Business Analyst', 'Consultant', 'HR', 'Operations'],
+    verificationStatus: 'VERIFIED',
+    duration: 30,
+    questionCount: 25,
+    sections: [
+      {
+        id: 'sec_verbal_main',
+        name: 'Verbal Ability Core',
+        questionCount: 25,
+        questionTypes: ['MCQ_SINGLE'],
+        topics: TAXONOMY.topics.VERBAL_ABILITY,
+        difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+        marksPerQuestion: 10,
+        negativeMarking: 2,
+      }
+    ],
+    difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+    skills: [TAXONOMY.skills.VERBAL_ABILITY],
+    topics: TAXONOMY.topics.VERBAL_ABILITY,
+    scoringModel: '+10 / -2',
+    mode: 'exam',
+  },
+  {
+    id: 'bp_foundation_di',
+    title: 'Data Interpretation Blueprint',
+    category: TAXONOMY.categories.FOUNDATION,
+    supportedRoles: ['Data Analyst', 'Business Analyst', 'Consultant', 'SE', 'Analyst', 'Operations'],
+    verificationStatus: 'VERIFIED',
+    duration: 30,
+    questionCount: 25,
+    sections: [
+      {
+        id: 'sec_di_main',
+        name: 'Data Interpretation Core',
+        questionCount: 25,
+        questionTypes: ['MCQ_SINGLE'],
+        topics: TAXONOMY.topics.DATA_INTERPRETATION,
+        difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+        marksPerQuestion: 10,
+        negativeMarking: 2,
+      }
+    ],
+    difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+    skills: [TAXONOMY.skills.DATA_INTERPRETATION],
+    topics: TAXONOMY.topics.DATA_INTERPRETATION,
+    scoringModel: '+10 / -2',
+    mode: 'exam',
+  },
+  {
+    id: 'bp_foundation_pseudocode',
+    title: 'Pseudocode & Programming Logic Blueprint',
+    category: TAXONOMY.categories.FOUNDATION,
+    supportedRoles: ['Software Developer', 'SE', 'SDE', 'Analyst', 'Data Analyst', 'Database Engineer'],
+    verificationStatus: 'VERIFIED',
+    duration: 30,
+    questionCount: 25,
+    sections: [
+      {
+        id: 'sec_pseudo_main',
+        name: 'Pseudocode & Logic Core',
+        questionCount: 25,
+        questionTypes: ['MCQ_SINGLE'],
+        topics: TAXONOMY.topics.PSEUDOCODE,
+        difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+        marksPerQuestion: 10,
+        negativeMarking: 2,
+      }
+    ],
+    difficultyDistribution: { Easy: 5, Medium: 15, Hard: 5 },
+    skills: [TAXONOMY.skills.PSEUDOCODE],
+    topics: TAXONOMY.topics.PSEUDOCODE,
+    scoringModel: '+10 / -2',
+    mode: 'exam',
+  }
+];

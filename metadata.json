@@ -1,0 +1,6 @@
+{
+  "name": "FirstRound",
+  "description": "Campus placement aptitude preparation platform with real company PYQ tests, live leaderboards, AI explanations, and performance analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
