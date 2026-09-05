@@ -51,42 +51,59 @@ def index_view(request):
 
 
 class AuthLoginOrRegisterView(APIView):
+    """
+    Handles both the React SPA (passwordless: {email, name, college}) and
+    legacy password-based login ({email, password, full_name, college}).
+    React identifies users by email only — no password required.
+    """
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
         email = request.data.get('email', '').strip().lower()
-        password = request.data.get('password', '').strip()
-        full_name = request.data.get('full_name', '').strip()
+        # React SPA sends 'name'; legacy sends 'full_name'
+        full_name = (
+            request.data.get('name') or
+            request.data.get('full_name') or ''
+        ).strip()
         college = request.data.get('college', '').strip()
+        password = request.data.get('password', '').strip()
 
-        if not email or not password:
+        if not email:
             return Response(
-                {'error': 'Email and password are required.'},
+                {'error': 'Email is required.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         user = User.objects.filter(email=email).first()
 
         if user:
-            if user.check_password(password):
-                user.save()
-                serializer = UserSerializer(user)
-                return Response({
-                    'message': 'Welcome back! Signed in successfully.',
-                    'is_new': False,
-                    'user': serializer.data,
-                    'token': f"token_{user.id}_{int(timezone.now().timestamp())}"
-                })
-            else:
+            # Existing user — if a password was provided, verify it
+            if password and not user.check_password(password):
                 return Response(
                     {'error': 'Invalid credentials. Please check your password.'},
                     status=status.HTTP_401_UNAUTHORIZED
                 )
+            # Update profile fields if provided
+            if full_name:
+                user.full_name = full_name
+            if college:
+                user.college = college
+            user.save()
+            serializer = UserSerializer(user)
+            return Response({
+                'message': 'Welcome back! Signed in successfully.',
+                'is_new': False,
+                'user': serializer.data,
+                'token': f"token_{user.id}_{int(timezone.now().timestamp())}"
+            })
         else:
+            # New user — create account
             name = full_name if full_name else email.split('@')[0].capitalize()
+            # Use a dummy password if none provided (React SPA flow)
+            effective_password = password if password else f"auto_{email}_{name}"
             user = User.objects.create_user(
                 email=email,
-                password=password,
+                password=effective_password,
                 full_name=name,
                 college=college or "Campus Placement Candidate"
             )
@@ -97,6 +114,144 @@ class AuthLoginOrRegisterView(APIView):
                 'user': serializer.data,
                 'token': f"token_{user.id}_{int(timezone.now().timestamp())}"
             }, status=status.HTTP_201_CREATED)
+
+
+# ─── React SPA Compatibility Stub Views ───────────────────────────────────────
+# The React frontend (api.ts) calls several endpoints that map to either
+# existing Django data or return sensible empty defaults.
+
+class CompaniesListView(APIView):
+    """React calls GET /api/companies — returns distinct company names."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        companies = (
+            TestSeries.objects
+            .filter(is_active=True, test_type='COMPANY')
+            .values_list('company_name', flat=True)
+            .distinct()
+            .order_by('company_name')
+        )
+        company_list = [
+            {'id': name.lower().replace(' ', '-'), 'name': name}
+            for name in companies
+        ]
+        return Response({'companies': company_list})
+
+
+class CatalogueView(APIView):
+    """React calls GET /api/catalogue — returns all active tests."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        ensure_database_seeded()
+        tests = TestSeries.objects.filter(is_active=True).order_by('company_name', 'title')
+        serializer = TestSeriesListSerializer(tests, many=True)
+        return Response({'tests': serializer.data})
+
+
+class UserAttemptsView(APIView):
+    """React calls GET /api/attempts?userId=... — returns user attempt history."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        user_id = request.query_params.get('userId')
+        if not user_id:
+            return Response({'attempts': []})
+        attempts = TestAttempt.objects.filter(user_id=user_id).order_by('-completed_at')[:20]
+        return Response({'attempts': TestAttemptSerializer(attempts, many=True).data})
+
+
+class NotificationsView(APIView):
+    """React calls GET /api/notifications — returns empty list (not implemented)."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response({'notifications': [], 'unreadCount': 0, 'readIds': []})
+
+    def post(self, request):
+        return Response({'success': True, 'unreadCount': 0})
+
+
+class NotificationReadView(APIView):
+    """React calls POST /api/notifications/{id}/read"""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request, notification_id=None):
+        return Response({'success': True, 'unreadCount': 0})
+
+
+class AdminAnnouncementsView(APIView):
+    """React calls POST /api/admin/announcements"""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        return Response({'success': True, 'notification': {}})
+
+
+class TestHistoryView(APIView):
+    """React calls GET /api/tests/history?userId=..."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        user_id = request.query_params.get('userId')
+        if not user_id:
+            return Response({'success': True, 'history': []})
+        attempts = TestAttempt.objects.filter(user_id=user_id).order_by('-completed_at')[:50]
+        history = []
+        for a in attempts:
+            history.append({
+                'testId': str(a.test_id),
+                'testTitle': a.test.title if a.test else '',
+                'mode': a.mode,
+                'score': a.score,
+                'totalQuestions': a.total_questions,
+                'accuracy': a.accuracy,
+                'completedAt': a.completed_at.isoformat() if a.completed_at else None,
+            })
+        return Response({'success': True, 'history': history})
+
+
+class TestHistoryVisitView(APIView):
+    """React calls POST /api/tests/history/visit — no-op stub."""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        return Response({'success': True})
+
+
+class TestHistoryStartView(APIView):
+    """React calls POST /api/tests/history/start — no-op stub."""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        return Response({'success': True})
+
+
+class AIDoubtView(APIView):
+    """React calls POST /api/ai/ask-doubt — returns a placeholder explanation."""
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        question = request.data.get('question', {})
+        q_text = question.get('question_text', '') if isinstance(question, dict) else ''
+        solution = question.get('step_by_step_solution', '') if isinstance(question, dict) else ''
+        explanation = solution or f"Review the core concept behind this question carefully. {q_text[:100]}"
+        return Response({
+            'explanation': {
+                'text': explanation,
+                'steps': [],
+                'formula': question.get('shortcut_formula', '') if isinstance(question, dict) else '',
+            }
+        })
+
+
+class QAReportView(APIView):
+    """React calls GET /api/admin/qa-report — returns stub."""
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response({'success': True, 'report': {}})
 
 
 class UserProfileView(APIView):
