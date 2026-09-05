@@ -499,8 +499,10 @@ export default function App() {
               <RevisionVaultView
                 weakQuestions={weakQuestions}
                 bookmarkedItems={bookmarkedItems}
+                tests={tests}
                 onRemoveBookmark={handleToggleBookmark}
                 onStartCustomQuiz={handleStartCustomRevisionQuiz}
+                onStartTest={handleStartTest}
                 onAskAI={handleAskAIDoubt}
               />
             )}
