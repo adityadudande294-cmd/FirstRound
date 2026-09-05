@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: var(--theme-color-primary);
+  --color-primary-hover: var(--theme-color-primary-hover);
+  --color-primary-active: var(--theme-color-primary-active);
+  --color-primary-dark: var(--theme-color-primary-dark);
+  --color-primary-border: var(--theme-color-primary-border);
+  --color-secondary: var(--theme-color-secondary);
+  --color-accent: var(--theme-color-accent);
+  
+  --color-gradient-start: var(--theme-gradient-start);
+  --color-gradient-mid: var(--theme-gradient-mid);
+  --color-gradient-end: var(--theme-gradient-end);
+  
+  --color-app-bg: var(--theme-color-app-bg);
+  --color-surface: var(--theme-color-surface);
+  --color-surface-hover: var(--theme-color-surface-hover);
+  
+  --color-text-primary: var(--theme-color-text-primary);
+  --color-text-secondary: var(--theme-color-text-secondary);
+  --color-text-muted: var(--theme-color-text-muted);
+  --color-text-inverse: var(--theme-color-text-inverse);
+  
+  --color-border: var(--theme-color-border);
+  --color-border-strong: var(--theme-color-border-strong);
+  
+  --color-success: var(--theme-color-success);
+  --color-success-bg: var(--theme-color-success-bg);
+  --color-danger: var(--theme-color-danger);
+  --color-danger-bg: var(--theme-color-danger-bg);
+  --color-warning: var(--theme-color-warning);
+  --color-warning-bg: var(--theme-color-warning-bg);
+  --color-info: var(--theme-color-info);
+  --color-info-bg: var(--theme-color-info-bg);
+}
+
+@layer base {
+  :root,
+  [data-theme="classic"] {
+    /* Classic Theme - Preserves exact original hex codes for 0% visual regression */
+    --theme-color-primary: #0b2545;
+    --theme-color-primary-hover: #123663;
+    --theme-color-primary-active: #18457d;
+    --theme-color-primary-dark: #081b33;
+    --theme-color-primary-border: #143a69;
+    
+    --theme-color-secondary: #3781C2;
+    --theme-color-accent: #FFC412;
+    
+    --theme-gradient-start: #0d3461;
+    --theme-gradient-mid: #0b2b52;
+    --theme-gradient-end: #071f3d;
+    
+    --theme-color-app-bg: #f8fafc;
+    --theme-color-surface: #FFFFFF;
+    --theme-color-surface-hover: #F8FAFC;
+    
+    --theme-color-text-primary: #0f172a;
+    --theme-color-text-secondary: #334155;
+    --theme-color-text-muted: #64748B;
+    --theme-color-text-inverse: #FFFFFF;
+    
+    --theme-color-border: #E2E8F0;
+    --theme-color-border-strong: #CBD5E1;
+    
+    --theme-color-success: #10B981;
+    --theme-color-success-bg: #D1FAE5;
+    --theme-color-danger: #EF4444;
+    --theme-color-danger-bg: #FEE2E2;
+    --theme-color-warning: #FEF3C7;
+    --theme-color-warning-bg: #FFFBEB;
+    --theme-color-info: #3B82F6;
+    --theme-color-info-bg: #DBEAFE;
+  }
+
+  [data-theme="new"] {
+    /* New Team Palette */
+    --theme-color-primary: #003057;
+    --theme-color-primary-hover: #00427a;
+    --theme-color-primary-active: #00223e;
+    --theme-color-primary-dark: #001a30;
+    --theme-color-primary-border: #00223e;
+    
+    --theme-color-secondary: #3781C2;
+    --theme-color-accent: #FFC412;
+    
+    --theme-gradient-start: #003057;
+    --theme-gradient-mid: #00223e;
+    --theme-gradient-end: #001426;
+    
+    --theme-color-app-bg: #F4F7F6;
+    --theme-color-surface: #FFFFFF;
+    --theme-color-surface-hover: #F8FAFC;
+    
+    --theme-color-text-primary: #00223E;
+    --theme-color-text-secondary: #334155;
+    --theme-color-text-muted: #64748B;
+    --theme-color-text-inverse: #FFFFFF;
+    
+    --theme-color-border: #E2E8F0;
+    --theme-color-border-strong: #CBD5E1;
+    
+    --theme-color-success: #10B981;
+    --theme-color-success-bg: #D1FAE5;
+    --theme-color-danger: #EF4444;
+    --theme-color-danger-bg: #FEE2E2;
+    --theme-color-warning: #FEF3C7;
+    --theme-color-warning-bg: #FFFBEB;
+    --theme-color-info: #3B82F6;
+    --theme-color-info-bg: #DBEAFE;
+  }
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Global scrollbar hiding if needed */
+html, body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,609 @@
+export type Role = 'student' | 'admin';
+
+export type NavTab = 'home' | 'tests' | 'vault' | 'leaderboard' | 'admin';
+
+export type TestCategory =
+  | 'foundation'
+  | 'company'
+  | 'coding'
+  | 'Quantitative'
+  | 'Logical'
+  | 'Verbal'
+  | 'Technical'
+  | 'Full Mock';
+
+export type PrimaryTestCategory = 'foundation' | 'company' | 'coding';
+
+export type VerificationStatus =
+  | 'VERIFIED'
+  | 'PATTERN_BASED'
+  | 'PARTIALLY_VERIFIED'
+  | 'UNVERIFIED';
+
+export type DifficultyLevel = 'Easy' | 'Medium' | 'Hard';
+
+export type TestMode = 'exam' | 'practice';
+
+export type NotificationType =
+  | 'ANNOUNCEMENT'
+  | 'NEW_TEST'
+  | 'COMPETITION'
+  | 'LEADERBOARD'
+  | 'ACHIEVEMENT'
+  | 'REMINDER'
+  | 'SYSTEM';
+
+export type NotificationActionType =
+  | 'OPEN_TEST'
+  | 'OPEN_LEADERBOARD'
+  | 'OPEN_REVISION'
+  | 'OPEN_PROFILE'
+  | 'OPEN_ANNOUNCEMENT';
+
+export interface AppNotification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  createdAt: string;
+  read?: boolean;
+  actionType?: NotificationActionType | string;
+  actionTargetId?: string;
+  actionTestId?: string;
+  actionTab?: NavTab;
+  actionLabel?: string;
+  actionUrl?: string;
+  targetCompany?: string;
+  targetUserId?: string;
+  audience?: string;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  college?: string;
+  targetCompany?: string;
+  targetRole?: string;
+  role: Role;
+  totalPoints: number;
+  totalTestsAttempted: number;
+  totalCorrect: number;
+  totalIncorrect: number;
+  averageAccuracy: number;
+  averageAccuracyPercentage?: number;
+  averageTimePerQuestionSeconds: number;
+  globalRank?: number;
+  readNotificationIds?: string[];
+  createdAt: string;
+}
+
+export type UserProfile = User;
+
+export interface QuestionOption {
+  id: 'A' | 'B' | 'C' | 'D';
+  text: string;
+}
+
+export interface BaseQuestion {
+  title?: string;
+  provenance?: string;
+  id: string;
+  testSeriesId: string;
+  questionText: string;
+  topic: string;
+  subTopic?: string;
+  difficulty: DifficultyLevel;
+  companyTag?: string;
+  yearTag?: string;
+  explanation: string;
+  shortcutFormula?: string;
+  stimulusId?: string;
+  stimulus?: DataStimulus;
+}
+
+export interface MCQQuestion extends BaseQuestion {
+  questionType: 'MCQ' | 'MCQ_SINGLE' | 'MCQ_MULTIPLE' | 'PSEUDOCODE';
+  options: QuestionOption[];
+  correctOption: 'A' | 'B' | 'C' | 'D' | string | string[];
+  codeSnippet?: string;
+}
+
+export interface CodingQuestion extends BaseQuestion {
+  questionType: 'CODING';
+  codingConfig: CodingConfig;
+  problemStatement?: string;
+  inputFormat?: string;
+  outputFormat?: string;
+  constraints?: string[];
+  examples?: any[];
+  starterCode?: any;
+  supportedLanguages?: any[];
+  timeLimitMs?: number;
+  memoryLimitMb?: number;
+  testCases?: any[];
+}
+
+export interface CodeOutputQuestion extends BaseQuestion {
+  questionType: 'CODE_OUTPUT';
+  codeSnippet: string;
+  options?: QuestionOption[];
+  correctOption?: string;
+}
+
+export interface DebuggingQuestion extends BaseQuestion {
+  questionType: 'DEBUGGING';
+  codeSnippet: string;
+  codingConfig?: CodingConfig;
+  options?: QuestionOption[];
+  correctOption?: string;
+}
+
+export interface SQLQuestion extends BaseQuestion {
+  questionType: 'SQL';
+  codingConfig?: CodingConfig;
+  options?: QuestionOption[];
+  correctOption?: string;
+}
+
+export type Question = MCQQuestion | CodingQuestion | CodeOutputQuestion | DebuggingQuestion | SQLQuestion;
+
+export interface CodingConfig {
+  problemType?: string;
+  languages?: string[];
+  defaultLanguage?: string;
+  starterCode?: Record<string, string>;
+  executionMode?: string;
+  timeLimitMs?: number;
+  memoryLimitMb?: number;
+  problemStatement?: string;
+  inputFormat?: string;
+  outputFormat?: string;
+  constraints?: string[];
+  examples?: any[];
+  supportedLanguages?: string[];
+  publicTests?: any[];
+  hiddenTests?: any[];
+}
+
+export interface TestSeries {
+  id: string;
+  title: string;
+  description: string;
+  category: TestCategory | string;
+  company?: string;
+  companyId?: string;
+  companyName?: string;
+  /** Roles that benefit from this test (e.g. 'SDE', 'Analyst') — drives role-based recommendations */
+  roles?: string[];
+  /** Canonical alias for roles[]. Both are kept for forward compatibility. */
+  supportedRoles?: string[];
+  skills?: string[];
+  topics?: string[];
+  difficulty: DifficultyLevel;
+  durationMinutes: number;
+  duration?: number;
+  totalQuestions: number;
+  questionCount?: number;
+  passingPercentage?: number;
+  testType?: 'sectional' | 'full_mock' | 'speed_drill' | 'coding_assessment' | string;
+  /** Default mode used when launching this test */
+  mode?: TestMode;
+  patternVersion?: string;
+  verificationStatus?: VerificationStatus;
+  isMegaEvent?: boolean;
+  megaEventId?: string;
+  tags?: string[];
+  questions?: Question[];
+  attemptsCount?: number;
+  avgScore?: number;
+  /** Playability gate. 'ready' = has real questions. 'coming_soon' = blueprint only, not playable. */
+  status?: 'ready' | 'coming_soon';
+  /** Human-readable scoring formula e.g. "+10/-2", "+4/-1", "No negative marking" */
+  scoringModel?: string;
+}
+
+export interface CompanyInfo {
+  id: string;
+  name: string;
+  badge: string;
+  color: string;
+  accentBg: string;
+  description: string;
+  rounds: string[];
+  patternSummary: string;
+  negativeMarking: string;
+  typicalCutoff: string;
+  recommendedPrepTime: string;
+  activeTestCount: number;
+}
+
+export interface QuestionResponse {
+  questionId: string;
+  selectedOption: string | string[] | null;
+  timeSpentSeconds: number;
+}
+
+export interface QuestionResponseDetail extends QuestionResponse {
+  isCorrect: boolean;
+  correctOption: string | string[];
+  question: Question;
+}
+
+export interface TopicStat {
+  topic: string;
+  total: number;
+  correct: number;
+  accuracy: number;
+}
+
+export interface TestAttempt {
+  id: string;
+  userId: string;
+  userName: string;
+  userCollege?: string;
+  testSeriesId: string;
+  testInstanceId?: string;
+  testTitle: string;
+  companyName?: string;
+  mode: TestMode;
+  totalQuestions: number;
+  attemptedQuestions: number;
+  correctCount: number;
+  incorrectCount: number;
+  unattemptedCount: number;
+  scorePoints: number; // (Correct * 10) - (Incorrect * 2) [min 0]
+  accuracyPercentage: number;
+  timeTakenSeconds: number;
+  avgTimePerQuestionSeconds: number;
+  submittedAt: string;
+  topicBreakdown: Record<string, { total: number; correct: number; accuracy: number }>;
+  strengths: string[];
+  weaknesses: string[];
+  recommendations: string[];
+  responses: QuestionResponseDetail[];
+}
+
+export interface MegaEvent {
+  id: string;
+  title: string;
+  description: string;
+  company: string;
+  startTime: string;
+  endTime: string;
+  durationMinutes: number;
+  status: 'UPCOMING' | 'LIVE' | 'ENDED';
+  testSeriesId: string;
+  totalParticipants: number;
+  prizes: string;
+  bannerTag: string;
+  badge: string;
+}
+
+export interface BookmarkedItem {
+  id: string;
+  userId: string;
+  questionId: string;
+  question: Question;
+  addedAt: string;
+}
+
+export interface WeakQuestionItem {
+  question: Question;
+  timesFailed: number;
+  lastAttemptedAt: string;
+  lastUserAnswer: string;
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  userId: string;
+  userName: string;
+  userCollege: string;
+  targetCompany?: string;
+  totalPoints: number;
+  averageAccuracy: number;
+  totalTestsAttempted: number;
+  avgSpeedSeconds: number;
+  badge?: string;
+}
+
+export interface AdminStats {
+  totalStudents: number;
+  totalTestSeries: number;
+  totalQuestions: number;
+  totalAttempts: number;
+  avgPlatformAccuracy: number;
+  topPerformingCollege: string;
+  recentAttempts: TestAttempt[];
+}
+
+export interface AIDoubtResponse {
+  answer: string;
+  stepByStepSolution: string[];
+  keyFormulaOrConcept: string;
+  shortcutTrick?: string;
+  commonTrapToAvoid?: string;
+}
+
+// ============================================================================
+// PHASE 2: TEST INTELLIGENCE & QUESTION BANK ARCHITECTURE
+// ============================================================================
+
+export type ContentLifecycleStatus = 'DRAFT' | 'REVIEW' | 'APPROVED' | 'PUBLISHED' | 'ARCHIVED';
+export type ContentVerificationStatus = 'VERIFIED' | 'PATTERN_BASED' | 'PARTIALLY_VERIFIED' | 'UNVERIFIED';
+export type QuestionDifficulty = 'Easy' | 'Medium' | 'Hard';
+export type QuestionType = 'MCQ' | 'MCQ_SINGLE' | 'MCQ_MULTIPLE' | 'NUMERICAL_INPUT' | 'CODING' | 'CODE_OUTPUT' | 'DEBUGGING' | 'SQL' | 'PSEUDOCODE';
+
+export interface DataStimulus {
+  id: string;
+  type: 'TABLE' | 'BAR_CHART' | 'LINE_GRAPH' | 'PIE_CHART' | 'CASELET' | 'MIXED_CHART';
+  title: string;
+  description?: string;
+  headers?: string[];
+  rows?: Array<Record<string, string | number> | Array<string | number>>;
+  dataPoints?: Array<{ label: string; value: number; unit?: string; category?: string }>;
+  rawContent?: string;
+  source?: string;
+  sourceReference?: string;
+}
+
+export interface CanonicalQuestion {
+  id: string;
+  questionType: QuestionType;
+  questionText: string;
+  options?: { id: string; text: string }[];
+  correctAnswer: string | string[];
+  explanation: string;
+  difficulty: QuestionDifficulty;
+  
+  category: string;
+  skill: string;
+  topic: string;
+  subtopic?: string;
+  
+  stimulusId?: string;
+  stimulus?: DataStimulus;
+  
+  supportedRoles?: string[];
+  technology?: string[];
+  company?: string;
+  assessmentBlueprintId?: string;
+  
+  source?: string;
+  sourceReference?: string;
+  qualityStatus: ContentLifecycleStatus;
+  verificationStatus: ContentVerificationStatus;
+  
+  tags: string[];
+}
+
+export interface BlueprintSection {
+  id: string;
+  name: string;
+  questionCount: number;
+  questionTypes: QuestionType[];
+  topics: string[];
+  difficultyDistribution: { Easy: number; Medium: number; Hard: number };
+  marksPerQuestion: number;
+  negativeMarking: number;
+}
+
+export interface AssessmentBlueprint {
+  id: string;
+  title: string;
+  category: string;
+  company?: string;
+  supportedRoles: string[];
+  
+  patternVersion?: string;
+  verificationStatus: ContentVerificationStatus;
+  source?: string;
+  lastReviewed?: string;
+  
+  duration: number; // minutes
+  questionCount: number;
+  
+  sections: BlueprintSection[];
+  difficultyDistribution: { Easy: number; Medium: number; Hard: number };
+  
+  skills: string[];
+  topics: string[];
+  scoringModel: string;
+  mode: 'exam' | 'practice';
+}
+
+export interface TestInstance {
+  id: string;
+  blueprintId: string;
+  userId: string;
+  questions: CanonicalQuestion[];
+  generatedAt: string;
+  status: 'pending' | 'in_progress' | 'completed';
+}
+
+// ============================================================================
+// PHASE 16: COMPANY ASSESSMENT PATTERN ARCHITECTURE
+// ============================================================================
+
+export type SourceEvidenceConfidence = 'HIGH' | 'MEDIUM' | 'LOW' | 'UNVERIFIED';
+
+export interface SourceEvidence {
+  source: string;
+  sourceType: 'RECRUITMENT_DRIVE' | 'OFFICIAL_SYLLABUS' | 'CANDIDATE_DEBRIEF' | 'PUBLIC_REPORT';
+  sourceYear: string;
+  retrievedAt: string;
+  confidence: SourceEvidenceConfidence;
+  notes?: string;
+}
+
+export interface CompanyPatternSection {
+  id: string;
+  name: string;
+  questionCount: number;
+  durationMinutes: number;
+  topics: string[];
+  skills: string[];
+  questionTypes: QuestionType[];
+  difficulty: QuestionDifficulty | 'Mixed';
+  scoringModel?: string;
+  negativeMarking?: number | string;
+  isOptional?: boolean;
+  notes?: string;
+}
+
+export interface CompanyAssessmentPattern {
+  id: string;
+  companyId: string;
+  companyName: string;
+  hiringTrack: string;
+  assessmentName: string;
+  patternVersion: string;
+  applicableRoles: string[];
+  
+  sections: CompanyPatternSection[];
+  totalQuestions: number;
+  totalDurationMinutes: number;
+  
+  skills: string[];
+  topics: string[];
+  
+  scoringModel: string;
+  negativeMarkingDescription: string;
+  
+  evidence: SourceEvidence[];
+  confidence: SourceEvidenceConfidence;
+  verificationStatus: ContentVerificationStatus;
+  status: 'coming_soon' | 'ready';
+  
+  targetBlueprintId: string;
+  catalogueTestId: string;
+  notes?: string;
+}
+
+// ============================================================================
+// PHASE 18E: CODING ASSESSMENT & ISOLATED EXECUTION ARCHITECTURE
+// ============================================================================
+
+export type SupportedLanguage = 'javascript' | 'typescript' | 'python' | 'java' | 'cpp';
+
+export type CodeExecutionStatus =
+  | 'QUEUED'
+  | 'COMPILING'
+  | 'COMPILE_ERROR'
+  | 'RUNNING'
+  | 'TIME_LIMIT_EXCEEDED'
+  | 'MEMORY_LIMIT_EXCEEDED'
+  | 'RUNTIME_ERROR'
+  | 'OUTPUT_LIMIT_EXCEEDED'
+  | 'WRONG_ANSWER'
+  | 'PASSED'
+  | 'SYSTEM_ERROR';
+
+export interface CodeTestCase {
+  id: string;
+  input: string;
+  expectedOutput: string;
+  isHidden: boolean;
+  explanation?: string;
+  weight?: number;
+}
+
+export interface TestCaseResult {
+  testCaseId: string;
+  passed: boolean;
+  input: string; // Sanitized: hidden tests redact raw inputs
+  expectedOutput?: string; // Redacted for hidden tests
+  actualOutput?: string;
+  error?: string;
+  runtimeMs: number;
+  memoryKb: number;
+  isHidden: boolean;
+  status: CodeExecutionStatus;
+}
+
+export interface CodingExecutionRequest {
+  submissionId?: string;
+  questionId: string;
+  userId: string;
+  language: SupportedLanguage;
+  sourceCode: string;
+  customInput?: string;
+  isSubmission?: boolean; // false = Run Sample Cases, true = Evaluate All (including Hidden)
+}
+
+export interface CodingExecutionResult {
+  submissionId: string;
+  questionId: string;
+  userId: string;
+  language: SupportedLanguage;
+  status: CodeExecutionStatus;
+  compileStatus?: 'SUCCESS' | 'FAILED' | 'SKIPPED';
+  compileOutput?: string;
+  passedTests: number;
+  totalTests: number;
+  sampleTestsPassed: number;
+  totalSampleTests: number;
+  hiddenTestsPassed: number;
+  totalHiddenTests: number;
+  runtimeMs: number;
+  memoryKb: number;
+  scorePercentage: number;
+  testCaseResults: TestCaseResult[];
+  errorMessage?: string;
+  executedAt: string;
+}
+
+export interface CodingSubmissionRecord {
+  id: string;
+  userId: string;
+  testSeriesId?: string;
+  testAttemptId?: string;
+  questionId: string;
+  language: SupportedLanguage;
+  sourceCode: string;
+  executionResult: CodingExecutionResult;
+  isFinalSubmission: boolean;
+  createdAt: string;
+}
+
+export interface LanguageExecutionConfig {
+  language: SupportedLanguage;
+  displayName: string;
+  version: string;
+  isSupported: boolean;
+  fileExtension: string;
+  compilerCommand?: string;
+  executionCommand: string;
+  defaultBoilerplate: string;
+  timeLimitMs: number;
+  memoryLimitMb: number;
+}
+
+export interface CodingExample {
+  input: string;
+  output: string;
+  explanation?: string;
+}
+
+export interface CanonicalCodingProblem extends CanonicalQuestion {
+  title: string;
+  problemStatement: string;
+  inputFormat: string;
+  outputFormat: string;
+  constraints: string[];
+  examples: CodingExample[];
+  supportedLanguages: SupportedLanguage[];
+  starterCode: Record<SupportedLanguage, string>;
+  timeLimitMs: number;
+  memoryLimitMb: number;
+  testCases: CodeTestCase[];
+  scoringConfig: {
+    model: 'PERCENTAGE_PASSED' | 'ALL_OR_NOTHING';
+    hiddenTestWeight: number;
+    sampleTestWeight: number;
+  };
+  // Phase 31C: Dynamic Question Config Metadata
+  codingConfig?: CodingConfig;
+}
+
