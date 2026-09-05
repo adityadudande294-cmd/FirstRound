@@ -46,9 +46,131 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
   const [expandedQuestions, setExpandedQuestions] = useState<Record<string, boolean>>({});
   const [expandAll, setExpandAll] = useState(false);
 
+  // 1. Safe & Complete Data Derivations
+  const responses: QuestionResponseDetail[] = useMemo(() => {
+    const rawList: any[] =
+      (attempt as any).detailedSolutions ||
+      (attempt as any).detailed_solutions ||
+      attempt.responses ||
+      [];
+
+    return rawList.map((r: any, idx: number) => {
+      const selectedOpt =
+        r.selectedOption !== undefined
+          ? r.selectedOption
+          : r.selected_option !== undefined
+          ? r.selected_option
+          : null;
+      const normalizedSelected =
+        selectedOpt === '' || selectedOpt === undefined ? null : selectedOpt;
+
+      const isCorr = Boolean(
+        r.isCorrect !== undefined ? r.isCorrect : r.is_correct
+      );
+      const corrOpt =
+        r.correctOption ||
+        r.correct_option ||
+        r.question?.correctOption ||
+        'A';
+
+      const qObj: Question = r.question || {
+        id: String(r.questionId || r.question_id || `q_${idx + 1}`),
+        testSeriesId: String(attempt.testSeriesId || (attempt as any).test_id || (attempt as any).testId || ''),
+        questionText: r.questionText || r.question_text || `Question ${idx + 1}`,
+        topic: r.topic || 'General Aptitude',
+        difficulty: r.difficulty || 'medium',
+        explanation:
+          r.explanation ||
+          r.step_by_step_solution ||
+          r.stepByStepSolution ||
+          '',
+        shortcutFormula:
+          r.shortcutFormula ||
+          r.shortcut_formula ||
+          '',
+        questionType: 'MCQ',
+        options: [
+          { id: 'A', text: r.option_a || r.options?.[0]?.text || 'Option A' },
+          { id: 'B', text: r.option_b || r.options?.[1]?.text || 'Option B' },
+          { id: 'C', text: r.option_c || r.options?.[2]?.text || 'Option C' },
+          { id: 'D', text: r.option_d || r.options?.[3]?.text || 'Option D' },
+        ],
+        correctOption: corrOpt,
+      };
+
+      return {
+        questionId: String(r.questionId || r.question_id || qObj.id),
+        selectedOption: normalizedSelected,
+        timeSpentSeconds: Number(r.timeSpentSeconds || r.time_spent_seconds || 0),
+        isCorrect: isCorr,
+        correctOption: corrOpt,
+        question: qObj,
+      };
+    });
+  }, [attempt]);
+
+  const rawAttempt: any = attempt || {};
+
+  const correctCount = Number(
+    rawAttempt.correct_count ??
+    rawAttempt.correctCount ??
+    responses.filter((r) => r.isCorrect).length
+  );
+
+  const incorrectCount = Number(
+    rawAttempt.incorrect_count ??
+    rawAttempt.incorrectCount ??
+    responses.filter((r) => !r.isCorrect && r.selectedOption !== null && r.selectedOption !== undefined && r.selectedOption !== '').length
+  );
+
+  const attemptedCount = Number(
+    rawAttempt.attempted_questions ??
+    rawAttempt.attemptedQuestions ??
+    (correctCount + incorrectCount)
+  );
+
+  const totalCount = Number(
+    rawAttempt.total_questions ??
+    rawAttempt.totalQuestions ??
+    rawAttempt.total_count ??
+    (responses.length > 0 ? responses.length : 1)
+  );
+
+  const accuracyPercentage =
+    attemptedCount > 0
+      ? Math.round((correctCount / attemptedCount) * 100)
+      : (rawAttempt.accuracy ?? rawAttempt.accuracyPercentage ?? 0);
+
+  const timeTaken = Number(
+    rawAttempt.time_taken_seconds ??
+    rawAttempt.timeTakenSeconds ??
+    0
+  );
+  const divisor = attemptedCount > 0 ? attemptedCount : (totalCount > 0 ? totalCount : 1);
+  const speedPerQuestion = Math.round(timeTaken / divisor);
+  const safeSpeed = isNaN(speedPerQuestion) || !isFinite(speedPerQuestion) ? 0 : speedPerQuestion;
+
+  const unattemptedCount = Math.max(
+    0,
+    Number(
+      rawAttempt.unanswered_count ??
+      rawAttempt.unansweredCount ??
+      (totalCount - attemptedCount)
+    )
+  );
+
+  const scorePoints = Number(
+    rawAttempt.points_earned ??
+    rawAttempt.pointsEarned ??
+    rawAttempt.scorePoints ??
+    Math.max(0, correctCount * 10 - incorrectCount * 2)
+  );
+
+  const isPassed = accuracyPercentage >= 65;
+
   // Trigger celebration if passed with solid score
   useEffect(() => {
-    if (attempt.accuracyPercentage >= 65) {
+    if (accuracyPercentage >= 65) {
       try {
         confetti({
           particleCount: 60,
@@ -59,7 +181,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
         // ignore if confetti fails in sandboxed iframe
       }
     }
-  }, [attempt.accuracyPercentage]);
+  }, [accuracyPercentage]);
 
   // ESC key to close
   useEffect(() => {
@@ -71,23 +193,6 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
-
-  // 1. Safe & Complete Data Derivations
-  const responses = attempt.responses || [];
-  const totalQuestions = attempt.totalQuestions || responses.length || 1;
-  const correctCount = attempt.correctCount ?? responses.filter((r) => r.isCorrect).length;
-  const incorrectCount =
-    attempt.incorrectCount ??
-    responses.filter((r) => !r.isCorrect && r.selectedOption !== null && r.selectedOption !== undefined).length;
-  const unattemptedCount =
-    attempt.unattemptedCount ??
-    responses.filter((r) => r.selectedOption === null || r.selectedOption === undefined).length;
-
-  const scorePoints = attempt.scorePoints ?? Math.max(0, correctCount * 10 - incorrectCount * 2);
-  const accuracyPercentage =
-    attempt.accuracyPercentage ?? (attempt.attemptedQuestions > 0 ? Math.round((correctCount / attempt.attemptedQuestions) * 100) : 0);
-
-  const isPassed = accuracyPercentage >= 65;
 
   // 2. Computed Topic Performance (Always real data derived from attempt)
   const topicStats = useMemo(() => {
@@ -176,8 +281,8 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
   const filteredResponses = useMemo(() => {
     return responses.filter((r) => {
       if (filterType === 'correct') return r.isCorrect;
-      if (filterType === 'incorrect') return !r.isCorrect && r.selectedOption !== null && r.selectedOption !== undefined;
-      if (filterType === 'unattempted') return r.selectedOption === null || r.selectedOption === undefined;
+      if (filterType === 'incorrect') return !r.isCorrect && r.selectedOption !== null && r.selectedOption !== undefined && r.selectedOption !== '';
+      if (filterType === 'unattempted') return r.selectedOption === null || r.selectedOption === undefined || r.selectedOption === '';
       return true;
     });
   }, [responses, filterType]);
@@ -222,6 +327,9 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
     }
   };
 
+  const companyNameDisplay = attempt.companyName || (attempt as any).company || (attempt as any).company_name;
+  const testTitleDisplay = attempt.testTitle || (attempt as any).test_title || (attempt as any).title || 'Placement Mock Assessment';
+
   return (
     <div
       id="test-result-modal-backdrop"
@@ -262,14 +370,14 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                 >
                   {isPassed ? '✓ Cutoff Cleared' : 'Mock Completed'}
                 </span>
-                {attempt.companyName && (
+                {companyNameDisplay && (
                   <span className="text-[11px] text-slate-300 font-semibold truncate hidden sm:inline">
-                    • {attempt.companyName}
+                    • {companyNameDisplay}
                   </span>
                 )}
               </div>
               <h1 className="text-sm sm:text-base lg:text-lg font-bold text-white truncate leading-tight mt-0.5 font-['Outfit']">
-                {attempt.testTitle}
+                {testTitleDisplay}
               </h1>
             </div>
           </div>
@@ -377,7 +485,7 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                         {accuracyPercentage}%
                       </span>
                     </div>
-                    <p className="text-[10px] text-text-muted">{correctCount} of {attempt.attemptedQuestions || totalQuestions} correct</p>
+                    <p className="text-[10px] text-text-muted">{correctCount} of {attemptedCount || totalCount} correct</p>
                   </div>
 
                   {/* Avg Speed */}
@@ -388,12 +496,12 @@ export const TestResultModal: React.FC<TestResultModalProps> = ({
                     </span>
                     <div className="flex items-baseline gap-1.5">
                       <span className="text-2xl sm:text-3xl font-black text-text-primary font-['Outfit']">
-                        {attempt.avgTimePerQuestionSeconds || Math.round(attempt.timeTakenSeconds / Math.max(1, attempt.attemptedQuestions))}s
+                        {safeSpeed}s
                       </span>
                       <span className="text-[11px] text-text-muted font-medium">/ question</span>
                     </div>
                     <p className="text-[10px] text-text-muted">
-                      {Math.floor(attempt.timeTakenSeconds / 60)}m {attempt.timeTakenSeconds % 60}s total
+                      {Math.floor(timeTaken / 60)}m {timeTaken % 60}s total
                     </p>
                   </div>
                 </div>

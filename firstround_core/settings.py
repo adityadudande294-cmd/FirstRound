@@ -98,6 +98,9 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
     BASE_DIR / 'frontend' / 'dist',
 ]
+if (BASE_DIR / 'frontend' / 'dist' / 'assets').exists():
+    STATICFILES_DIRS.append(BASE_DIR / 'frontend' / 'dist' / 'assets')
+
 # Use CompressedStaticFilesStorage (not Manifest) — Vite already hashes filenames,
 # so re-hashing with ManifestStaticFilesStorage breaks asset resolution.
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'

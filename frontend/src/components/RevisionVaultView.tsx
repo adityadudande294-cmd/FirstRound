@@ -20,7 +20,11 @@ import {
   XCircle,
   Zap,
   Search,
-  ArrowRight
+  ArrowRight,
+  Code2,
+  Building2,
+  Layers,
+  GraduationCap
 } from 'lucide-react';
 import { AIDoubtResponse, BookmarkedItem, Question, WeakQuestionItem, TestSeries, TestMode } from '../types';
 import { AIDoubtDrawer } from './AIDoubtDrawer';
@@ -45,12 +49,13 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
   onAskAI,
 }) => {
   const [activeTab, setActiveTab] = useState<'weak' | 'bookmarks'>('weak');
+  const [selectedCategoryTab, setSelectedCategoryTab] = useState<'all' | 'foundation' | 'company' | 'coding'>('all');
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  
+  const [masteredIds, setMasteredIds] = useState<Set<string>>(new Set());
+
   // Filters
   const [selectedTopic, setSelectedTopic] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedCompany, setSelectedCompany] = useState('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
 
@@ -64,50 +69,72 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
 
   // Pre-process current list and map metadata
   const currentListRaw = activeTab === 'weak' ? weakQuestions : bookmarkedItems;
-  
+
   const currentListWithMeta = useMemo(() => {
-    return currentListRaw.map((item) => {
-      const q = 'question' in item ? item.question : (item as any).question;
-      const test = tests.find(t => t.id === q.testSeriesId);
-      const isWeak = activeTab === 'weak';
-      return {
-        item,
-        q,
-        test,
-        timesFailed: isWeak ? (item as WeakQuestionItem).timesFailed : 0,
-        lastAttemptedAt: isWeak ? (item as WeakQuestionItem).lastAttemptedAt : (item as BookmarkedItem).addedAt,
-      };
-    });
-  }, [currentListRaw, tests, activeTab]);
+    return currentListRaw
+      .filter((item) => {
+        if (!item) return false;
+        const q = ('question' in item ? item.question : (item as any).question) || item;
+        return q && q.id && !masteredIds.has(q.id);
+      })
+      .map((item) => {
+        const q = ('question' in item ? item.question : (item as any).question) || item || {};
+        const test = tests.find((t) => t.id === q?.testSeriesId || (t as any).id === q?.test_id);
+        const isWeak = activeTab === 'weak';
+        
+        // Categorize question
+        let cat = 'foundation';
+        const topicLower = (q?.topic || (q as any)?.topic_category || '').toLowerCase();
+        const testCat = (test?.category || '').toLowerCase();
+        if (testCat === 'company' || q?.companyTag || test?.company) {
+          cat = 'company';
+        } else if (testCat === 'coding' || topicLower.includes('coding') || topicLower.includes('dsa') || topicLower.includes('sql') || topicLower.includes('pseudocode')) {
+          cat = 'coding';
+        }
+
+        return {
+          item,
+          q,
+          test,
+          category: cat,
+          timesFailed: isWeak ? (item as WeakQuestionItem).timesFailed || 1 : 0,
+          lastAttemptedAt: isWeak ? (item as WeakQuestionItem).lastAttemptedAt : (item as BookmarkedItem).addedAt,
+        };
+      });
+  }, [currentListRaw, tests, activeTab, masteredIds]);
 
   // Derived available filters
-  const availableTopics = Array.from(new Set(currentListWithMeta.map((m) => m.q.topic).filter(Boolean)));
-  const availableCategories = Array.from(new Set(currentListWithMeta.map((m) => m.test?.category).filter(Boolean)));
-  const availableCompanies = Array.from(new Set(currentListWithMeta.map((m) => m.q.companyTag || m.test?.company).filter(Boolean)));
-  const availableDifficulties = Array.from(new Set(currentListWithMeta.map((m) => m.q.difficulty).filter(Boolean)));
+  const availableTopics = Array.from(new Set(currentListWithMeta.map((m) => m?.q?.topic || (m?.q as any)?.topic_category || 'General Aptitude').filter(Boolean)));
+  const availableCompanies = Array.from(new Set(currentListWithMeta.map((m) => m?.q?.companyTag || m?.test?.company).filter(Boolean)));
+  const availableDifficulties = Array.from(new Set(currentListWithMeta.map((m) => m?.q?.difficulty || 'Medium').filter(Boolean)));
 
-  // Apply Search, Filters, and Sort
+  // Apply Search, Category Tabs, Filters, and Sort
   const filteredItems = useMemo(() => {
     let result = [...currentListWithMeta];
+
+    // Category tab filter
+    if (selectedCategoryTab !== 'all') {
+      result = result.filter((m) => m.category === selectedCategoryTab);
+    }
 
     // Search
     if (searchTerm.trim()) {
       const lowerSearch = searchTerm.toLowerCase();
-      result = result.filter(m => 
-        m.q.questionText.toLowerCase().includes(lowerSearch) ||
-        m.q.topic.toLowerCase().includes(lowerSearch) ||
-        (m.test?.title || '').toLowerCase().includes(lowerSearch) ||
-        (m.q.companyTag || m.test?.company || '').toLowerCase().includes(lowerSearch)
+      result = result.filter(
+        (m) =>
+          (m?.q?.questionText || (m?.q as any)?.question_text || '').toLowerCase().includes(lowerSearch) ||
+          (m?.q?.topic || (m?.q as any)?.topic_category || '').toLowerCase().includes(lowerSearch) ||
+          (m?.test?.title || '').toLowerCase().includes(lowerSearch) ||
+          (m?.q?.companyTag || m?.test?.company || '').toLowerCase().includes(lowerSearch)
       );
     }
 
-    // Filters
-    if (selectedTopic !== 'all') result = result.filter(m => m.q.topic === selectedTopic);
-    if (selectedCategory !== 'all') result = result.filter(m => m.test?.category === selectedCategory);
-    if (selectedCompany !== 'all') result = result.filter(m => (m.q.companyTag || m.test?.company) === selectedCompany);
-    if (selectedDifficulty !== 'all') result = result.filter(m => m.q.difficulty === selectedDifficulty);
+    // Dropdown Filters
+    if (selectedTopic !== 'all') result = result.filter((m) => (m?.q?.topic || (m?.q as any)?.topic_category) === selectedTopic);
+    if (selectedCompany !== 'all') result = result.filter((m) => (m?.q?.companyTag || m?.test?.company) === selectedCompany);
+    if (selectedDifficulty !== 'all') result = result.filter((m) => (m?.q?.difficulty || 'Medium') === selectedDifficulty);
 
-    // Sorting (Weak only for failed/recent, Bookmarks can use recent)
+    // Sorting
     if (weakSortOrder === 'most-failed' && activeTab === 'weak') {
       result.sort((a, b) => b.timesFailed - a.timesFailed);
     } else if (weakSortOrder === 'recent') {
@@ -115,9 +142,18 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
     }
 
     return result;
-  }, [currentListWithMeta, searchTerm, selectedTopic, selectedCategory, selectedCompany, selectedDifficulty, weakSortOrder, activeTab]);
+  }, [
+    currentListWithMeta,
+    selectedCategoryTab,
+    searchTerm,
+    selectedTopic,
+    selectedCompany,
+    selectedDifficulty,
+    weakSortOrder,
+    activeTab,
+  ]);
 
-  const finalFilteredQuestions = filteredItems.map(m => m.q);
+  const finalFilteredQuestions = filteredItems.map((m) => m.q);
 
   // Derive Quiz options
   const quizCountOptions = useMemo(() => {
@@ -129,17 +165,19 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
     return opts;
   }, [finalFilteredQuestions.length]);
 
-  // Adjust quizCount if it exceeds available
-  if (quizCount !== 'all' && parseInt(quizCount) > finalFilteredQuestions.length && finalFilteredQuestions.length > 0) {
-    setQuizCount('all');
-  }
-
   const handleStartQuiz = () => {
     let qList = finalFilteredQuestions;
     if (quizCount !== 'all') {
       qList = qList.slice(0, parseInt(quizCount));
     }
     onStartCustomQuiz(qList);
+  };
+
+  const handleMarkMastered = (questionId: string) => {
+    setMasteredIds((prev) => new Set([...prev, questionId]));
+    if (activeTab === 'bookmarks') {
+      onRemoveBookmark(questionId);
+    }
   };
 
   return (
@@ -155,7 +193,7 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
           Revision Vault & Weak Areas
         </h1>
         <p className="text-xs sm:text-sm text-slate-200 max-w-2xl leading-relaxed">
-          Automated collection of questions you answered incorrectly across mock tests. Re-attempt weak concepts until you achieve 100% mastery.
+          Automated collection of questions you answered incorrectly across mock tests. Re-attempt weak concepts, ask the AI doubt engine, and practice until you achieve 100% mastery.
         </p>
 
         {finalFilteredQuestions.length > 0 && (
@@ -166,8 +204,10 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                 onChange={(e) => setQuizCount(e.target.value as any)}
                 className="bg-transparent text-white text-xs font-bold focus:outline-none px-2 py-1 appearance-none cursor-pointer"
               >
-                {quizCountOptions.map(o => (
-                  <option key={o.value} value={o.value} className="text-slate-900">{o.label} Questions</option>
+                {quizCountOptions.map((o) => (
+                  <option key={o.value} value={o.value} className="text-slate-900">
+                    {o.label} Questions
+                  </option>
                 ))}
               </select>
               <ChevronDown className="w-3 h-3 text-white/70 mr-2" />
@@ -183,13 +223,16 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
         )}
       </div>
 
-      {/* Controls Container */}
-      <div className="bg-surface rounded-2xl border border-border p-4 shadow-sm space-y-4">
-        {/* Top Row: Tabs, Search, Sort */}
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 w-full lg:w-auto no-scrollbar">
+      {/* Main Container */}
+      <div className="bg-surface rounded-2xl border border-border p-4 shadow-sm space-y-5">
+        {/* Row 1: Source Selector (Weak Questions vs Bookmarks) */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border">
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => { setActiveTab('weak'); setWeakSortOrder('default'); }}
+              onClick={() => {
+                setActiveTab('weak');
+                setWeakSortOrder('default');
+              }}
               className={`whitespace-nowrap px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
                 activeTab === 'weak'
                   ? 'bg-primary text-white shadow-sm'
@@ -201,7 +244,10 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
             </button>
 
             <button
-              onClick={() => { setActiveTab('bookmarks'); setWeakSortOrder('default'); }}
+              onClick={() => {
+                setActiveTab('bookmarks');
+                setWeakSortOrder('default');
+              }}
               className={`whitespace-nowrap px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 ${
                 activeTab === 'bookmarks'
                   ? 'bg-primary text-white shadow-sm'
@@ -213,35 +259,69 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
             </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto">
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input
-                type="text"
-                placeholder="Search questions, topics..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary transition-colors"
-              />
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <span className="text-text-muted text-xs font-semibold whitespace-nowrap">Sort:</span>
-              <select
-                value={weakSortOrder}
-                onChange={(e) => setWeakSortOrder(e.target.value as any)}
-                className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
-              >
-                <option value="default">Default</option>
-                <option value="recent">Recently Failed</option>
-                {activeTab === 'weak' && <option value="most-failed">Most Failed</option>}
-              </select>
-            </div>
+          {/* Search Bar */}
+          <div className="relative w-full sm:w-72">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+            <input
+              type="text"
+              placeholder="Search questions, topics..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary transition-colors"
+            />
           </div>
         </div>
 
-        {/* Bottom Row: Filters */}
-        <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border">
+        {/* Row 2: Category Tabs (Foundation, Company, Coding) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+          <button
+            onClick={() => setSelectedCategoryTab('all')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              selectedCategoryTab === 'all'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
+                : 'bg-app-bg text-text-secondary hover:text-text-primary border border-border'
+            }`}
+          >
+            <Layers className="w-3.5 h-3.5" />
+            <span>All Categories</span>
+          </button>
+          <button
+            onClick={() => setSelectedCategoryTab('foundation')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              selectedCategoryTab === 'foundation'
+                ? 'bg-blue-600 text-white'
+                : 'bg-app-bg text-text-secondary hover:text-text-primary border border-border'
+            }`}
+          >
+            <GraduationCap className="w-3.5 h-3.5" />
+            <span>Foundation & Sectional</span>
+          </button>
+          <button
+            onClick={() => setSelectedCategoryTab('company')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              selectedCategoryTab === 'company'
+                ? 'bg-purple-600 text-white'
+                : 'bg-app-bg text-text-secondary hover:text-text-primary border border-border'
+            }`}
+          >
+            <Building2 className="w-3.5 h-3.5" />
+            <span>Company-Specific</span>
+          </button>
+          <button
+            onClick={() => setSelectedCategoryTab('coding')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              selectedCategoryTab === 'coding'
+                ? 'bg-emerald-600 text-white'
+                : 'bg-app-bg text-text-secondary hover:text-text-primary border border-border'
+            }`}
+          >
+            <Code2 className="w-3.5 h-3.5" />
+            <span>Coding & Technical</span>
+          </button>
+        </div>
+
+        {/* Row 3: Dropdown Filters & Sorters */}
+        <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-border">
           <div className="flex items-center gap-1.5 text-text-muted text-xs font-semibold mr-2">
             <Filter className="w-3.5 h-3.5" /> Filters:
           </div>
@@ -252,19 +332,12 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
               onChange={(e) => setSelectedTopic(e.target.value)}
               className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
             >
-              <option value="all">All Topics</option>
-              {availableTopics.map(t => <option key={t} value={t}>{t}</option>)}
-            </select>
-          )}
-
-          {availableCategories.length > 0 && (
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
-            >
-              <option value="all">All Categories</option>
-              {availableCategories.map(c => <option key={c} value={c}>{c}</option>)}
+              <option value="all">All Topics ({availableTopics.length})</option>
+              {availableTopics.map((t) => (
+                <option key={t} value={t}>
+                  {t}
+                </option>
+              ))}
             </select>
           )}
 
@@ -275,7 +348,11 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
               className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
             >
               <option value="all">All Companies</option>
-              {availableCompanies.map(c => <option key={c} value={c}>{c}</option>)}
+              {availableCompanies.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
           )}
 
@@ -286,38 +363,57 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
               className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
             >
               <option value="all">All Difficulties</option>
-              {availableDifficulties.map(d => <option key={d} value={d}>{d}</option>)}
+              {availableDifficulties.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
             </select>
           )}
-          
-          {(selectedTopic !== 'all' || selectedCategory !== 'all' || selectedCompany !== 'all' || selectedDifficulty !== 'all' || searchTerm !== '') && (
-            <button
-              onClick={() => {
-                setSelectedTopic('all');
-                setSelectedCategory('all');
-                setSelectedCompany('all');
-                setSelectedDifficulty('all');
-                setSearchTerm('');
-              }}
-              className="px-3 py-1.5 text-xs font-semibold text-rose-500 hover:bg-rose-50 rounded-xl transition-colors"
+
+          <div className="flex items-center gap-2 ml-auto">
+            <span className="text-text-muted text-xs font-semibold whitespace-nowrap">Sort:</span>
+            <select
+              value={weakSortOrder}
+              onChange={(e) => setWeakSortOrder(e.target.value as any)}
+              className="px-3 py-1.5 bg-app-bg border border-border rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
             >
-              Clear Filters
-            </button>
-          )}
+              <option value="default">Default</option>
+              <option value="recent">Recently Added</option>
+              {activeTab === 'weak' && <option value="most-failed">Most Failed</option>}
+            </select>
+          </div>
         </div>
       </div>
 
-      {/* Questions List */}
+      {/* Questions List or Graceful Empty State */}
       <div className="space-y-4">
         {filteredItems.length === 0 ? (
-          <div className="bg-surface border border-border rounded-2xl p-12 text-center space-y-3 shadow-sm">
-            <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
-            <h3 className="text-base font-bold text-text-primary">
-              {activeTab === 'weak' ? 'No weak questions match your criteria.' : 'No bookmarked questions match your criteria.'}
+          <div className="bg-surface border border-border rounded-3xl p-12 text-center space-y-4 shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
+              <CheckCircle2 className="w-8 h-8" />
+            </div>
+            <h3 className="text-lg font-bold text-text-primary">
+              {activeTab === 'weak'
+                ? 'Your Revision Vault is Clear!'
+                : 'No Saved Bookmarks Yet'}
             </h3>
-            <p className="text-xs text-text-muted max-w-md mx-auto leading-relaxed">
-              Try adjusting your search terms or clearing the active filters.
+            <p className="text-xs sm:text-sm text-text-muted max-w-md mx-auto leading-relaxed">
+              {activeTab === 'weak'
+                ? 'Whenever you get questions wrong during mock exams, they are automatically logged here so you can review and master them.'
+                : 'Click the bookmark icon on any question during test practice to save it for quick revision.'}
             </p>
+            {tests.length > 0 && onStartTest && (
+              <div className="pt-2">
+                <button
+                  onClick={() => onStartTest(tests[0], 'practice')}
+                  className="px-6 py-2.5 bg-primary hover:bg-primary-active text-white text-xs font-bold rounded-xl shadow-md transition-all inline-flex items-center gap-2"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Start a Test to Practice</span>
+                </button>
+              </div>
+            )}
           </div>
         ) : (
           filteredItems.map((meta, idx) => {
@@ -327,7 +423,7 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
             return (
               <div
                 key={q.id}
-                className="bg-surface border border-border rounded-2xl p-6 space-y-4 shadow-sm transition-all hover:border-slate-300"
+                className="bg-surface border border-border rounded-2xl p-6 space-y-4 shadow-sm transition-all hover:border-slate-300 dark:hover:border-slate-700"
               >
                 {/* Meta Header */}
                 <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
@@ -336,14 +432,18 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                       #{idx + 1}
                     </span>
                     <span className="px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200 text-[10px] font-bold uppercase tracking-wider">
-                      {q.topic}
+                      {q?.topic || (q as any)?.topic_category || 'General Aptitude'}
                     </span>
                     {q.difficulty && (
-                      <span className={`px-2.5 py-0.5 rounded-md border text-[10px] font-bold uppercase tracking-wider ${
-                        q.difficulty === 'Hard' ? 'bg-rose-50 text-rose-700 border-rose-200' :
-                        q.difficulty === 'Medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
-                        'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      }`}>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-md border text-[10px] font-bold uppercase tracking-wider ${
+                          q.difficulty === 'Hard'
+                            ? 'bg-rose-50 text-rose-700 border-rose-200'
+                            : q.difficulty === 'Medium'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        }`}
+                      >
                         {q.difficulty}
                       </span>
                     )}
@@ -361,23 +461,24 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-auto">
+                    {/* Ask AI Doubt Button */}
                     <button
                       onClick={() => setActiveDoubtQuestion(q)}
                       className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors shadow-sm"
                     >
                       <Bot className="w-3.5 h-3.5 text-amber-600" />
-                      <span>Ask AI</span>
+                      <span>Ask AI Doubt</span>
                     </button>
 
-                    {activeTab === 'bookmarks' && (
-                      <button
-                        onClick={() => onRemoveBookmark(q.id)}
-                        className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                        title="Remove from bookmarks"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
+                    {/* Mark Mastered / Remove Control */}
+                    <button
+                      onClick={() => handleMarkMastered(q.id)}
+                      className="px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-colors flex items-center gap-1"
+                      title="Mark as Mastered"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                      <span>Mark Mastered</span>
+                    </button>
                   </div>
                 </div>
 
@@ -417,51 +518,61 @@ export const RevisionVaultView: React.FC<RevisionVaultViewProps> = ({
 
                 {/* Options List */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {q.options && q.options.map((opt) => {
-                    const isCorrect = opt.id === q.correctOption;
-                    return (
-                      <div
-                        key={opt.id}
-                        className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 ${
-                          isCorrect && isExpanded
-                            ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold'
-                            : 'bg-app-bg border-border text-slate-700'
-                        }`}
-                      >
-                        <span className="w-5 h-5 rounded bg-slate-200 font-bold text-[11px] flex items-center justify-center text-slate-700 shrink-0">
-                          {opt.id}
-                        </span>
-                        <span className="flex-1">{opt.text}</span>
-                        {isCorrect && isExpanded && (
-                          <span className="text-[10px] font-black text-emerald-700 shrink-0">✓ Correct</span>
-                        )}
-                      </div>
-                    );
-                  })}
+                  {q.options &&
+                    q.options.map((opt) => {
+                      const isCorrect = opt.id === q.correctOption;
+                      return (
+                        <div
+                          key={opt.id}
+                          className={`p-3 rounded-xl border text-xs flex items-center gap-2.5 ${
+                            isCorrect && isExpanded
+                              ? 'bg-emerald-50 border-emerald-300 text-emerald-950 font-semibold dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700'
+                              : 'bg-app-bg border-border text-text-primary'
+                          }`}
+                        >
+                          <span className="w-5 h-5 rounded bg-slate-200 dark:bg-slate-700 font-bold text-[11px] flex items-center justify-center text-slate-700 dark:text-slate-200 shrink-0">
+                            {opt.id}
+                          </span>
+                          <span className="flex-1">{opt.text}</span>
+                          {isCorrect && isExpanded && (
+                            <span className="text-[10px] font-black text-emerald-700 dark:text-emerald-400 shrink-0">
+                              ✓ Correct
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
                 </div>
 
-                {/* Expand / Collapse Solution */}
+                {/* Reveal Solution Bar */}
                 <div className="pt-3 border-t border-border flex items-center justify-between">
                   <button
                     onClick={() => setExpandedId(isExpanded ? null : q.id)}
-                    className="text-xs font-bold text-sky-700 hover:text-sky-900 flex items-center gap-1 transition-colors"
+                    className="text-xs font-bold text-sky-600 hover:text-sky-800 dark:text-sky-400 flex items-center gap-1.5 transition-colors"
                   >
                     <Eye className="w-3.5 h-3.5" />
-                    <span>{isExpanded ? 'Hide Step-by-Step Solution' : 'View Step-by-Step Solution & Formulas'}</span>
+                    <span>
+                      {isExpanded ? 'Hide Step-by-Step Solution' : 'Reveal Solution & Formulas'}
+                    </span>
                   </button>
 
-                  <span className="text-[11px] text-text-muted font-medium">Correct Option: ({q.correctOption})</span>
+                  <span className="text-[11px] text-text-muted font-medium">
+                    Correct Option: ({q.correctOption})
+                  </span>
                 </div>
 
+                {/* Expanded Solution Box */}
                 {isExpanded && (
                   <div className="p-4 rounded-xl bg-app-bg border border-border space-y-2 animate-in fade-in">
-                    <p className="text-xs font-bold text-emerald-800">Full Derivation & Solution:</p>
-                    <p className="text-xs text-slate-700 font-mono whitespace-pre-line leading-relaxed">
+                    <p className="text-xs font-bold text-emerald-800 dark:text-emerald-400">
+                      Full Derivation & Solution:
+                    </p>
+                    <p className="text-xs text-text-primary font-mono whitespace-pre-line leading-relaxed">
                       {q.explanation}
                     </p>
                     {q.shortcutFormula && (
-                      <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 font-semibold mt-3">
-                        💡 Exam Shortcut: {q.shortcutFormula}
+                      <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-900 font-semibold mt-3 dark:bg-amber-950/30 dark:text-amber-300 dark:border-amber-800">
+                        💡 Speed Shortcut: {q.shortcutFormula}
                       </div>
                     )}
                   </div>

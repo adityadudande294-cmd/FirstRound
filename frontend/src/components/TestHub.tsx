@@ -40,6 +40,7 @@ import {
   TestAttempt,
   WeakQuestionItem,
   VerificationStatus,
+  safeLower,
 } from '../types';
 import { recommendationEngine } from '../services/RecommendationEngine';
 
@@ -278,21 +279,22 @@ export const TestHub: React.FC<TestHubProps> = ({
   // Unified metadata search matcher
   const matchesSearch = (test: TestSeries, query: string): boolean => {
     if (!query.trim()) return true;
-    const q = query.trim().toLowerCase();
+    const q = safeLower(query.trim());
     const words = q.split(/\s+/).filter(Boolean);
 
-    const title = (test.title || '').toLowerCase();
-    const desc = (test.description || '').toLowerCase();
-    const company = (test.company || test.companyName || test.companyId || '').toLowerCase();
-    const category = (test.category || '').toLowerCase();
-    const testType = (test.testType || '').toLowerCase();
-    const difficulty = (test.difficulty || '').toLowerCase();
-    const topics = (test.topics || []).map((t) => t.toLowerCase()).join(' ');
-    const skills = (test.skills || []).map((s) => s.toLowerCase()).join(' ');
-    const roles = (test.roles || []).map((r) => r.toLowerCase()).join(' ');
-    const tags = (test.tags || []).map((t) => t.toLowerCase()).join(' ');
+    const title = safeLower(test.title);
+    const desc = safeLower(test.description);
+    const company = safeLower(test.company || test.companyName || test.companyId);
+    const category = safeLower(test.category);
+    const testType = safeLower(test.testType);
+    const difficulty = safeLower(test.difficulty);
+    const year = safeLower(test.year);
+    const topics = (test.topics || []).map((t) => safeLower(t)).join(' ');
+    const skills = (test.skills || []).map((s) => safeLower(s)).join(' ');
+    const roles = (test.roles || []).map((r) => safeLower(r)).join(' ');
+    const tags = (test.tags || []).map((t) => safeLower(t)).join(' ');
 
-    const fullBlob = `${title} ${desc} ${company} ${category} ${testType} ${difficulty} ${topics} ${skills} ${roles} ${tags}`;
+    const fullBlob = `${title} ${desc} ${company} ${category} ${testType} ${difficulty} ${year} ${topics} ${skills} ${roles} ${tags}`;
 
     return words.every((word) => fullBlob.includes(word));
   };
@@ -304,34 +306,35 @@ export const TestHub: React.FC<TestHubProps> = ({
     if (selectedCategory === 'foundation') {
       list = foundationTests;
       if (selectedTopic !== 'All') {
+        const topLow = safeLower(selectedTopic);
         list = list.filter(
           (t) =>
-            t.topics?.includes(selectedTopic) ||
-            t.skills?.includes(selectedTopic) ||
-            t.title.toLowerCase().includes(selectedTopic.toLowerCase())
+            (t.topics || []).some((top) => safeLower(top).includes(topLow)) ||
+            (t.skills || []).some((s) => safeLower(s).includes(topLow)) ||
+            safeLower(t.title).includes(topLow)
         );
       }
     } else if (selectedCategory === 'company') {
       list = companyTests;
       if (selectedCompany !== 'All') {
-        const cLow = selectedCompany.toLowerCase();
+        const cLow = safeLower(selectedCompany);
         list = list.filter(
           (t) =>
-            t.company?.toLowerCase().includes(cLow) ||
-            t.companyName?.toLowerCase().includes(cLow) ||
-            t.companyId?.toLowerCase().includes(cLow) ||
-            t.title.toLowerCase().includes(cLow)
+            safeLower(t.company).includes(cLow) ||
+            safeLower(t.companyName).includes(cLow) ||
+            safeLower(t.companyId).includes(cLow) ||
+            safeLower(t.title).includes(cLow)
         );
       }
     } else if (selectedCategory === 'coding') {
       list = codingTests;
       if (selectedTech !== 'All') {
-        const techLow = selectedTech.toLowerCase();
+        const techLow = safeLower(selectedTech);
         list = list.filter(
           (t) =>
-            t.skills?.some((s) => s.toLowerCase().includes(techLow)) ||
-            t.topics?.some((top) => top.toLowerCase().includes(techLow)) ||
-            t.title.toLowerCase().includes(techLow)
+            (t.skills || []).some((s) => safeLower(s).includes(techLow)) ||
+            (t.topics || []).some((top) => safeLower(top).includes(techLow)) ||
+            safeLower(t.title).includes(techLow)
         );
       }
     } else {
@@ -346,10 +349,10 @@ export const TestHub: React.FC<TestHubProps> = ({
 
     // Role filter (cross-category)
     if (selectedRole !== 'All') {
-      const roleLow = selectedRole.toLowerCase();
+      const roleLow = safeLower(selectedRole);
       list = list.filter(
         (t) =>
-          (t.roles || t.supportedRoles || []).some((r) => r.toLowerCase().includes(roleLow))
+          (t.roles || t.supportedRoles || []).some((r) => safeLower(r).includes(roleLow))
       );
     }
 

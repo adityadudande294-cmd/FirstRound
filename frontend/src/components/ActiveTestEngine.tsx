@@ -51,8 +51,23 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
   initialBookmarkedIds,
   onOpenScratchpad,
 }) => {
-  const questions = test.questions || [];
+  const questions = test?.questions || [];
   const totalQuestions = questions.length;
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-6 text-center">
+        <div className="max-w-md bg-white p-8 rounded-2xl border border-slate-200 shadow-md space-y-4">
+          <AlertCircle className="w-10 h-10 text-amber-500 mx-auto" />
+          <h3 className="text-lg font-bold text-slate-900">No Questions Available</h3>
+          <p className="text-sm text-slate-500">This test series has no active questions loaded yet.</p>
+          <button onClick={onExit} className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors">
+            Return to Hub
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const storageKeySuffix = mode === 'practice' ? '_practice' : '';
   const storageKey = userId ? `firstround_progress_${userId}_${test.id}${storageKeySuffix}` : null;
@@ -549,7 +564,7 @@ export const ActiveTestEngine: React.FC<ActiveTestEngineProps> = ({
                     Select One Option
                   </label>
                   <div className="space-y-2.5">
-                    {('options' in currentQ! ? (currentQ as import('../types').MCQQuestion).options : [])?.map((opt) => {
+                    {(currentQ && 'options' in currentQ ? (currentQ as import('../types').MCQQuestion).options : [])?.map((opt) => {
                       const isSelected = selectedAnswers[currentQ.id] === opt.id;
                       const isPracticeVerified = showPracticeAnswer[currentQ.id];
                       const mcq = currentQ as import('../types').MCQQuestion;

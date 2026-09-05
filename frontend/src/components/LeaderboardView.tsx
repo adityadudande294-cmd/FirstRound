@@ -23,7 +23,15 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
 }) => {
   const [filterCompany, setFilterCompany] = useState('all');
 
-  const filtered = leaderboard.filter((entry) => {
+  const getPoints = (entry: any) => (entry?.totalPoints ?? entry?.total_points ?? 0);
+  const getName = (entry: any) => (entry?.userName || entry?.full_name || entry?.name || 'Anonymous');
+  const getCollege = (entry: any) => (entry?.userCollege || entry?.college || 'Campus Candidate');
+  const getAccuracy = (entry: any) => (entry?.averageAccuracy ?? entry?.accuracy_percentage ?? entry?.accuracy ?? 0);
+  const getSpeed = (entry: any) => (entry?.avgSpeedSeconds ?? entry?.avg_speed_seconds ?? (entry?.total_time_taken_seconds && entry?.total_questions_solved ? Math.round(entry.total_time_taken_seconds / entry.total_questions_solved) : 0));
+  const getTestsAttempted = (entry: any) => (entry?.totalTestsAttempted ?? entry?.total_tests ?? 0);
+  const getId = (entry: any) => (entry?.userId || entry?.id || '');
+
+  const filtered = (leaderboard || []).filter((entry) => {
     if (filterCompany !== 'all' && !entry.targetCompany?.toLowerCase().includes(filterCompany.toLowerCase())) {
       return false;
     }
@@ -63,17 +71,17 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               <span className="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full bg-surface-hover text-slate-700 border border-border">
                 🥈 Rank 2
               </span>
-              <h3 className="text-base font-bold text-text-primary mt-2">{top2.userName}</h3>
-              <p className="text-xs text-text-muted truncate">{top2.userCollege}</p>
+              <h3 className="text-base font-bold text-text-primary mt-2">{getName(top2)}</h3>
+              <p className="text-xs text-text-muted truncate">{getCollege(top2)}</p>
             </div>
             <div className="p-3 bg-app-bg rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Points</p>
-                <p className="text-sm font-extrabold text-text-primary">{top2.totalPoints.toLocaleString()}</p>
+                <p className="text-sm font-extrabold text-text-primary">{getPoints(top2).toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Accuracy</p>
-                <p className="text-sm font-extrabold text-emerald-600">{top2.averageAccuracy}%</p>
+                <p className="text-sm font-extrabold text-emerald-600">{getAccuracy(top2)}%</p>
               </div>
             </div>
           </div>
@@ -92,21 +100,21 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               <span className="text-xs uppercase font-extrabold px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
                 👑 All-India Champion
               </span>
-              <h3 className="text-lg font-black text-text-primary mt-2.5 font-['Outfit']">{top1.userName}</h3>
-              <p className="text-xs text-text-muted font-medium">{top1.userCollege}</p>
+              <h3 className="text-lg font-black text-text-primary mt-2.5 font-['Outfit']">{getName(top1)}</h3>
+              <p className="text-xs text-text-muted font-medium">{getCollege(top1)}</p>
             </div>
             <div className="p-3.5 bg-amber-50/60 rounded-2xl border border-amber-200 grid grid-cols-3 gap-2 text-center text-xs">
               <div>
                 <p className="text-[10px] text-text-muted font-semibold">Points</p>
-                <p className="text-base font-black text-slate-950">{top1.totalPoints.toLocaleString()}</p>
+                <p className="text-base font-black text-slate-950">{getPoints(top1).toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-[10px] text-text-muted font-semibold">Accuracy</p>
-                <p className="text-base font-black text-emerald-600">{top1.averageAccuracy}%</p>
+                <p className="text-base font-black text-emerald-600">{getAccuracy(top1)}%</p>
               </div>
               <div>
                 <p className="text-[10px] text-text-muted font-semibold">Speed</p>
-                <p className="text-base font-black text-sky-700">{top1.avgSpeedSeconds}s</p>
+                <p className="text-base font-black text-sky-700">{getSpeed(top1)}s</p>
               </div>
             </div>
           </div>
@@ -122,17 +130,17 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
               <span className="text-[10px] uppercase font-black px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200">
                 🥉 Rank 3
               </span>
-              <h3 className="text-base font-bold text-text-primary mt-2">{top3.userName}</h3>
-              <p className="text-xs text-text-muted truncate">{top3.userCollege}</p>
+              <h3 className="text-base font-bold text-text-primary mt-2">{getName(top3)}</h3>
+              <p className="text-xs text-text-muted truncate">{getCollege(top3)}</p>
             </div>
             <div className="p-3 bg-app-bg rounded-xl border border-slate-150 grid grid-cols-2 gap-2 text-center text-xs">
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Points</p>
-                <p className="text-sm font-extrabold text-text-primary">{top3.totalPoints.toLocaleString()}</p>
+                <p className="text-sm font-extrabold text-text-primary">{getPoints(top3).toLocaleString()}</p>
               </div>
               <div>
                 <p className="text-[10px] text-slate-400 font-semibold">Accuracy</p>
-                <p className="text-sm font-extrabold text-emerald-600">{top3.averageAccuracy}%</p>
+                <p className="text-sm font-extrabold text-emerald-600">{getAccuracy(top3)}%</p>
               </div>
             </div>
           </div>
@@ -180,11 +188,14 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.length > 0 ? (
-                filtered.map((entry) => {
-                  const isCurrentUser = entry.userId === currentUserId;
+                filtered.map((entry, idx) => {
+                  const entryId = getId(entry);
+                  const isCurrentUser = entryId === currentUserId;
+                  const rank = entry.rank || (idx + 1);
+                  const userName = getName(entry);
                   return (
                     <tr
-                      key={entry.userId}
+                      key={entryId || idx}
                       className={`transition-colors ${
                         isCurrentUser
                           ? 'bg-amber-50/70 font-semibold text-slate-950'
@@ -194,34 +205,34 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                       <td className="py-3.5 px-4 text-center">
                         <span
                           className={`inline-flex items-center justify-center w-7 h-7 rounded-xl font-bold text-xs ${
-                            entry.rank === 1
+                            rank === 1
                               ? 'bg-amber-400 text-slate-950'
-                              : entry.rank === 2
+                              : rank === 2
                               ? 'bg-slate-200 text-slate-800'
-                              : entry.rank === 3
+                              : rank === 3
                               ? 'bg-amber-100 text-amber-900 border border-amber-300'
                               : 'bg-surface-hover text-text-secondary'
                           }`}
                         >
-                          {entry.rank}
+                          {rank}
                         </span>
                       </td>
 
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-lg bg-surface-hover border border-border text-xs font-bold text-slate-800 flex items-center justify-center">
-                            {entry.userName.charAt(0)}
+                            {userName.charAt(0)}
                           </div>
                           <div>
                             <p className="font-bold text-text-primary flex items-center gap-1.5">
-                              {entry.userName}
+                              {userName}
                               {isCurrentUser && (
                                 <span className="text-[10px] font-black px-1.5 py-0.2 rounded bg-amber-400 text-slate-950">
                                   YOU
                                 </span>
                               )}
                             </p>
-                            <p className="text-[11px] text-text-muted truncate max-w-xs">{entry.userCollege}</p>
+                            <p className="text-[11px] text-text-muted truncate max-w-xs">{getCollege(entry)}</p>
                           </div>
                         </div>
                       </td>
@@ -233,20 +244,20 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({
                       </td>
 
                       <td className="py-3.5 px-4 text-center font-semibold text-slate-700">
-                        {entry.totalTestsAttempted} Mocks
+                        {getTestsAttempted(entry)} Mocks
                       </td>
 
                       <td className="py-3.5 px-4 text-center">
-                        <span className="text-emerald-700 font-bold">{entry.averageAccuracy}%</span>
+                        <span className="text-emerald-700 font-bold">{getAccuracy(entry)}%</span>
                       </td>
 
                       <td className="py-3.5 px-4 text-center text-text-secondary font-mono">
-                        {entry.avgSpeedSeconds}s / Q
+                        {getSpeed(entry)}s / Q
                       </td>
 
                       <td className="py-3.5 px-4 text-right">
                         <span className="text-sm font-extrabold text-text-primary font-mono">
-                          {entry.totalPoints.toLocaleString()}
+                          {getPoints(entry).toLocaleString()}
                         </span>
                       </td>
                     </tr>

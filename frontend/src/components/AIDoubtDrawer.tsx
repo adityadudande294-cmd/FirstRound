@@ -96,10 +96,10 @@ export const AIDoubtDrawer: React.FC<AIDoubtDrawerProps> = ({
           {/* Question Summary Pill */}
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-sky-800">{question.topic}</span>
-              <span className="text-slate-500 font-semibold">Correct Option: ({question.correctOption})</span>
+              <span className="font-bold text-sky-800">{question?.topic || (question as any)?.topic_category || 'General Aptitude'}</span>
+              <span className="text-slate-500 font-semibold">Correct Option: ({question?.correctOption || (question as any)?.correct_option || 'A'})</span>
             </div>
-            <p className="text-xs text-slate-800 line-clamp-3 leading-relaxed font-medium">{question.questionText}</p>
+            <p className="text-xs text-slate-800 line-clamp-3 leading-relaxed font-medium">{question?.questionText || (question as any)?.question_text || ''}</p>
           </div>
 
           {/* AI Response Area */}

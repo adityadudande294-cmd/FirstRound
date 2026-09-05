@@ -15,7 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { FormulaItem, PLACEMENT_FORMULA_CATALOG } from '../data/placementFormulas';
-import { TestCategory } from '../types';
+import { TestCategory, safeLower } from '../types';
 
 interface PlacementToolkitModalProps {
   onClose: () => void;
@@ -35,10 +35,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<ToolkitTab>('notes');
 
-  // ----------------------------------------------------
-  // QUICK NOTES STATE & PERSISTENCE
-  // ----------------------------------------------------
-  const notesStorageKey = `firstround_toolkit_notes_${userId || 'guest'}`;
+  // Notes state (synced to localStorage per user)
+  const notesStorageKey = `firstround_notes_${userId || 'guest'}`;
   const [notes, setNotes] = useState<string>(() => {
     try {
       return localStorage.getItem(notesStorageKey) || '';
@@ -46,34 +44,19 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
       return '';
     }
   });
-  const [copiedNotes, setCopiedNotes] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(notesStorageKey, notes);
-    } catch {}
-  }, [notes, notesStorageKey]);
-
-  const handleCopyNotes = () => {
-    if (!notes.trim()) return;
-    navigator.clipboard.writeText(notes);
-    setCopiedNotes(true);
-    setTimeout(() => setCopiedNotes(false), 2000);
-  };
-
-  const handleClearNotes = () => {
-    if (window.confirm('Clear all quick rough notes?')) {
-      setNotes('');
-    }
-  };
-
-  // ----------------------------------------------------
-  // FORMULA LIBRARY STATE & RECENT TRACKING
-  // ----------------------------------------------------
+  // Formula Search & Filter state
   const [formulaSearchQuery, setFormulaSearchQuery] = useState('');
   const [selectedFormulaCategory, setSelectedFormulaCategory] = useState<string>('All');
   const [copiedFormulaId, setCopiedFormulaId] = useState<string | null>(null);
 
+  // Quick numerical solver state
+  const [solverType, setSolverType] = useState<SolverCategory>('speed');
+  const [solverInputs, setSolverInputs] = useState<Record<string, string>>({});
+  const [solverResult, setSolverResult] = useState<{ value: string; step: string } | null>(null);
+
+  // Recent Formulas viewed / applied
   const recentFormulasKey = `firstround_recent_formulas_${userId || 'guest'}`;
   const [recentFormulaIds, setRecentFormulaIds] = useState<string[]>(() => {
     try {
@@ -84,13 +67,8 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
     }
   });
 
-  const handleCopyFormula = (formula: FormulaItem) => {
-    const textToCopy = `${formula.name}: ${formula.equation}`;
-    navigator.clipboard.writeText(textToCopy);
-    setCopiedFormulaId(formula.id);
-    setTimeout(() => setCopiedFormulaId(null), 1800);
-
-    // Save to user's real recent list (up to 5 most recent)
+  const handleSelectFormula = (formula: FormulaItem) => {
+    // Add to recent
     setRecentFormulaIds((prev) => {
       const updated = [formula.id, ...prev.filter((id) => id !== formula.id)].slice(0, 5);
       try {
@@ -102,7 +80,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
   // Filter formulas
   const filteredFormulas = useMemo(() => {
-    const query = formulaSearchQuery.trim().toLowerCase();
+    const query = safeLower(formulaSearchQuery.trim());
     return PLACEMENT_FORMULA_CATALOG.filter((item) => {
       const matchesCat =
         selectedFormulaCategory === 'All' || item.category === selectedFormulaCategory;
@@ -110,11 +88,11 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
 
       if (!query) return true;
       return (
-        item.name.toLowerCase().includes(query) ||
-        item.topic.toLowerCase().includes(query) ||
-        item.equation.toLowerCase().includes(query) ||
-        (item.explanation && item.explanation.toLowerCase().includes(query)) ||
-        item.keywords.some((kw) => kw.toLowerCase().includes(query))
+        safeLower(item.name).includes(query) ||
+        safeLower(item.topic).includes(query) ||
+        safeLower(item.equation).includes(query) ||
+        safeLower(item.explanation || '').includes(query) ||
+        (item.keywords || []).some((kw) => safeLower(kw).includes(query))
       );
     });
   }, [formulaSearchQuery, selectedFormulaCategory]);
@@ -122,7 +100,7 @@ export const PlacementToolkitModal: React.FC<PlacementToolkitModalProps> = ({
   // Context-aware recommended formulas
   const recommendedFormulas = useMemo(() => {
     if (!activeTestCategory) return [];
-    const catLower = activeTestCategory.toLowerCase();
+    const catLower = safeLower(activeTestCategory);
     if (catLower.includes('quant')) {
       return PLACEMENT_FORMULA_CATALOG.filter((f) => f.category === 'Quantitative').slice(0, 4);
     }

@@ -1,4 +1,10 @@
-export type Role = 'student' | 'admin';
+export type Role = 'SUPER_ADMIN' | 'STAFF_ADMIN' | 'STUDENT' | 'student' | 'admin';
+
+export const safeLower = (val: unknown): string => {
+  if (typeof val === 'string') return val.toLowerCase();
+  if (typeof val === 'number') return String(val).toLowerCase();
+  return '';
+};
 
 export type NavTab = 'home' | 'tests' | 'vault' | 'leaderboard' | 'admin';
 
@@ -201,6 +207,10 @@ export interface TestSeries {
   status?: 'ready' | 'coming_soon';
   /** Human-readable scoring formula e.g. "+10/-2", "+4/-1", "No negative marking" */
   scoringModel?: string;
+  approvalStatus?: 'PENDING' | 'APPROVED' | 'REJECTED' | string;
+  createdByName?: string;
+  createdBy?: string | number;
+  isActive?: boolean;
 }
 
 export interface CompanyInfo {

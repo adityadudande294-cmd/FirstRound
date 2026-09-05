@@ -55,7 +55,13 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   // User State
-  const [userId, setUserId] = useState<string | null>(() => localStorage.getItem('firstround_uid') || null);
+  const [userId, setUserId] = useState<string | null>(() => {
+    try {
+      return localStorage.getItem('firstround_uid') || null;
+    } catch {
+      return null;
+    }
+  });
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
 
   // Data Collections
@@ -252,12 +258,25 @@ export default function App() {
     }
   };
 
-  const handleSwitchUser = (user: UserProfile) => {
+  const handleSwitchUser = (user: UserProfile, redirectHint?: string) => {
     localStorage.setItem('firstround_uid', user.id);
     setUserId(user.id);
     setCurrentUser(user);
     setIsAuthModalOpen(false);
-    setActiveTab('home');
+    const role = user.role || '';
+    if (
+      redirectHint === 'admin' ||
+      role === 'SUPER_ADMIN' ||
+      role === 'STAFF_ADMIN' ||
+      role === 'admin' ||
+      (user as any).is_staff ||
+      (user as any).isStaff ||
+      user.email?.toLowerCase() === 'aadi@gmail.com'
+    ) {
+      setActiveTab('admin');
+    } else {
+      setActiveTab('home');
+    }
   };
 
   const handleLogout = () => {
@@ -415,6 +434,7 @@ export default function App() {
             setAuthModalMode('login');
             setIsAuthModalOpen(true);
           }}
+          onStartTest={(test, mode) => handleStartTest(test, mode)}
           tests={tests}
           companies={companies}
         />
@@ -513,6 +533,7 @@ export default function App() {
 
             {activeTab === 'admin' && (
               <AdminPanel
+                currentUser={currentUser}
                 tests={tests}
                 onRefreshTests={async () => {
                   const res = await apiGetTests();

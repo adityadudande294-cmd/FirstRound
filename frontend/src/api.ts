@@ -15,6 +15,8 @@ import {
   WeakQuestionItem,
 } from './types';
 
+const API_BASE = '';
+
 // Named API Client Functions
 export async function apiLoginOrRegister(payload: {
   email: string;
@@ -24,7 +26,7 @@ export async function apiLoginOrRegister(payload: {
   targetRole?: string;
   role?: 'student' | 'admin';
 }): Promise<User> {
-  const res = await fetch('/api/auth/login-or-register', {
+  const res = await fetch(`${API_BASE}/api/auth/login-or-register/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),
@@ -86,13 +88,19 @@ export async function apiUpdateUserProfile(
   const res = await fetch(`/api/users/${userId}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
+    body: JSON.stringify({
+      ...data,
+      userId,
+      user_id: userId,
+      full_name: (data as any).full_name || data.name,
+      college: data.college,
+    }),
   });
   const resData = await res.json();
   return {
     user: {
       ...resData.user,
-      averageAccuracyPercentage: resData.user.averageAccuracy,
+      averageAccuracyPercentage: resData.user?.averageAccuracy ?? resData.user?.accuracy_percentage,
     },
   };
 }
@@ -117,7 +125,16 @@ export async function apiGetTests(params?: {
 
   const res = await fetch(`/api/tests?${query.toString()}`);
   const data = await res.json();
-  return { tests: data.tests || [] };
+  const rawTests: any[] = data.tests || [];
+  const normalizedTests: TestSeries[] = rawTests.map((t) => ({
+    ...t,
+    topic: t.topic || t.topic_category || t.category || 'General',
+    topics: Array.isArray(t.topics) ? t.topics : (t.topic || t.topic_category ? [t.topic || t.topic_category] : []),
+    skills: Array.isArray(t.skills) ? t.skills : [],
+    supportedRoles: Array.isArray(t.supportedRoles) ? t.supportedRoles : (Array.isArray(t.roles) ? t.roles : []),
+    questions: Array.isArray(t.questions) ? t.questions : [],
+  }));
+  return { tests: normalizedTests };
 }
 
 /**
@@ -128,20 +145,96 @@ export async function apiGetTests(params?: {
 export async function apiGetCatalogue(): Promise<{ tests: TestSeries[] }> {
   const res = await fetch('/api/catalogue');
   const data = await res.json();
-  return { tests: data.tests || [] };
+  const rawTests: any[] = data.tests || [];
+  const normalizedTests: TestSeries[] = rawTests.map((t) => ({
+    ...t,
+    topic: t.topic || t.topic_category || t.category || 'General',
+    topics: Array.isArray(t.topics) ? t.topics : (t.topic || t.topic_category ? [t.topic || t.topic_category] : []),
+    skills: Array.isArray(t.skills) ? t.skills : [],
+    supportedRoles: Array.isArray(t.supportedRoles) ? t.supportedRoles : (Array.isArray(t.roles) ? t.roles : []),
+    questions: Array.isArray(t.questions) ? t.questions : [],
+  }));
+  return { tests: normalizedTests };
+}
+
+export async function apiLogin(payload: {
+  email: string;
+  password?: string;
+}): Promise<{
+  user: User;
+  token?: string;
+  role: string;
+  redirect: 'admin' | 'home';
+  message: string;
+}> {
+  const res = await fetch(`${API_BASE}/api/auth/login/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Login failed. Please verify credentials.');
+  return data;
+}
+
+export async function apiRegister(payload: {
+  email: string;
+  password?: string;
+  fullName?: string;
+  name?: string;
+  college?: string;
+}): Promise<{
+  user: User;
+  token?: string;
+  role: string;
+  redirect: 'home';
+  message: string;
+}> {
+  const res = await fetch(`${API_BASE}/api/auth/register/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: payload.email,
+      password: payload.password,
+      full_name: payload.fullName || payload.name,
+      college: payload.college,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Registration failed.');
+  return data;
+}
+
+export async function apiChangePassword(payload: {
+  userId: string;
+  currentPassword?: string;
+  newPassword?: string;
+  fullName?: string;
+  college?: string;
+}): Promise<{ success: boolean; message: string; user: User }> {
+  const res = await fetch('/api/auth/change-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to update profile.');
+  return data;
 }
 
 export async function apiGetTestById(id: string): Promise<{ test: TestSeries & { questions: Question[] } }> {
   const res = await fetch(`/api/tests/${id}`);
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Failed to fetch test');
-  return { test: data.test };
+  const testObj = data.test || data;
+  return { test: testObj };
 }
 
 export async function apiSubmitAttempt(payload: {
   testId: string;
   testInstanceId?: string;
   userId: string;
+  mode?: string;
   responses: QuestionResponse[];
   timeTakenSeconds: number;
 }): Promise<{ attempt: TestAttempt }> {
@@ -151,14 +244,83 @@ export async function apiSubmitAttempt(payload: {
     body: JSON.stringify({
       userId: payload.userId,
       testInstanceId: payload.testInstanceId,
-      mode: 'exam',
+      mode: payload.mode || 'exam',
       responses: payload.responses,
       timeTakenSeconds: payload.timeTakenSeconds,
     }),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.error || 'Failed to submit test');
-  return { attempt: data.attempt };
+  return data;
+}
+
+export async function apiCreateComprehensiveTest(payload: {
+  userId?: string;
+  title: string;
+  category: string;
+  company_name?: string;
+  year?: string;
+  topic_category?: string;
+  description?: string;
+  duration_minutes?: number;
+  questions: Array<{
+    question_text: string;
+    option_a: string;
+    option_b: string;
+    option_c: string;
+    option_d: string;
+    correct_option: string;
+    step_by_step_solution?: string;
+    shortcut_formula?: string;
+    topic?: string;
+  }>;
+}): Promise<{ success: boolean; message: string; test: TestSeries; approval_status: string }> {
+  const res = await fetch('/api/admin/tests/create-comprehensive', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to create test series.');
+  return data;
+}
+
+export async function apiGetPendingTests(userId?: string): Promise<{
+  success: boolean;
+  pending_tests: TestSeries[];
+  count: number;
+}> {
+  const url = userId ? `/api/admin/pending-tests?userId=${encodeURIComponent(userId)}` : '/api/admin/pending-tests';
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to fetch pending tests.');
+  return data;
+}
+
+export async function apiModerateTest(payload: {
+  testId: string | number;
+  userId?: string;
+  action: 'APPROVE' | 'REJECT';
+}): Promise<{ success: boolean; message: string; test: TestSeries }> {
+  const res = await fetch(`/api/admin/tests/${payload.testId}/moderate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      userId: payload.userId,
+      action: payload.action,
+    }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Moderation action failed.');
+  return data;
+}
+
+export async function apiGetAdminMembers(userId?: string): Promise<{ members: any[] }> {
+  const url = userId ? `/api/admin/members?userId=${encodeURIComponent(userId)}` : '/api/admin/members';
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to fetch member list.');
+  return data;
 }
 
 export async function apiGetUserAttempts(userId?: string | null): Promise<{ attempts: TestAttempt[] }> {
@@ -178,13 +340,26 @@ export async function apiGetLeaderboard(params?: {
 
   const res = await fetch(`/api/leaderboard?${query.toString()}`);
   const data = await res.json();
-  return { leaderboard: data.leaderboard || [] };
+  const rawList = data.leaderboard || [];
+  const normalizedList: LeaderboardEntry[] = rawList.map((entry: any, index: number) => ({
+    rank: entry.rank || index + 1,
+    userId: entry.id || entry.userId || '',
+    userName: entry.full_name || entry.userName || entry.name || 'Anonymous',
+    userCollege: entry.college || entry.userCollege || 'Campus Candidate',
+    targetCompany: entry.targetCompany || entry.target_company || 'Tier-1 IT',
+    totalPoints: entry.total_points ?? entry.totalPoints ?? 0,
+    totalTestsAttempted: entry.total_tests ?? entry.totalTestsAttempted ?? 0,
+    totalCorrect: entry.total_correct ?? entry.totalCorrect ?? 0,
+    averageAccuracy: entry.accuracy_percentage ?? entry.averageAccuracy ?? entry.accuracy ?? 0,
+    avgSpeedSeconds: entry.avgSpeedSeconds ?? entry.avg_speed_seconds ?? (entry.total_time_taken_seconds && entry.total_questions_solved ? Math.round(entry.total_time_taken_seconds / entry.total_questions_solved) : 0),
+  }));
+  return { leaderboard: normalizedList };
 }
 
 export async function apiGetMegaEvents(): Promise<{ events: MegaEvent[] }> {
   const res = await fetch('/api/mega-events');
   const data = await res.json();
-  return { events: data.megaEvents || [] };
+  return { events: data.megaEvents || data.mega_events || data.events || [] };
 }
 
 export async function apiToggleBookmark(
@@ -194,7 +369,12 @@ export async function apiToggleBookmark(
   const res = await fetch('/api/bookmarks/toggle', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, questionId }),
+    body: JSON.stringify({
+      userId,
+      user_id: userId,
+      questionId,
+      question_id: questionId,
+    }),
   });
   const data = await res.json();
   return data;
@@ -204,18 +384,60 @@ export async function apiGetBookmarkedQuestions(
   userId?: string | null
 ): Promise<{ bookmarks: BookmarkedItem[] }> {
   if (!userId) return { bookmarks: [] };
-  const res = await fetch(`/api/bookmarks?userId=${userId}`);
+  const res = await fetch(`/api/bookmarks?userId=${encodeURIComponent(userId)}&user_id=${encodeURIComponent(userId)}`);
   const data = await res.json();
-  return { bookmarks: data.bookmarks || [] };
+  const rawList: any[] = data.bookmarks || [];
+  const normalizedList: BookmarkedItem[] = rawList
+    .filter(Boolean)
+    .map((item) => {
+      const q = item.question || item;
+      return {
+        ...item,
+        questionId: item.questionId || item.question_id || q.id || '',
+        question: {
+          ...q,
+          id: q.id || item.questionId || `bq_${Math.random()}`,
+          questionText: q.questionText || q.question_text || '',
+          topic: q.topic || q.topic_category || 'General Aptitude',
+          difficulty: q.difficulty || 'Medium',
+          options: Array.isArray(q.options) ? q.options : [],
+          correctOption: q.correctOption || q.correct_option || 'A',
+          explanation: q.explanation || q.step_by_step_solution || '',
+        },
+        addedAt: item.addedAt || item.created_at || new Date().toISOString(),
+      };
+    });
+  return { bookmarks: normalizedList };
 }
 
 export async function apiGetWeakQuestions(
   userId?: string | null
 ): Promise<{ weakQuestions: WeakQuestionItem[] }> {
   if (!userId) return { weakQuestions: [] };
-  const res = await fetch(`/api/revision-vault/weak-questions?userId=${userId}`);
+  const res = await fetch(`/api/revision-vault/weak-questions?userId=${encodeURIComponent(userId)}&user_id=${encodeURIComponent(userId)}`);
   const data = await res.json();
-  return { weakQuestions: data.weakQuestions || [] };
+  const rawList: any[] = data.weakQuestions || data.weak_questions || [];
+  const normalizedList: WeakQuestionItem[] = rawList
+    .filter(Boolean)
+    .map((item) => {
+      const q = item.question || item;
+      return {
+        ...item,
+        question: {
+          ...q,
+          id: q.id || item.id || `wq_${Math.random()}`,
+          questionText: q.questionText || q.question_text || '',
+          topic: q.topic || q.topic_category || 'General Aptitude',
+          difficulty: q.difficulty || 'Medium',
+          options: Array.isArray(q.options) ? q.options : [],
+          correctOption: q.correctOption || q.correct_option || 'A',
+          explanation: q.explanation || q.step_by_step_solution || '',
+        },
+        timesFailed: item.timesFailed || item.times_failed || 1,
+        lastAttemptedAt: item.lastAttemptedAt || item.last_attempted_at || new Date().toISOString(),
+      };
+    });
+  return { weakQuestions: normalizedList };
 }
 
 export async function apiAskAIDoubt(payload: {
@@ -233,10 +455,14 @@ export async function apiAskAIDoubt(payload: {
   return data.explanation;
 }
 
-export async function apiGetAdminStats(): Promise<{ stats: AdminStats }> {
-  const res = await fetch('/api/admin/stats');
+export async function apiGetAdminStats(userId?: string): Promise<{ stats: AdminStats }> {
+  const effectiveUserId = userId || localStorage.getItem('firstround_uid') || '';
+  const query = effectiveUserId ? `?userId=${encodeURIComponent(effectiveUserId)}&user_id=${encodeURIComponent(effectiveUserId)}` : '';
+  const res = await fetch(`/api/admin/stats${query}`, {
+    headers: effectiveUserId ? { 'X-User-Id': effectiveUserId } : {},
+  });
   const data = await res.json();
-  return { stats: data.stats };
+  return { stats: data.stats || data };
 }
 
 export async function apiGetQAReport(): Promise<{ success: boolean; report: any }> {

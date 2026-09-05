@@ -1,4 +1,4 @@
-import { TestSeries, UserProfile, TestAttempt, WeakQuestionItem } from '../types';
+import { TestSeries, UserProfile, TestAttempt, WeakQuestionItem, safeLower } from '../types';
 import { ROLE_MAPPINGS } from '../data/roleMapping';
 
 export interface RecommendationResult {
@@ -49,24 +49,25 @@ export class RecommendationEngine {
     const playableTests = this.getPlayableTests(tests);
     if (playableTests.length === 0) return [];
 
-    const targetRole = user?.targetRole?.trim() || '';
-    const targetCompany = user?.targetCompany?.trim() || '';
-    const roleMapping = targetRole ? ROLE_MAPPINGS[targetRole] : null;
+    const targetRole = safeLower(user?.targetRole?.trim());
+    const targetCompany = safeLower(user?.targetCompany?.trim());
+    const roleMapping = targetRole ? Object.entries(ROLE_MAPPINGS).find(([k]) => safeLower(k) === targetRole)?.[1] || (ROLE_MAPPINGS as any)[targetRole] : null;
 
-    const roleSkills = new Set(roleMapping?.skills.map((s) => s.toLowerCase()) || []);
-    const roleTopics = new Set(roleMapping?.topics.map((t) => t.toLowerCase()) || []);
+    const roleSkills = new Set((roleMapping?.skills || []).map((s: string) => safeLower(s)));
+    const roleTopics = new Set((roleMapping?.topics || []).map((t: string) => safeLower(t)));
 
     // Identify weak topics from authentic attempt history & vault
     const weakTopicsCount: Record<string, number> = {};
     weakQuestions.forEach((wq) => {
-      const top = wq.question.topic;
-      if (top) weakTopicsCount[top.toLowerCase()] = (weakTopicsCount[top.toLowerCase()] || 0) + 1;
+      const top = safeLower(wq?.question?.topic || (wq as any)?.topic || (wq as any)?.question?.topic_category);
+      if (top) weakTopicsCount[top] = (weakTopicsCount[top] || 0) + 1;
     });
 
     userAttempts.forEach((att) => {
       if (att.weaknesses) {
         att.weaknesses.forEach((w) => {
-          weakTopicsCount[w.toLowerCase()] = (weakTopicsCount[w.toLowerCase()] || 0) + 2;
+          const wLow = safeLower(w);
+          if (wLow) weakTopicsCount[wLow] = (weakTopicsCount[wLow] || 0) + 2;
         });
       }
     });
@@ -83,23 +84,23 @@ export class RecommendationEngine {
 
         const testRoleMatch =
           targetRole &&
-          test.supportedRoles?.some((r) => r.toLowerCase().includes(targetRole.toLowerCase()));
+          test.supportedRoles?.some((r) => safeLower(r).includes(targetRole));
         const testSkillMatch =
-          test.skills?.some((s) => roleSkills.has(s.toLowerCase())) ||
-          (targetRole && test.skills?.some((s) => s.toLowerCase().includes(targetRole.toLowerCase())));
+          test.skills?.some((s) => roleSkills.has(safeLower(s))) ||
+          (targetRole && test.skills?.some((s) => safeLower(s).includes(targetRole)));
         const testTopicMatch =
-          test.topics?.some((t) => roleTopics.has(t.toLowerCase())) ||
-          (targetRole && test.topics?.some((t) => t.toLowerCase().includes(targetRole.toLowerCase())));
+          test.topics?.some((t) => roleTopics.has(safeLower(t))) ||
+          (targetRole && test.topics?.some((t) => safeLower(t).includes(targetRole)));
 
         // SIGNAL 1: PRIMARY ROLE MATCH (+100)
         if (testRoleMatch) {
           score += 100;
           matchType = 'ROLE_MATCH';
-          reason = `Recommended for your ${targetRole} target role.`;
+          reason = `Recommended for your ${user?.targetRole} target role.`;
         } else if (testSkillMatch || testTopicMatch) {
           score += 60;
           matchType = 'ROLE_MATCH';
-          reason = `Covers key ${targetRole} skills (${test.skills?.[0] || 'Core Aptitude'}).`;
+          reason = `Covers key ${user?.targetRole} skills (${test.skills?.[0] || 'Core Aptitude'}).`;
         } else if (test.category === 'foundation' || test.category === 'Foundation & Sectional') {
           score += 30;
           matchType = 'FOUNDATION_FALLBACK';
@@ -109,23 +110,23 @@ export class RecommendationEngine {
         // SIGNAL 2: SECONDARY COMPANY CONTEXT (+20)
         const companyMatch =
           targetCompany &&
-          (test.companyName?.toLowerCase().includes(targetCompany.toLowerCase()) ||
-            test.companyId?.toLowerCase() === targetCompany.toLowerCase() ||
-            test.company?.toLowerCase() === targetCompany.toLowerCase());
+          (safeLower(test.companyName).includes(targetCompany) ||
+            safeLower(test.companyId) === targetCompany ||
+            safeLower(test.company) === targetCompany);
 
         if (companyMatch) {
           score += 20;
           if (matchType === 'ROLE_MATCH') {
             matchType = 'ROLE_AND_COMPANY';
-            reason = `Tailored for ${targetRole} hiring pattern at ${targetCompany}.`;
+            reason = `Tailored for ${user?.targetRole} hiring pattern at ${user?.targetCompany}.`;
           } else {
-            reason = `${targetCompany} mock test covering placement patterns.`;
+            reason = `${user?.targetCompany} mock test covering placement patterns.`;
           }
         }
 
         // SIGNAL 3: AUTHENTIC CANDIDATE WEAKNESS SIGNAL (+40)
         const hasWeaknessMatch = test.topics?.some(
-          (t) => (weakTopicsCount[t.toLowerCase()] || 0) > 0
+          (t) => (weakTopicsCount[safeLower(t)] || 0) > 0
         );
         if (hasWeaknessMatch) {
           score += 40;
@@ -214,7 +215,7 @@ export class RecommendationEngine {
     const topicStats: Record<string, { total: number; incorrect: number; accuracySum: number; count: number }> = {};
 
     weakQuestions.forEach((wq) => {
-      const topic = wq.question.topic;
+      const topic = wq?.question?.topic || (wq as any)?.topic || (wq as any)?.question?.topic_category;
       if (!topic) return;
       if (!topicStats[topic]) topicStats[topic] = { total: 0, incorrect: 0, accuracySum: 0, count: 0 };
       topicStats[topic].incorrect += 1;
@@ -239,7 +240,7 @@ export class RecommendationEngine {
     Object.entries(topicStats).forEach(([topic, stat]) => {
       if (stat.incorrect > 0) {
         const matchingTest = playableTests.find((t) =>
-          t.topics?.some((top) => top.toLowerCase() === topic.toLowerCase())
+          t.topics?.some((top) => safeLower(top) === safeLower(topic))
         );
         focusAreas.push({
           topic,

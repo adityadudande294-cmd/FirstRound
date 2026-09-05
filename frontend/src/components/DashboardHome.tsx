@@ -103,7 +103,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   const initial = displayName.charAt(0).toUpperCase();
 
   // Real Streak calculation based on distinct submission dates
-  const attemptDates = Array.from(new Set(userAttempts.map((a) => a.submittedAt.split('T')[0])));
+  const attemptDates = Array.from(
+    new Set(
+      (userAttempts || [])
+        .map((a: any) => (a.submittedAt || a.completed_at || a.completedAt || '').split('T')[0])
+        .filter(Boolean)
+    )
+  );
   const streakDays = attemptDates.length;
 
   // Level System based strictly on existing XP (totalPoints)
@@ -722,35 +728,44 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
             {/* Real weak questions or intentional empty state */}
             {weakQuestions.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                {weakQuestions.slice(0, 3).map((item, idx) => {
-                  const targetTest =
-                    tests.find((t) => t.id === item.question.testSeriesId) || tests[0];
-                  return (
-                    <div
-                      key={`weak_${item.question.id}_${idx}`}
-                      onClick={() => targetTest && onStartTest(targetTest, 'practice')}
-                      className="bg-app-bg hover:bg-surface p-4 rounded-xl border border-border hover:border-amber-400/80 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between min-h-[110px] group"
-                    >
-                      <div className="space-y-1">
-                        <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 group-hover:text-amber-600 transition-colors">
-                          PRACTICE • #{idx + 1}
-                        </span>
-                        <h5 className="text-xs font-bold text-slate-800 group-hover:text-text-primary line-clamp-2">
-                          {item.question.topic} ({item.timesFailed}x review)
-                        </h5>
-                      </div>
+                {weakQuestions
+                  .filter((item) => item && (item.question || (item as any).topic || (item as any).topic_category))
+                  .slice(0, 3)
+                  .map((item, idx) => {
+                    const q = item.question || (item as any);
+                    const qTopic = q?.topic || q?.topic_category || 'General Aptitude';
+                    const qDifficulty = q?.difficulty || 'Medium';
+                    const testId = q?.testSeriesId || (item as any)?.testId;
+                    const targetTest =
+                      tests.find((t) => t.id === testId) || tests[0];
+                    const questionId = q?.id || `weak_q_${idx}`;
+                    const timesFailed = item.timesFailed || (item as any).times_failed || 1;
+                    return (
+                      <div
+                        key={`weak_${questionId}_${idx}`}
+                        onClick={() => targetTest && onStartTest(targetTest, 'practice')}
+                        className="bg-app-bg hover:bg-surface p-4 rounded-xl border border-border hover:border-amber-400/80 hover:shadow-sm transition-all cursor-pointer flex flex-col justify-between min-h-[110px] group"
+                      >
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 group-hover:text-amber-600 transition-colors">
+                            PRACTICE • #{idx + 1}
+                          </span>
+                          <h5 className="text-xs font-bold text-slate-800 group-hover:text-text-primary line-clamp-2">
+                            {qTopic} ({timesFailed}x review)
+                          </h5>
+                        </div>
 
-                      <div className="flex items-center justify-between text-[11px] text-sky-700 font-semibold pt-2">
-                        <span className="text-slate-400 group-hover:text-text-secondary">
-                          {item.question.difficulty}
-                        </span>
-                        <span className="group-hover:translate-x-0.5 transition-transform">
-                          Solve →
-                        </span>
+                        <div className="flex items-center justify-between text-[11px] text-sky-700 font-semibold pt-2">
+                          <span className="text-slate-400 group-hover:text-text-secondary">
+                            {qDifficulty}
+                          </span>
+                          <span className="group-hover:translate-x-0.5 transition-transform">
+                            Solve →
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             ) : (
               <div className="py-8 px-4 rounded-xl bg-app-bg border border-dashed border-border text-center space-y-3">

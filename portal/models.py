@@ -32,10 +32,17 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    ROLE_CHOICES = [
+        ('SUPER_ADMIN', 'Super Admin'),
+        ('STAFF_ADMIN', 'Staff Admin'),
+        ('STUDENT', 'Student'),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True, db_index=True)
     full_name = models.CharField(max_length=255)
     college = models.CharField(max_length=255, blank=True, default="")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='STUDENT')
     
     # Leaderboard & Performance Stats
     total_points = models.IntegerField(default=0)
@@ -60,10 +67,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         ordering = ['-total_points', 'total_time_taken_seconds']
 
     def __str__(self):
-        return f"{self.full_name} ({self.email})"
+        return f"{self.full_name} ({self.email}) [{self.role}]"
+
+    @property
+    def is_admin(self):
+        return self.role in ['SUPER_ADMIN', 'STAFF_ADMIN'] or self.is_staff or self.is_superuser
+
+    @property
+    def is_super_admin(self):
+        return self.role == 'SUPER_ADMIN' or self.is_superuser or self.email.lower() == 'aadi@gmail.com'
 
     def recalculate_stats(self):
-        attempts = self.attempts.all()
+        # Strict Exam Mode Isolation: Only EXAM attempts count towards Leaderboard points & rank
+        attempts = self.attempts.filter(mode='EXAM')
         self.total_tests = attempts.count()
         self.total_correct = sum(a.correct_count for a in attempts)
         self.total_incorrect = sum(a.incorrect_count for a in attempts)
@@ -99,7 +115,15 @@ class TestSeries(models.Model):
     TEST_TYPE_CHOICES = [
         ('COMPANY', 'Company Specific PYQs'),
         ('TOPIC', 'Topic Wise Practice'),
+        ('FOUNDATION', 'Foundation & Sectional'),
+        ('CODING', 'Coding & Technical'),
         ('OTHER', 'Pattern-Crafted Mock Tests'),
+    ]
+
+    APPROVAL_CHOICES = [
+        ('PENDING', 'Pending Approval'),
+        ('APPROVED', 'Approved'),
+        ('REJECTED', 'Rejected'),
     ]
 
     title = models.CharField(max_length=255)
@@ -113,6 +137,10 @@ class TestSeries(models.Model):
     duration_minutes = models.IntegerField(default=25)
     total_questions = models.IntegerField(default=25)
     difficulty = models.CharField(max_length=50, default="Standard Placement Pattern")
+    
+    # Moderation & Creator Tracking
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='created_tests')
+    approval_status = models.CharField(max_length=20, choices=APPROVAL_CHOICES, default='APPROVED')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -121,7 +149,7 @@ class TestSeries(models.Model):
         ordering = ['company_name', '-year', 'title']
 
     def __str__(self):
-        return f"{self.title} [{self.company_name} {self.year}]"
+        return f"{self.title} [{self.company_name} {self.year}] ({self.approval_status})"
 
     def get_actual_question_count(self):
         return self.questions.count()
@@ -256,4 +284,47 @@ class MegaEvent(models.Model):
             return "LIVE"
         else:
             return "ENDED"
+
+
+class UserTestProgress(models.Model):
+    STATUS_CHOICES = [
+        ('NOT_STARTED', 'Not Started'),
+        ('VISITED', 'Visited'),
+        ('IN_PROGRESS', 'In Progress'),
+        ('COMPLETED', 'Completed'),
+    ]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='test_progress')
+    test = models.ForeignKey(TestSeries, on_delete=models.CASCADE, related_name='user_progress')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='NOT_STARTED')
+    mode = models.CharField(max_length=20, default='exam')
+    last_visited_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ('user', 'test')
+        ordering = ['-last_visited_at']
+
+    def __str__(self):
+        return f"{self.user.full_name} - {self.test.title} ({self.status})"
+
+
+class CodingSubmission(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='coding_submissions')
+    question_id = models.CharField(max_length=100, db_index=True)
+    test_series = models.ForeignKey(TestSeries, on_delete=models.SET_NULL, null=True, blank=True)
+    language = models.CharField(max_length=50)  # python, javascript
+    source_code = models.TextField()
+    status = models.CharField(max_length=50, default='ACCEPTED')  # ACCEPTED, WRONG_ANSWER, TIME_LIMIT_EXCEEDED, RUNTIME_ERROR
+    passed_test_cases = models.IntegerField(default=0)
+    total_test_cases = models.IntegerField(default=0)
+    execution_time_ms = models.FloatField(default=0.0)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-submitted_at']
+
+    def __str__(self):
+        return f"{self.user.full_name} - Q:{self.question_id} [{self.language}] ({self.status})"
 

@@ -104,8 +104,8 @@ export class QuestionSelectionEngine {
     if (isAdvQuantReasoning) {
       return true;
     }
-    const secTopicsLower = sec.topics.map((t) => t.toLowerCase());
-    const qTopicLower = q.topic.toLowerCase();
+    const secTopicsLower = (sec.topics || []).map((t) => t.toLowerCase());
+    const qTopicLower = (q.topic || (q as any).topic_category || '').toLowerCase();
     const topicMatches = secTopicsLower.some(
       (t) => qTopicLower.includes(t) || t.includes(qTopicLower)
     );

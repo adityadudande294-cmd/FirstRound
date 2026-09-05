@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Search, Check } from 'lucide-react';
 
+import { safeLower } from '../../../types';
+
 interface FilterPopoverProps {
   label: string;
   options: string[];
@@ -11,7 +13,7 @@ interface FilterPopoverProps {
 
 export const FilterPopover: React.FC<FilterPopoverProps> = ({
   label,
-  options,
+  options = [],
   selectedOption,
   onSelect,
   searchable = false,
@@ -34,9 +36,10 @@ export const FilterPopover: React.FC<FilterPopoverProps> = ({
     };
   }, [isOpen]);
 
+  const safeOptions = Array.isArray(options) ? options : [];
   const filteredOptions = searchable
-    ? options.filter((opt) => opt.toLowerCase().includes(searchQuery.toLowerCase()))
-    : options;
+    ? safeOptions.filter((opt) => safeLower(opt).includes(safeLower(searchQuery)))
+    : safeOptions;
 
   const isActive = selectedOption !== 'All';
 
@@ -65,7 +68,7 @@ export const FilterPopover: React.FC<FilterPopoverProps> = ({
                 <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
-                  placeholder={`Search ${label.toLowerCase()}...`}
+                  placeholder={`Search ${safeLower(label)}...`}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"

@@ -28,6 +28,7 @@ import { CompanyInfo, TestSeries } from '../types';
 interface LandingPageProps {
   onGetStarted: () => void;
   onLogin: () => void;
+  onStartTest?: (test: TestSeries, mode?: 'exam' | 'practice') => void;
   tests?: TestSeries[];
   companies?: CompanyInfo[];
 }
@@ -35,6 +36,7 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({
   onGetStarted,
   onLogin,
+  onStartTest,
   tests = [],
   companies = [],
 }) => {
