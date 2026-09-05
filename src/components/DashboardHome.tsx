@@ -106,18 +106,32 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
   const attemptDates = Array.from(new Set(userAttempts.map((a) => a.submittedAt.split('T')[0])));
   const streakDays = attemptDates.length;
 
-  // Concept A: Overall Readiness Score (%) derived across ALL completed user attempts
-  const hasCompletedTests = userAttempts.length > 0 || (currentUser?.totalTestsAttempted ?? 0) > 0;
-  const overallReadinessPercentage =
-    currentUser && hasCompletedTests
-      ? Math.min(
-          100,
-          Math.round(
-            (currentUser.averageAccuracy || currentUser.averageAccuracyPercentage || 0) * 0.7 +
-              Math.min((currentUser.totalTestsAttempted || userAttempts.length) * 10, 30)
-          )
-        )
-      : 0;
+  // Level System based strictly on existing XP (totalPoints)
+  const getLevelInfo = (xp: number) => {
+    const thresholds = [0, 100, 250, 500, 1000, 2000, 3500, 5000, 7500, 10000];
+    let level = 1;
+    let nextLevelXp = thresholds[1];
+
+    for (let i = 0; i < thresholds.length; i++) {
+      if (xp >= thresholds[i]) {
+        level = i + 1;
+        nextLevelXp = thresholds[i + 1] || thresholds[thresholds.length - 1] + 5000;
+      } else {
+        break;
+      }
+    }
+
+    if (xp >= thresholds[thresholds.length - 1]) {
+      const excess = xp - thresholds[thresholds.length - 1];
+      const extraLevels = Math.floor(excess / 5000);
+      level = thresholds.length + extraLevels;
+      nextLevelXp = thresholds[thresholds.length - 1] + (extraLevels + 1) * 5000;
+    }
+
+    return { level, currentXp: xp, nextLevelXp };
+  };
+
+  const levelInfo = getLevelInfo(displayPoints);
 
   // Real Leaderboard standing: only ranked if the user has completed eligible assessments and earned points
   const activeLeaderboardParticipants = leaderboard.filter((l) => l.totalPoints > 0);
@@ -152,8 +166,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
     masteredWeakCount >= Math.min(3, totalWeakCount);
   const m4InProgress = hasWeakAreaEvidence && !m4Complete;
 
-  const placementReadinessTarget = 75;
-  const m5Complete = overallReadinessPercentage >= placementReadinessTarget;
+  const m5Complete = levelInfo.level >= 5;
 
   const journeyCompletedCount = [
     m1Complete,
@@ -908,11 +921,11 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
               </div>
 
               <div className="p-2.5 bg-app-bg rounded-xl border border-slate-100 text-center">
-                <span className="text-[10px] font-semibold text-text-muted block">Readiness</span>
+                <span className="text-[10px] font-semibold text-text-muted block">Level {levelInfo.level}</span>
                 <div className="flex items-center justify-center gap-1 mt-1">
-                  <Target className="w-3.5 h-3.5 text-sky-600" />
-                  <span className="text-sm font-extrabold text-text-primary">
-                    {overallReadinessPercentage}%
+                  <Crown className="w-3.5 h-3.5 text-sky-600" />
+                  <span className="text-xs font-extrabold text-text-primary">
+                    {levelInfo.currentXp} / {levelInfo.nextLevelXp}
                   </span>
                 </div>
               </div>
@@ -1247,7 +1260,7 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <h5 className="text-xs font-bold text-text-primary leading-tight">
-                          Placement Ready
+                          FirstRound Progress
                         </h5>
                         <span
                           className={`px-1.5 py-0.2 text-[10px] font-bold rounded ${
@@ -1256,13 +1269,13 @@ export const DashboardHome: React.FC<DashboardHomeProps> = ({
                               : 'bg-surface-hover text-text-secondary'
                           }`}
                         >
-                          {overallReadinessPercentage}% / {placementReadinessTarget}%
+                          Level {levelInfo.level}
                         </span>
                       </div>
                       <p className="text-[11px] text-text-muted mt-0.5">
                         {m5Complete
-                          ? 'Your preparation has reached the readiness target.'
-                          : `Reach ${placementReadinessTarget}% overall readiness score.`}
+                          ? 'You are making great progress through FirstRound!'
+                          : `Keep completing assessments and revision to progress.`}
                       </p>
                     </div>
                   </div>
