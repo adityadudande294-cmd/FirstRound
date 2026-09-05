@@ -3,7 +3,7 @@ services:
     name: firstround-portal
     runtime: python
     plan: free
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python populate_db.py"
+    buildCommand: "cd frontend && npm ci && npm run build && cd .. && pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate && python populate_db.py"
     startCommand: "gunicorn firstround_core.wsgi:application"
     envVars:
       - key: PYTHON_VERSION

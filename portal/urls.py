@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -33,7 +33,7 @@ urlpatterns = [
     # Mega Contests Arena
     path('api/mega-events/', views.MegaEventListView.as_view(), name='api-mega-events'),
     path('api/mega-events/<int:event_id>/leaderboard/', views.MegaEventLeaderboardView.as_view(), name='api-mega-event-leaderboard'),
+
+    # SPA catch-all: serve React index.html for all non-API routes (React Router support)
+    re_path(r'^(?!api/).*$', views.index_view, name='spa-catchall'),
 ]
-
-
-

@@ -36,8 +36,16 @@ def check_is_admin(request):
 
 
 def index_view(request):
-    """Serve the single-page application and auto-seed database if empty."""
+    """Serve the compiled React SPA. Auto-seeds database on first load.
+    Falls back to legacy template if the React build does not yet exist.
+    """
     ensure_database_seeded()
+    from pathlib import Path
+    import os
+    react_index = Path(__file__).resolve().parent.parent / 'frontend' / 'dist' / 'index.html'
+    if react_index.exists():
+        return render(request, 'index.html')
+    # Fallback: legacy Django template (used during local dev without a build)
     return render(request, 'portal/index.html')
 
 
