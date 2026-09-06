@@ -10,3 +10,5 @@ venv/
 # Frontend build artifacts (generated fresh on Render deploy)
 frontend/node_modules/
 frontend/dist/
+
+.venv/
